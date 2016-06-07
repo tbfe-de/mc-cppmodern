@@ -162,9 +162,9 @@ name: notice_to_the_reader
 
 * This document supplies the **Guiding Thread** only
 
-   - It is not meant to be read stand alone
+  - It is not meant to be read stand alone
 
-   - The bulk of teaching material is in the
+  - The bulk of teaching material is in the
      [live demos](#live_examples)
 
       - created and augmented throughout this course, while
@@ -196,17 +196,17 @@ There are two basic forms:
 
 * **Conditional code `#if … #else … #endif`**
 
-   - Usually both versions work, demonstrating alternative ways to
+  - Usually both versions work, demonstrating alternative ways to
      solve the particular problem at hand
-   - Sometimes not all versions are compatible with C++11 but may
+  - Sometimes not all versions are compatible with C++11 but may
      require C++14 or even C++14 features
 
 * **Commented-out lines – sometimes with alternatives**
 
-   - Sometimes these are shown because they **do not compile** and
+  - Sometimes these are shown because they **do not compile** and
      should indicate that a particular solution that may even seem
      attractive at first glance is **not** the way to go.
-   - Furthermore, if removing the comment often some other line
+  - Furthermore, if removing the comment often some other line
      (in close proximity, typically the previous or next one) needs
      to be commented.
 
@@ -219,9 +219,9 @@ to actually internalise the topics covered!**
 
 * Assuming you are well versed in "Classic C++98"
 
-   - Get the idea from an example
+  - Get the idea from an example
 
-   - Look-up the reference documentation
+  - Look-up the reference documentation
 
       - Grasp what you (seem to) understand at from a cursory look
 
@@ -231,10 +231,10 @@ to actually internalise the topics covered!**
 
          - … but do not loop endlessly
 
-------------------------------------------------------------
+--------------------------------------------------------------------------------
 
-Most things in C++ are designed to work exactly as you would
-expect it …
+Most language features and library classes in C++ are designed
+to work exactly as you would expect it …
 
 … except those that work differently.
 
@@ -245,17 +245,17 @@ name: linked_reference_documentation
 
 * This presentation frequently links to http://en.cppreference.com
 
-   - It is provided freely
+  - It is provided freely
 
-   - It is "vitally alive" and very recent
+  - It is "vitally alive" and very recent
 
-   - It clearly marks additions of C++11, C++14, and C++17
+  - It clearly marks additions of C++11, C++14, and C++17
 
-   - It provides compilable examples
+  - It provides compilable examples
 
 * A close competitor also to recommend is http://www.cplusplus.com
 
---------------------------------------------------------------
+--------------------------------------------------------------------------------
 
 What if `cppreference.com` goes out of service some day,
 temporarily or permanently?
@@ -296,9 +296,9 @@ auto foo(bool tf) /* -> const int* */ {
 http://coliru.stacked-crooked.com/a/8257d868776840dd
 
 * Alternatives in examples are provided to be tried!
-   - Switch between `#if` – `#else` – `#endif` sections.
-   - Remove comments (like around `/* -> const int* */`.
-   - Move comments (like between last two lines in `foo`).
+  - Switch between `#if` – `#else` – `#endif` sections.
+  - Remove comments (like around `/* -> const int* */`.
+  - Move comments (like between last two lines in `foo`).
 * Add annotations and feel free to extend.
 
 ---
@@ -325,8 +325,8 @@ int main() {
 ```
 
 * Useful helpers for writing test `main` programs:
-   - Simple expression printer macro (`PT`)
-   - [Boost.Type_index] based type printer macro (`PT`)
+  - Simple expression printer macro (`PT`)
+  - [Boost.Type_index] based type printer macro (`PT`)
 
 [Boost.Type_index]: http://www.boost.org/doc/libs/master/doc/html/boost_typeindex/getting_started.html
 
@@ -337,11 +337,11 @@ name: live_examples
 
 * Coliru is provided freely - do not overly stress it!
 
-   - It is an Online Compile Service
+  - It is an Online Compile Service
 
-   - Very up-to-date with respect to modern C++
+  - Very up-to-date with respect to modern C++
 
-   - Includes recent version of Boost Libraries
+  - Includes recent version of Boost Libraries
 
 * **Coliru is provided freely - do not overly stress it!**
 
@@ -366,25 +366,18 @@ a donation.
 
 ---
 
-## Section Overview
-
-* [Some Useful Stuff				](#some_useful_stuff)
-* [`const` vs. `constexpr`			](#const_vs_constexpr)
-
----
-
 name: some_useful_stuff
 ## Some Useful Stuff
 
 * [Why - **not** - Use The Preprocessor](#the_preprocessor)
 
-* Expressions have **Value** and **Type**
+* [Expressions have **Value** and **Type**](#types_vs_values)
 
-* Printing Types at Run-Time
+* [Printing Types at Run-Time](#show_expression_type)
 
-* C++98 and C++11 Support (for the former)
+* [C++98 and C++11 Support (for the former)](#typeid_and_decltype)
 
-* The Preprocessor (once more)
+* [The Preprocessor (once more)](#the_preprocessor_again)
 
 ---
 
@@ -393,11 +386,11 @@ name: the_preprocessor
 
 * Basic Features
 
-   - Including Files
+  - Including Files
 
-   - Expanding Macros
+  - Expanding Macros
 
-   - Conditional Compilation
+  - Conditional Compilation
 
 http://en.cppreference.com/w/c/preprocessor
 
@@ -407,13 +400,13 @@ http://en.cppreference.com/w/c/preprocessor
 
 * Insert contents of a file
 
-   - Usually looked up in search path
+  - Usually looked up in search path
 
-   - May actually skip content (Guard-Technique!)
+  - May actually skip content (Guard-Technique!)
 
 * File existence can be tested in C++1z
 
-   - `__has_include()`
+  - `__has_include()`
 
 http://en.cppreference.com/w/cpp/preprocessor/include
 
@@ -423,15 +416,15 @@ http://en.cppreference.com/w/cpp/preprocessor/include
 
 * `#include` processing may be time consuming …
 
-   - … and even cause subtle problems …
+  - … and even cause subtle problems …
 
-   - … especially when unnecessarily duplicated
+  - … especially when unnecessarily duplicated
 
 * Counter measures are:
 
-   - External to Compiler: Include guards
+  - External to Compiler: Include guards
 
-   - Internal in Compiler: Processing optimisations
+  - Internal in Compiler: Processing optimisations
 
 ---------------------------------------------------
 
@@ -445,9 +438,9 @@ considered a *Quality of Implementation* issue (QOI).
 
 * Allows textual substitutions
 
-   - At early translation phase
+  - At early translation phase
 
-   - Little regard to C++ syntax
+  - Little regard to C++ syntax
 
 * Caller may provide arguments
 
@@ -479,15 +472,15 @@ int main() {
 
 * `#define`-s are 
 
-   - not properly scoped
+  - not properly scoped
 
-   - may cause code duplication
+  - may cause code duplication
 
 * `#define`-s expand arguments textually
 
-   - Countermeasure: extensive parenthesizing
+  - Countermeasure: extensive parenthesizing
 
-   - **Strictly to avoid: side effects**
+  - **Strictly to avoid: side effects**
 
 * Sloppy use may cause glitches hard to find
 
@@ -523,13 +516,13 @@ int main() {
 
 * Allows to enable or disable parts of a source code
 
-   - Conditions limited to:
+  - Conditions limited to:
 
       - Defined preprocessor macro
 
       - Literal constant expressions
 
-   - May be nested but not across files
+  - May be nested but not across files
 
 http://en.cppreference.com/w/cpp/preprocessor/conditional
 
@@ -539,15 +532,15 @@ http://en.cppreference.com/w/cpp/preprocessor/conditional
 
 * Conditions evaluated early in translation, e.g.
 
-   - no knowledge about types
+  - no knowledge about types
 
-   - conditions need to be trivial
+  - conditions need to be trivial
 
 * If used in nested forms
 
-   - Code quickly gets unmaintainable
+  - Code quickly gets unmaintainable
 
-   - More so when crossing runtime control structure
+  - More so when crossing runtime control structure
 
 ```
     if (x > 0) { // x is positive
@@ -567,13 +560,13 @@ http://en.cppreference.com/w/cpp/preprocessor/conditional
 
 * Terminates translation with error message
 
-   - Obviously needs to be combined with `#if` (etc.)
+  - Obviously needs to be combined with `#if` (etc.)
 
 * Conditions evaluated early in translation, e.g.
 
-   - no knowledge about types
+  - no knowledge about types
 
-   - conditions need to be trivial
+  - conditions need to be trivial
 
 http://en.cppreference.com/w/cpp/preprocessor/error
 
@@ -624,9 +617,9 @@ C++14 feature is actually used and how could it have been avoided?)
 
 * Alternative `#pragma once`:
 
-   - Widely Supported
+  - Widely Supported
 
-   - Not Standardized
+  - Not Standardized
 
 ---
 
@@ -664,21 +657,21 @@ http://coliru.stacked-crooked.com/a/3fc20b0a0765e6fb
 
 * Macros to centralize literals
 
-   - Prefer `const` / `constexpr`
+  - Prefer `const` / `constexpr`
 
 * Macros to avoid subroutines
 
-   - Prefer `inline`
+  - Prefer `inline`
 
 * Macros to parametrize types
 
-   - Prefer `template`-s
+  - Prefer `template`-s
 
 * Complex conditional sections
 
-   - Rely on "optimised-out" Run-Time `if`
+  - Rely on "optimised-out" Run-Time `if`
 
-   - Consider Template Meta-Programming
+  - Consider Template Meta-Programming
 
 ---
 
@@ -740,9 +733,9 @@ Covered later:
 
 * Adorned use of macro arguments
 
-   - Stringizing (`#arg`)
+  - Stringizing (`#arg`)
 
-   - Token Pasting (`arg ## whatever`)
+  - Token Pasting (`arg ## whatever`)
 
 ---
 
@@ -769,9 +762,9 @@ name: types_vs_values
 
 * Each expression has distinct
 
-   - **Type** – known at Compile-Time
+  - **Type** – known at Compile-Time
 
-   - **Value** – known at Runtime
+  - **Value** – known at Runtime
 
 ---
 
@@ -779,9 +772,9 @@ name: types_vs_values
 
 * At Run-Time `operator>>` works for
 
-   - **All** basic types
+  - **All** basic types
 
-   - **Some** more complex types
+  - **Some** more complex types
 
       * e.g. pointers (shows address in hex)
 
@@ -801,15 +794,17 @@ name: types_vs_values
 
 ---
 
+
+name: show_expression_type
 #### Show (Expression) Type
 
 * At Run-Time
 
-   - … ?
+  - … ?
 
 * At Compile-Time
 
-   - May occurs in error messages
+  - May occurs in error messages
 
 * Types are **always** known at Compile-Time
 
@@ -839,9 +834,9 @@ name: type_aliases
 
 * Alternative syntax for `typedef`
 
-   - After keyword `using` alias name comes first …
+  - After keyword `using` alias name comes first …
 
-   - … then an equals (`=`), then the aliased type
+  - … then an equals (`=`), then the aliased type
 
 * Improves readability
 
@@ -873,7 +868,7 @@ name: typeid_and_decltype
 
 * C++98 introduced `typeid()`
 
-   - Has `name()` member (among other uses)
+  - Has `name()` member (among other uses)
 
       - Returns unique string for each distinct type
 
@@ -883,9 +878,9 @@ http://en.cppreference.com/w/cpp/language/typeid
 
 * C++11 added `decltype()`
 
-   - Takes type for expression
+  - Takes type for expression
 
-   - and then ???
+  - and then ???
 
 http://en.cppreference.com/w/cpp/language/decltype
 
@@ -923,13 +918,13 @@ http://coliru.stacked-crooked.com/a/f444d6912e498e68
 
 * … if not:
 
-   - Read in error message
+  - Read in error message
 
       - idea "stolen" from Scott Meyers
 
       - ugly … but works (for desperadoes!)
 
-   - Turn error message into string
+  - Turn error message into string
 
       - starts out simple …
 
@@ -1011,9 +1006,9 @@ name: decltype_peculiarities
 
 * Use for expressions
 
-   - Parenthesizing?
+  - Parenthesizing?
 
-   - Non-Modifying Operations
+  - Non-Modifying Operations
 
 ---
 
@@ -1053,9 +1048,9 @@ name: the_preprocessor_again
 
 * C++11: Variadic Macro Arguments
 
-   - Defining with `...`
+  - Defining with `...`
 
-   - Accessing with `__VA_ARGS__`
+  - Accessing with `__VA_ARGS__`
 
 * Untypical use: solve the comma problem
 
@@ -1094,15 +1089,15 @@ name: const_vs_constexpr
 
 * [`const` has always there](#const_is_for_write_protection)
 
-   - Actually introduced by C++
+  - Actually introduced by C++
 
-   - Adopted by C89 (ANSI/ISO-C)
+  - Adopted by C89 (ANSI/ISO-C)
 
 * [C++11 added `constexpr`](#const_expr_enforces_compile_time)
 
-   - For data (Compile-Time initialisation)
+  - For data (Compile-Time initialisation)
 
-   - For functions (Compile-Time callable)
+  - For functions (Compile-Time callable)
 
 * C++14 improved `constexpr` functions
 
@@ -1116,15 +1111,15 @@ name: const_vs_constexpr
 
 * May or may not hold
 
-   - different values
+  - different values
 
-   - on different instantiations
+  - on different instantiations
 
 * May or may not
 
-   - load initial value with executable
+  - load initial value with executable
 
-   - contrary to requiring Run-Time initialisation
+  - contrary to requiring Run-Time initialisation
 
 http://en.cppreference.com/w/cpp/language/cv
 
@@ -1208,15 +1203,15 @@ http://coliru.stacked-crooked.com/a/f8f7f0933d68b758
 
 * Require use of `const` member functions
 
-   - `const` goes after argument list
+  - `const` goes after argument list
 
-   - before implementation code block or semicolon
+  - before implementation code block or semicolon
 
 * Such member functions
 
-   - may not modify data members (Compile Error)
+  - may not modify data members (Compile Error)
 
-   - except when marked as `mutable`
+  - except when marked as `mutable`
 
 ---------------------------------------------------
 
@@ -1288,15 +1283,15 @@ name: const_expr_enforces_compile_time
 
 * `constexpr` for data
 
-   - guarantees initialisation during compilation
+  - guarantees initialisation during compilation
 
-   - turns modification attempts into Compile Error
+  - turns modification attempts into Compile Error
 
 * `constexpr` for functions
 
-   - `constexpr` goes all on the left
+  - `constexpr` goes all on the left
 
-   - requires visible implementation (like `inline`)
+  - requires visible implementation (like `inline`)
 
 http://en.cppreference.com/w/cpp/language/constexpr
 
@@ -1339,13 +1334,13 @@ http://coliru.stacked-crooked.com/a/bc181edb47b6e6f9
 
 * Must be initialised
 
-   - Literal constants
+  - Literal constants
 
-   - other `constexpr` data values
+  - other `constexpr` data values
 
-   - calls to `constexpr` functions
+  - calls to `constexpr` functions
 
-   - or a combination thereof.
+  - or a combination thereof.
 
 * Initial value (can be) loaded from executable file
 
@@ -1383,11 +1378,11 @@ http://coliru.stacked-crooked.com/a/1192d833caacb675
 
 * Are callable at Compile-Time …
 
-   - … given that all arguments can be determined
+  - … given that all arguments can be determined
 
 * A Run-Time version may be generated for calls …
 
-   - … with arguments **not** `constexpr` themselves
+  - … with arguments **not** `constexpr` themselves
 
 -----------------------------------------------------
 
@@ -1401,9 +1396,9 @@ https://isocpp.org/files/papers/N3652.html
 
 * Some usages of plain `const`
 
-   - also qualify as compile-time constants
+  - also qualify as compile-time constants
 
-   - hence may be used to
+  - hence may be used to
 
       - initialize `constexpr` data
 
@@ -1422,15 +1417,15 @@ over `const`.
 
 * Constructors may also be `constexpr`
 
-   - given the class is "simple enough" (POD) …
+  - given the class is "simple enough" (POD) …
 
-   - … objects may be created at compile time and
+  - … objects may be created at compile time and
 
 * Such objects may participate in (other) …
 
-   - `constexpr` data initializations
+  - `constexpr` data initializations
 
-   - `constexpr` function calls
+  - `constexpr` function calls
 
 ---
 
@@ -1474,7 +1469,7 @@ name: new_kinds_of_literals
 
 * [Character / String Literal Encoding	](#character_string_literal_encoding)
 
-* User Defined Literals
+* [User Defined Literal Suffixes	](#user_defined_literal_suffixes)
 
 ---
 
@@ -1483,13 +1478,13 @@ name: binary_literal_notation
 
 * Prefix `0b` followed by `0` and `1`
 
-   - `0b11` (same as `03`, `3`, or `0x3`)
+  - `0b11` (same as `03`, `3`, or `0x3`)
 
-   - `0b1001` (same as `011`, `9`, or `0x9`)
+  - `0b1001` (same as `011`, `9`, or `0x9`)
 
-   - `0b1110` (same as `016`, `14`, or `0xE`)
+  - `0b1110` (same as `016`, `14`, or `0xE`)
 
-   - `0b11011110101011011011111011101111` (same as ?)
+  - `0b11011110101011011011111011101111` (same as ?)
 
 http://en.cppreference.com/w/cpp/language/integer_literal
 
@@ -1500,15 +1495,15 @@ name: structuring_numeric_literals
 
 * Use Apostroph (`'` = ASCII/UTF code point 39)
 
-   - `1'000'000'000`
+  - `1'000'000'000`
 
-   - `3'735'928'559`
+  - `3'735'928'559`
 
-   - `0xDE'AD'BE'EF`
+  - `0xDE'AD'BE'EF`
 
-   - `0b1101'1110'1010'1101'1011'1110'1110'1111`
+  - `0b1101'1110'1010'1101'1011'1110'1110'1111`
 
-   - `0b110'111101'01011'01'1011111'01'110'1111`
+  - `0b110'111101'01011'01'1011111'01'110'1111`
 
 http://en.cppreference.com/w/cpp/language/integer_literal#Syntax
 
@@ -1554,19 +1549,19 @@ name: character_string_literal_encoding
 
 * What makes up a Character?
 
-   - User perceived character *not same as*
+  - User perceived character *not same as*
 
-   - Glyph *not same as*
+  - Glyph *not same as*
 
-   - Code-Point *not same as*
+  - Code-Point *not same as*
 
-   - Code-Unit
+  - Code-Unit
 
 * Understand the Terminology!
 
-   - Encoding not same as
+  - Encoding not same as
 
-   - Character Set
+  - Character Set
 
 ---
 
@@ -1574,21 +1569,21 @@ name: character_string_literal_encoding
 
 * Glyphs may or may not represent
 
-   - exactly **one** user perceived character (like `y`)
+  - exactly **one** user perceived character (like `y`)
 
-   - a part of a user perceived character (e.g. diacritic marks)
+  - a part of a user perceived character (e.g. diacritic marks)
 
-   - more then one user perceived characters (e.g. ligatures)
+  - more then one user perceived characters (e.g. ligatures)
 
 * Character Sets
 
-   - Define available glyphs
+  - Define available glyphs
 
-   - Assign code points (or otherwise name) glyphs
+  - Assign code points (or otherwise name) glyphs
 
 * Encodings
 
-   - Map code points to code units
+  - Map code points to code units
 
 ---
 
@@ -1596,23 +1591,23 @@ name: character_string_literal_encoding
 
 * 7 Bit = 128 possible values
 
-   - traditional ASCII (excess bit sometimes used for parity)
+  - traditional ASCII (excess bit sometimes used for parity)
 
 * 8 Bit = 256 possible values
 
-   - smallest addressable unit in most of today's computers
+  - smallest addressable unit in most of today's computers
 
-   - typically chosen for `char` in C/C++
+  - typically chosen for `char` in C/C++
 
 * 16 Bit = 65536 possible values
 
-   - internal character type in Windows / `char` type in Java
+  - internal character type in Windows / `char` type in Java
 
-   - may be chosen for `wchar_t` in C/C++
+  - may be chosen for `wchar_t` in C/C++
 
 * 32 Bit = 4'294'967'296 possible values
 
-   - may also be chosen for `wchar_t` in C/C++
+  - may also be chosen for `wchar_t` in C/C++
 
 ---
 
@@ -1620,21 +1615,21 @@ name: character_string_literal_encoding
 
 * 7-bit ASCII (128 code points)
 
-   - Code Point = Code Unit = User Perceived Character
+  - Code Point = Code Unit = User Perceived Character
 
-   - Only 95 printable character
+  - Only 95 printable character
 
-   - Glyphs map 1:1 to user perceived characters
+  - Glyphs map 1:1 to user perceived characters
 
 * ISO 8859-x (256 code points)
 
-   - Requires variants to hold all world alphabets
+  - Requires variants to hold all world alphabets
 
 * Unicode (about one million code points)
 
-   - 1:1 mapping to 32 bit (and still some excess bits)
+  - 1:1 mapping to 32 bit (and still some excess bits)
 
-   - 1:1 mapping to 16 bit **only** when limited to BMP
+  - 1:1 mapping to 16 bit **only** when limited to BMP
 
 ---
 
@@ -1642,23 +1637,23 @@ name: character_string_literal_encoding
 
 * In computer "stone age" often 1:1 mapping between
 
-   - Code units and
+  - Code units and
 
-   - Code points and
+  - Code points and
 
-   - User perceived character
+  - User perceived character
 
 * Code Pages (e.g. in IBM main-frames and PC-DOS/MS-DOS)
 
-   - usually 1:1 mapping to glyphs or user perceived characters
+  - usually 1:1 mapping to glyphs or user perceived characters
 
 * Today frequently used encodings
 
-   - UTF-8 = 1 to 4 code units per code point)
+  - UTF-8 = 1 to 4 code units per code point)
 
-   - UTF-16 (sic!) = 1 or 2 code units per code point
+  - UTF-16 (sic!) = 1 or 2 code units per code point
 
-   - UTF-32 = 1 code unit per code point 
+  - UTF-32 = 1 code unit per code point 
 
 ---
 
@@ -1666,21 +1661,21 @@ name: character_string_literal_encoding
 
 * Mostly **not** much of a problem when
 
-   - when user input is just …
+  - when user input is just …
 
-   - … "handed through" to system calls
+  - … "handed through" to system calls
 
 * But may cause headaches for reliable string processing
 
-   - because different possible encodings …
+  - because different possible encodings …
 
-   - … for what is perceived by the user
+  - … for what is perceived by the user
 
 * Normalization to canonical form may help …
 
-   - … but very limited support, even in modern C++
+  - … but very limited support, even in modern C++
 
-   - maybe consider using the ICU library
+  - maybe consider using the ICU library
 
 ---
 
@@ -1688,15 +1683,15 @@ name: character_string_literal_encoding
 
 * C++11 added prefixes
 
-   - to specify various encodings
+  - to specify various encodings
 
-   - to allow for raw strings
+  - to allow for raw strings
 
 * Encoding-Transformations
 
-   - do **not** generally happen automatically
+  - do **not** generally happen automatically
 
-   - but may be bound to I/O streams
+  - but may be bound to I/O streams
 
 http://en.cppreference.com/w/cpp/locale/wstring_convert
 
@@ -1706,21 +1701,21 @@ http://en.cppreference.com/w/cpp/locale/wstring_convert
 
 * Like in C in C++98 `L` for a character literal
 
-   - changes its type to `wchar_t`
+  - changes its type to `wchar_t`
 
-   - which (typically) may be either 16 or 32 bit
+  - which (typically) may be either 16 or 32 bit
 
 * C++11 added the prefixes
 
-   - `u8` – request use of UTF-8 encoding
+  - `u8` – request use of UTF-8 encoding
 
-   - `u` (lower case) – request use of UTF-16 encoding
+  - `u` (lower case) – request use of UTF-16 encoding
 
       - Changes its type to `char16_t`
 
       - **Compile error if character outside of BMP**
 
-   - `U` (upper case) – request use of UTF-32 encoding
+  - `U` (upper case) – request use of UTF-32 encoding
 
       - Changes its type to `char32_t` 
 
@@ -1732,19 +1727,19 @@ http://en.cppreference.com/w/cpp/language/character_literal
 
 * Like in C in C++98 `L` for a string literal
 
-   - changes the type **of its elements** to `wchar_t`
+  - changes the type **of its elements** to `wchar_t`
 
 * C++11 added the prefixes
 
-   - `u8` – request use of UTF-8 encoding
+  - `u8` – request use of UTF-8 encoding
 
-   - `u` (lower case) – request use of UTF-16 encoding
+  - `u` (lower case) – request use of UTF-16 encoding
 
       - Changes the type **of its elements** to `char16_t`
 
       - Uses two code units for characters outside BMP
 
-   - `U` (upper case) – request use of UTF-32 encoding
+  - `U` (upper case) – request use of UTF-32 encoding
 
       - Changes the type **of its elements** to `char32_t`
 
@@ -1783,17 +1778,17 @@ http://coliru.stacked-crooked.com/a/c03827eb62cf51cb
 
 * Added by C++11
 
-   - Requested by prefix `R`
+  - Requested by prefix `R`
 
-   - Follows optional encoding prefix
+  - Follows optional encoding prefix
 
 * Every character represents itself
 
-   - Especially backslashes ('\') are **not** evaluated
+  - Especially backslashes ('\') are **not** evaluated
 
       - Line concatenation from *Translation Phase 2* is reverted
 
-   - Termination delimiter may be chosen
+  - Termination delimiter may be chosen
 
 http://en.cppreference.com/w/cpp/language/translation_phases#Phase_2
 
@@ -1825,17 +1820,18 @@ int main() {
 
 ---
 
-### User Defined Literal
+name: user_defined_literal_suffixes
+### User Defined Literal Suffixes
 
 * Extends (traditionally) hard-coded suffix use
 
-   - like `…L`, `…LL`, `…LU` …
+  - like `…L`, `…LL`, `…LU` …
 
 * Syntax based on operator overloading (`operator""`)
 
-   - Reserves regular suffixes for later use
+  - Reserves regular suffixes for later use
 
-   - User defined suffixes should
+  - User defined suffixes should
 
       - start with underscore
 
@@ -1879,17 +1875,17 @@ http://coliru.stacked-crooked.com/a/1e47b87f9498ff65
 
 * C++14 has introduced predefined suffixes:
 
-   - String literal to `std::basic_string` (`s`) …
+  - String literal to `std::basic_string` (`s`) …
 
-   - … directly visible via `using namespace::string_literals`
+  - … directly visible via `using namespace::string_literals`
 
-   - Complex types imaginary part (`i`, `if`, `il`) …
+  - Complex types imaginary part (`i`, `if`, `il`) …
 
-   - … directly visible via `using namespace complex::literals`
+  - … directly visible via `using namespace complex::literals`
 
-   - Duration types (`h`, `s`, `min`, `ms`, `us`, `ns`) …
+  - Duration types (`h`, `s`, `min`, `ms`, `us`, `ns`) …
 
-   - … directly visible via `using namespace std::chrono_literals`
+  - … directly visible via `using namespace std::chrono_literals`
 
 * Future versions of standard C++ may add more
 
@@ -1918,9 +1914,10 @@ int main() {
 
 http://coliru.stacked-crooked.com/a/1209a09c4f1a1db2
 
-----------------------------------------------------------------------
+--------------------------------------------------------------------------------
 
-The *Durations and Clocks* library (`std::chrono`) will be covered later.
+The [Durations and Clocks Library Classes](#date_and_time) (`std::chrono`)
+will be covered later.
 
 ---
 
@@ -1929,11 +1926,11 @@ name: strongly_typed_enums
 
 * Classic Enumerations
 
-   - Originally much like in C
+  - Originally much like in C
 
       - though no silent conversion **from** integral
 
-   - extended in C++11
+  - extended in C++11
 
 * Scoped Enumerations (C++11)
 
@@ -1947,9 +1944,9 @@ name: strongly_typed_enums
 
 * Only since C++11
 
-   - Representation can be chosen
+  - Representation can be chosen
 
-   - Forward declaration is possible
+  - Forward declaration is possible
 
 http://en.cppreference.com/w/cpp/language/enum#Unscoped_enumerations
 
@@ -2002,29 +1999,30 @@ http://coliru.stacked-crooked.com/a/9fcd9f0298efdf48
 name: copying_vs_moving
 ## Copying vs. Moving
 
-* [Value Assignment		](#value_assignment)
+* [Value Assignment				](#value_assignment)
 
-* Classic references are aliases
+* [Classic references are aliases		](#classic_references)
 
-* Rvalue references (C++11) bind to temporaries
+* [Rvalue references bind to temporaries	](#rvalue_references)
 
-* Move-constructor and -assignment
+* [Move constructor and assignment		](#move_ctor_and_assign)
 
-* Move-only types
+* [Move-only types				](#move_only_types)
 
 ---
 
+name: value_assignment
 ### Value Assignment
 
 * Assignment usually means copying
 
-   - Cheap and easy
+  - Cheap and easy
 
       - when directly supported by machine instructions
 
       - maybe even for character strings (to some degree)
 
-   - Potentially expensive
+  - Potentially expensive
 
       - for large objects
 
@@ -2071,23 +2069,24 @@ http://coliru.stacked-crooked.com/a/72b939757e46d642
 
 ---
 
-### References
+name: classic_references
+### Classic References
 
 * Initialising a reference
 
-   - basically creates an alias
+  - basically creates an alias
 
       - therefore the initialisation requires no copying
 
-   - usually involves a pointer behind the scenes
+  - usually involves a pointer behind the scenes
 
       - therefore access via reference causes overhead
 
 * A reference initialised from a reference
 
-   - directly aliases the referenced object
+  - directly aliases the referenced object
 
-   - hence no "double indirection" overhead
+  - hence no "double indirection" overhead
 
 http://en.cppreference.com/w/cpp/language/reference
 
@@ -2121,17 +2120,17 @@ http://coliru.stacked-crooked.com/a/b46ba3d4b3e78bd6
 
 * Compared to pointers a reference is `const`
 
-   - as it always refers to the same object
+  - as it always refers to the same object
 
-   - but the aliased object may or may not be `const`
+  - but the aliased object may or may not be `const`
 
 * `const`-qualified references
 
-   - are mandatory to bind to `const`-qualified objects
+  - are mandatory to bind to `const`-qualified objects
 
-   - also bind to modifiable memory locations
+  - also bind to modifiable memory locations
 
-   - but **cannot** used to modify there content
+  - but **cannot** used to modify there content
 
 * **Only `const`-qualified references bind to temporaries**
 
@@ -2139,13 +2138,14 @@ http://en.cppreference.com/w/cpp/language/reference#Lvalue_references
 
 ---
 
+name: rvalue_references
 #### Rvalue References
 
 * Rvalue references (as introduced with C++11)
 
-   - **only** bind to temporaries
+  - **only** bind to temporaries
 
-   - are typically **not** `const`-qualified
+  - are typically **not** `const`-qualified
 
 http://en.cppreference.com/w/cpp/language/reference#Rvalue_references
 
@@ -2161,11 +2161,11 @@ copying.
 
 * Reference-based overloading (of functions) is possible as
 
-   - `const` references *can co-exist with*
+  - `const` references *can co-exist with*
 
-   - non-`const`-references *can co-exist with*
+  - non-`const`-references *can co-exist with*
 
-   - rvalue references (usually non-`const`)
+  - rvalue references (usually non-`const`)
 
 ---
 
@@ -2196,15 +2196,15 @@ http://coliru.stacked-crooked.com/a/15009e8c6e05f61c
 
 * Classes are copyable by default
 
-   - if all of their members are copyable
+  - if all of their members are copyable
 
-   - such operations are not explicitly blocked
+  - such operations are not explicitly blocked
 
 * Copying potentially takes place during
 
-   - construction (copy constructor)
+  - construction (copy constructor)
 
-   - assignment (`operator=`)
+  - assignment (`operator=`)
 
 http://en.cppreference.com/w/cpp/language/copy_constructor
 
@@ -2239,13 +2239,14 @@ http://coliru.stacked-crooked.com/a/926b040c36d2a19d
 
 ---
 
+name: move_ctor_and_assign
 #### Move Constructor and Assignment
 
 * Since C++11 also
 
-   - move constructors can be added
+  - move constructors can be added
 
-   - move assignment can be added
+  - move assignment can be added
 
 * Selection is by overload resolution
 
@@ -2264,9 +2265,9 @@ might take place (if possible use compiler option to disable).
 
 * Since C++11 also copy and move constructor
 
-   - can be `default`-ed
+  - can be `default`-ed
 
-   - or `delete`-d
+  - or `delete`-d
 
 * Same for copy and move assignment
 
@@ -2300,21 +2301,22 @@ http://coliru.stacked-crooked.com/a/503cb1be438af585
 
 ---
 
+name: move_only_types
 #### Move-Only Types
 
 * Such only support move operations
 
-   - which may be `default`-ed or
+  - which may be `default`-ed or
 
-   - specifically implemented
+  - specifically implemented
 
 * Typical library examples are
 
-   - `std::unique_pointer`
+  - `std::unique_pointer`
 
-   - threads, mutexes, and locks
+  - threads, mutexes, and locks
 
-   - and all kinds of I/O streams
+  - and all kinds of I/O streams
 
 ---
 
@@ -2417,15 +2419,15 @@ name: new_meaning_of_auto
 
 * Old meaning of keyword `auto`:
 
-   - Place variable on stack
+  - Place variable on stack
 
-   - (still so in C)
+  - (still so in C)
 
 * The meaning completely changed in C++11
 
-   - when used as type for a variable
+  - when used as type for a variable
 
-   - when used as function return type
+  - when used as function return type
 
 http://en.cppreference.com/w/cpp/language/auto
 
@@ -2435,13 +2437,13 @@ http://en.cppreference.com/w/cpp/language/auto
 
 A variable given the type `auto`
 
-   - takes the type of its initialising expression
+  - takes the type of its initialising expression
 
-   - after stripping `const` and reference
+  - after stripping `const` and reference
 
 * `auto`-type (on left) may also be adorned,
 
-   - frequently with
+  - frequently with
 
       - `*` (pointer)
 
@@ -2451,7 +2453,7 @@ A variable given the type `auto`
 
       - or combinations thereof
 
-   - that way effectively restricting type of initialiser
+  - that way effectively restricting type of initialiser
 
 ---
 
@@ -2486,19 +2488,19 @@ http://coliru.stacked-crooked.com/a/eaef38306c4db828
 
 * A function given the return type `auto`
 
-   - needs either a trailing return type
+  - needs either a trailing return type
 
-   - which follows **after** the argument list
+  - which follows **after** the argument list
 
-   - separated with `->`
+  - separated with `->`
 
 * Since C++14: determined from `return` statement
 
-   - therefore implementation must be supplied
+  - therefore implementation must be supplied
 
-   - in case of more then one return statement …
+  - in case of more then one return statement …
 
-   - … all must have the same type
+  - … all must have the same type
 
 ------------------------------------------------------------------
 
@@ -2543,27 +2545,32 @@ name: uniform_initialisation
 
 * C++11 unifies initialisation syntax
 
-   - The goal is to simplify initilisation
+  - In practice, [classic initialisation](#classic_initialisation)
+    must still be known …
 
-   - In practice, classic forms must still be known …
+    - … as there exists many "old" software …
 
-      - … as there exists many "old" software …
+    - … and probably will so for a long time
 
-      - … and probably will so for a long time
+  - Therefore whether this [simplifies initilisation](#brace_initialisation)
+    is questionable
 
-* Even worse, the new form introduced new pitfalls
+.N.center[
+Even worse: the new form introduced [new pitfalls](#initialiser_pitfalls)!
+]
 
 ---
 
+name: classic_initialisation
 ### Classic Initialisation Syntax
 
 * Classic initialisation uses
 
-   - Equal signs for simple types
+  - Equal signs for simple types
 
-   - Parentheses for constructor calls
+  - Parentheses for constructor calls
 
-   - Curly braces for aggregates
+  - Curly braces for aggregates
 
 http://en.cppreference.com/w/cpp/language/initialization
 
@@ -2596,15 +2603,16 @@ http://coliru.stacked-crooked.com/a/08a8e43822fdc323
 
 ---
 
-### Brace Initialisation
+name: brace_initialisation
+### Brace Initialisation Syntax
 
 * Since C++11 initial values in curly braces
 
-   - are possible in all well-known classic contexts
+  - are possible in all well-known classic contexts
 
-   - and some more (new and lesser known)
+  - and some more (new and lesser known)
 
--------------------------------------------------------
+--------------------------------------------------------------------------------
 
 Some ambiguities stem from also introducing initializer-lists.
 
@@ -2629,7 +2637,7 @@ int main() {
 * What is the type of `mask` in the currently enabled line?
 * Why would you prefer the currently commented syntax?
 
--------------------------------------------------------------
+--------------------------------------------------------------------------------
 
 https://www.youtube.com/watch?feature=player_detailpage&v=xnqTKD8uD64#t=2336
 
@@ -2639,15 +2647,15 @@ https://www.youtube.com/watch?feature=player_detailpage&v=xnqTKD8uD64#t=2336
 
 * `std::initializer_list<T>`
 
-   - allows to hand-over a list of values as a unit
+  - allows to hand-over a list of values as a unit
 
-   - access is by iterating in standard ways
+  - access is by iterating in standard ways
 
 * The element type `T` is templated
 
-   - Will be deduced when all contained values have same type
+  - Will be deduced when all contained values have same type
 
-   - Otherwise must be explicitly specified (or Compile Error)
+  - Otherwise must be explicitly specified (or Compile Error)
 
 http://coliru.stacked-crooked.com/a/147c36fd4e078fff
 
@@ -2681,11 +2689,11 @@ http://coliru.stacked-crooked.com/a/c1512f80224d37c9
 
 * Initializer lists for `auto`-typed variables
 
-   - **are** deducted when elements have a unique type
+  - **are** deducted when elements have a unique type
 
-   - are **ambiguous** if they only hold one element
+  - are **ambiguous** if they only hold one element
 
-   - can obviously **not** be deducted if completely empty
+  - can obviously **not** be deducted if completely empty
 
 -----------------------------------------------------------
 
@@ -2730,19 +2738,20 @@ http://coliru.stacked-crooked.com/a/c1512f80224d37c9
 
 * Functions may accept arguments of type `std::initializer_list`
 
-   - The list element type may be spelled out
+  - The list element type may be spelled out
 
-   - Alternatively the function may templated the type
+  - Alternatively the function may templated the type
 
 * Implementation may use container interface as usual
 
-   - Iterating from `begin` to `end`
+  - Iterating from `begin` to `end`
 
-   - Range-based `for` loop
+  - Range-based `for` loop
 
 ------------------------------------------------------------------
 
-Range-based `for` loops will be covered in a later chapter.
+[Range-based `for` loops](#range_based_loops)
+will be covered in a later chapter.
 
 ---
 
@@ -2777,6 +2786,7 @@ http://coliru.stacked-crooked.com/a/c1512f80224d37c9
 
 ---
 
+name: initialiser_pitfalls
 #### Resolving Problems with Initialiser Lists
 
 * Initializer lists also use curly braces as delimiters
@@ -2789,7 +2799,7 @@ http://coliru.stacked-crooked.com/a/c1512f80224d37c9
 
   - initialiser lists are generally deduced in C++11
 
-  - which was changed to be only deduced after `=`
+  - which was changed to be only deduced after an equals sign (`=`)
 
 ---
 
@@ -2822,19 +2832,19 @@ name: range_based_loops
 
 * Syntax has colon in parentheses after `for`
 
-   - Placeholder variable on left
+  - Placeholder variable on left
 
-   - Container on right
+  - Container on right
 
 * Can benefit from `auto` typing the placeholder
 
-   - avoid copying
+  - avoid copying
 
-   - use reference
+  - use reference
 
 - Then same or better performance than alternatives
 
-   - (otherwise no one would use it)
+  - (otherwise no one would use it)
 
 http://en.cppreference.com/w/cpp/language/range-for
 
@@ -2842,11 +2852,11 @@ http://en.cppreference.com/w/cpp/language/range-for
 
 ### Native Arrays
 
-* Works by default, given:
+* Work by default, given:
 
-   - Container needs to visible as native array type …
+  - Container is visible as native **array** type …
 
-   - … **not** decayed to pointer (to first element)
+  - … **not** decayed to pointer (to first element)
 
 -------------------------------------------------------
 
@@ -2873,7 +2883,7 @@ http://coliru.stacked-crooked.com/a/94bcea8326eb854b
 
 ### STL Containers
 
-* Works by default
+* Work by default
 
   - Placeholder variable has `value_type` of iterator
 
@@ -2911,13 +2921,13 @@ int main() {
 
 ### Initializer Lists
 
-* Works by default
+* Work by default
 
-   - Useful for fixed-sized lists …
+  - Useful for fixed-sized lists …
 
-   - … of values typically precalculated at Compile-Time …
+  - … of values typically precalculated at Compile-Time …
 
-   - … not (necessarily) algorithmically related
+  - … not (necessarily) algorithmically related
 
 ---
 
@@ -2950,7 +2960,7 @@ int main() {
 
     Member function `begin()` to return (nested) iterator type …
 
-   - … providing (at least)
+  - … providing (at least)
 
        - dereference operation (`operator*`)
 
@@ -2958,7 +2968,7 @@ int main() {
 
        - comparison (`operator==` and `operator!=`)
 
-   - Member function `end()` for comparison to stop
+  - Member function `end()` for comparison to stop
 
 ---
 
@@ -3020,7 +3030,7 @@ name: lambdas
 
   - if you want to learn one …
 
-  … you may try Haskell
+  - … you may try Haskell
 
 ---------------------------------------------------------
 
@@ -3032,11 +3042,11 @@ http://learnyouahaskell.com/chapters
 
 * In C++98 Callable entities are
 
-   - Classical Functions (as in C)
+  - Classical Functions (as in C)
 
-   - Classes overloading `operator()` …
+  - Classes overloading `operator()` …
 
-   -  Call syntax for both is identical
+  -  Call syntax for both is identical
 
       - Append actual arguments in parentheses
 
@@ -3044,7 +3054,7 @@ http://learnyouahaskell.com/chapters
 
 * C++11 added Lambdas (Function Literals)
 
-   - For a **caller** equivalent to the above
+  - For a **caller** equivalent to the above
 
 http://en.cppreference.com/w/cpp/language/lambda
 
@@ -3087,19 +3097,24 @@ http://coliru.stacked-crooked.com/a/64d0447ce5e6dc6e
 
 * When handed over to caller …
 
-   - syntax requires `[]` as prefix  …
+  - syntax requires `[]` as prefix  …
 
-   - … followed by parameter list declaration …
+  - … followed by parameter list declaration …
 
-   - … an optional trailing return type …
+  - … an optional trailing return type …
 
-   - … finally a code block (implementation)
+  - … finally a code block (implementation)
 
-* Optionally inside `[` … `] context can be capture
+* Inside `[` … `]` variables from local context may be captured._[]
 
-   - Either by value (i.e. making copies)
+  - Either by value (i.e. making copies)
 
-   - Or by reference (i.e. handing over pointers)
+  - Or by reference (i.e. handing over pointers)
+
+.F[:
+Therefore the square brackets introducing a lambda are also called a
+*Capture List*.
+]
 
 ---
 
@@ -3136,9 +3151,9 @@ void capture_basics() {
 
 * Frequently handed over to STL algorithms, e.g.
 
-   - as predicates
+  - as predicates
 
-   - for sorting, as ordering criteria
+  - for sorting, as ordering criteria
 
 * Tree-based STL containers may also specify ordering
 
@@ -3177,33 +3192,36 @@ void capture_nothing(const std::initializer_list<int>& values) {
 
 * On the left of a lambda
 
-   - neither a return type …
+  - neither a return type …
 
-   - … nor `auto` is specified
+  - … nor `auto` is specified
 
 * Instead trailing return type syntax may be used
 
 * If not, return type is deduced
 
-   - `void` if there is no return statement
+  - `void` if there is no return statement
 
-   - from a single (allowed) `return` statement in C++11
+  - from a single (allowed) `return` statement in C++11
 
-   - maybe from multiple `return` statements since C++14
+  - maybe from multiple `return` statements since C++14
 
 ---
 
 ##### Example (cont.): callable_lambda/demo.cpp
 
-void capture_basics() {
-    static int x = 42;  PX(x); PX(&x);
 ```
-    auto f1 = []() {return &x;}         (); PT(decltype(f1));
-    auto f2 = []() {return &x;}           ; PT(decltype(f2));
+void capture_basics() {
+    static int x = 42;                      PX(x);
+                                            PX(&x);
+    auto f1 = []()          {return &x;}(); PT(decltype(f1));
+    auto f2 = []()          {return &x;}  ; PT(decltype(f2));
     auto f3 = []() -> void* {return &x;}(); PT(decltype(f3));
+
     auto f4 = []() {return (x) ? &x : nullptr;};
-//  auto f5 = []() {if (x) return &x; else return nullptr; };
-    auto f6 = []() -> const int* {if (x) return &x; else return nullptr;};
+//  auto f5 = []() {if (x) return &x; else return nullptr;};
+    auto f6 = []() -> const int*
+                   {if (x) return &x; else return nullptr;};
 }
 ```
 
@@ -3216,7 +3234,7 @@ void capture_basics() {
 
 * Arguments of lambdas may have types `auto`
 
-   - emulating templated `operator()` overload
+  - emulating templated `operator()` overload
 
 -------------------------------------------------------------------
 
@@ -3253,15 +3271,15 @@ void generic_lambda(std::initializer_list<T> values) {
 
 * Used to feed values from the call context
 
-   - May make a copy
+  - May make a copy
 
-   - or use reference access
+  - or use reference access
 
-   - or initialize a local
+  - or initialize a local
 
 * Technically like functor data members
 
-   - (much) less boiler plate code
+  - (much) less boiler plate code
 
 http://en.cppreference.com/w/cpp/language/lambda#Lambda_capture
 
@@ -3271,21 +3289,21 @@ http://en.cppreference.com/w/cpp/language/lambda#Lambda_capture
 
 * In non-capturing lambdas the capture list is empty.
 
-   - **It cannot be omitted!**
+  - **It cannot be omitted!**
 
-   - (like an empty argument list can be)
+  - (like an empty argument list can be)
 
 * Non-local entities are still available, i.e.
 
-   - global variables
+  - global variables
 
-   - local `static` variables
+  - local `static` variables
 
 * In **member functions** of a class …
 
-   - …  also `this` can be capture …
+  - …  also `this` can be capture …
 
-   - … giving access to all members
+  - … giving access to all members
 
 ---
 
@@ -3310,11 +3328,11 @@ void capture_basics() {
 
 * Capturing by value makes copies
 
-   - Therefore typically much "safer", i.e. …
+  - Therefore typically much "safer", i.e. …
 
-   - … valid for Lambda calls outside of definition context
+  - … valid for Lambda calls outside of definition context
 
-   - **But: it cannot be used for *move only* types
+  - **But: it cannot be used for *move only* types**
 
 * The capture list syntax `[=]` may be used as short-hand.
 
@@ -3324,13 +3342,16 @@ void capture_basics() {
 
 ```
 void capture_basics() {
-    int y = 1;  PX(y); PX(&y);
-    PX(     [y]() {return y;}                   ());
-    PX(     [y]   {return y;}                   ());
-    PX(     [y]() mutable {return ++y;}         ());
-    PX(     [y]   mutable {return ++y;}         ());
-    PX(     [y]() {return &y;}                  ());
-    PX(     [=]() {return &y;}                  ());
+    int y = 1;  PX(y); PX(&y);          // |<--- "call" is inside
+    //  |<-- typical use as an argument -->|
+    PX(      [y]() {return y;}               ()  );
+    PX(      [y]   {return y;}               ()  );
+    PX(      [y]() mutable {return ++y;}     ()  );
+    PX(      [y]   mutable {return ++y;}     ()  );
+    PX(      [y]() {return &y;}              ()  );
+    PX(      [=]() {return &y;}              ()  );
+    //  |<-------------------------------->|
+                                        // |<--- another function
 }
 ```
 
@@ -3344,11 +3365,11 @@ void capture_basics() {
 
 * Capturing by reference uses pointers behind the scenes
 
-   - Therefore the danger of *dangling pointers* arises
+  - Therefore the danger of *dangling pointers* arises
 
-   - ** Be careful when to call such a lambda, especially**
+  - ** Be careful when to call such a lambda, especially**
 
-   - **NEVER** call it after the defining context is discarded
+  - **NEVER** call it after the defining context is discarded
 
 * The capture list syntax `[=]` may be used as short-hand.
 
@@ -3376,13 +3397,13 @@ void capture_basics() {
 
 * Uses of *`var`* `=` *`init-expr`* in capture list
 
-   - Variable is introduced as local to lambda
+  - Variable is introduced as local to lambda
 
-   - Comparable to locals in functors
+  - Comparable to locals in functors
 
-   - Name of *`var`* shadows context of definition …
+  - Name of *`var`* shadows context of definition …
 
-   - … but only **after** *`init-expr`* has been evaluated
+  - … but only **after** *`init-expr`* has been evaluated
 
 ---
 
@@ -3390,15 +3411,18 @@ void capture_basics() {
 
 ```
 void capture_basics() {
-    static int x = 42;  PX(x); PX(&x);
-    PX(     [z = x]() {return z;}               ());
-    PX(     [z = &x]() {return &z;}             ());
-
-    int y = 1;          PX(y); PX(&y);
-    PX(     [z = &y]() {return &z;}             ());
-
-    double z = 0;       PX(z); PX(&z);
-    PX(     [z = &z]() {return &z;}             ());
+    static int x = 42;  PX(x);       // only for that demo:
+                        PX(&x);      // direct call ---vv
+    PX(     [z = x]() {return z;}                      ());
+    PX(     [z = &x]() {return &z;}  //                ());
+                                     //                ..
+    int y = 1;          PX(y);       //                ..
+                        PX(&y);      //                ..
+    PX(     [z = &y]() {return &z;}                    ());
+                                     //                ..
+    double z = 0;       PX(z);       //                ..
+                        PX(&z);      //                ..
+    PX(     [z = &z]() {return &z;}                    ());
 ```
 
 * Add more examples to explore (potential) grey areas.
@@ -3410,17 +3434,17 @@ void capture_basics() {
 
 * Be careful when capturing array variables
 
-   - Understand when names decay to a pointers
+  - Understand when names decay to a pointers
 
-   - Be aware of the differences between …
+  - Be aware of the differences between …
 
        - … native arrays (like `double data[10]`)
 
        - … and STL wrappers (like `std::array<double, 10>`)
 
-   - Generally STL containers do not decay
+  - Generally STL containers do not decay
 
-   - `std::move` may be considered on last point of use
+  - `std::move` may be considered on last point of use
 
 ---
 
@@ -3464,19 +3488,19 @@ under the term "higher order functional programming".
 
 * Callables generally differ in type
 
-   - Classic function type determined by arguments and result
+  - Classic function type determined by arguments and result
 
-   - Each Functor is a distinct type
+  - Each Functor is a distinct type
 
-   - Same for each lambda (unspecified internal type)
+  - Same for each lambda (unspecified internal type)
 
 * Type erasure with std::function means
 
-   - only calling convention is carried along
+  - only calling convention is carried along
 
-   - useful to store "call-backs" in variables
+  - useful to store "call-backs" in variables
 
-   - for arguments competes with fully generic templates
+  - for arguments competes with fully generic templates
 
 http://en.cppreference.com/w/cpp/utility/functional/function
 
@@ -3517,9 +3541,9 @@ http://coliru.stacked-crooked.com/a/cb9ba4b36734e074
 
 * Definition resembles prototypes
 
-   - `std::function< … >` is a template
+  - `std::function< … >` is a template
 
-   - Inside the square brackets go
+  - Inside the square brackets go
 
       - The return type
 
@@ -3580,7 +3604,7 @@ int main() {
 
 ```
 int main() {
-    std::function<bool(int)> f;
+    std::function<bool(int)> f;      // call ----vv
     PX((f = is_odd)                             (42));
     PX((f = is_even)                            (42));
     PX((f = check_odd{})                        (42));
@@ -3733,17 +3757,17 @@ std::size_t count(const std::initializer_list<int>& values,
 
 * `std::bind` transforms a callable to another callable with
 
-   - fewer arguments (some bound to fixed values)
+  - fewer arguments (some bound to fixed values)
 
-   - with different argument order
+  - with different argument order
 
-   - (or a combination of both)
+  - (or a combination of both)
 
 * Also member functions can be handled
 
-   - Object goes as first argument
+  - Object goes as first argument
 
-   - (as is technically when transferring arguments on the stack)
+  - (as is technically when transferring arguments on the stack)
 
 http://en.cppreference.com/w/cpp/utility/functional/bind
 
@@ -3762,15 +3786,15 @@ long double powerof(long double value, int exponent) {
 }
 
 int main() {
-    using std::placeholders::_1;
-    using std::placeholders::_2;
-    PX(std::bind(powerof, _1, 2)        (4));
-    PX(std::bind(powerof, _1, 3)        (4));
-    PX(std::bind(powerof, 2, 3)         ());
-    PX(std::bind(powerof, _1, _2)       (5, 2));
-    PX(std::bind(powerof, _1, _2)       (5, 3));
-    PX(std::bind(powerof, _2, _1)       (2, 5));
-    PX(std::bind(powerof, _2, _1)       (3, 5));
+    using std::placeholders::_1;   // untypical (only for demo)
+    using std::placeholders::_2;   // vvv------ call is present
+    PX(std::bind(powerof, _1, 2)      (4)      );
+    PX(std::bind(powerof, _1, 3)      (4)      );
+    PX(std::bind(powerof, 2, 3)       ()       );
+    PX(std::bind(powerof, _1, _2)     (5, 2)   );
+    PX(std::bind(powerof, _1, _2)     (5, 3)   );
+    PX(std::bind(powerof, _2, _1)     (2, 5)   );
+    PX(std::bind(powerof, _2, _1)     (3, 5)   );
 }
 ```
 
@@ -3786,11 +3810,11 @@ int main() {
 
 * Therefore it can/should not be used
 
-   - For arguments to be modified
+  - For arguments to be modified
 
-   - With move only types
+  - With move only types
 
-   - With types that are expensive to copy
+  - With types that are expensive to copy
 
 * The solution is provided via reference wrappers
 
@@ -3802,17 +3826,17 @@ http://en.cppreference.com/w/cpp/utility/functional/reference_wrapper
 
 * `std::ref` returns an `std::reference_wrapper`
 
-   - holding its argument as `const` (non-modifiable) reference
+  - holding its argument as `const` (non-modifiable) reference
 
-   - therefore allows to hand *move-only* types to `std::bind`
+  - therefore allows to hand *move-only* types to `std::bind`
 
-   - and also improves performances for types expensive to copy
+  - and also improves performances for types expensive to copy
 
 * `std::cref` returns an `std::reference_wrapper`
 
-   - holding its argument as non-`const` (modifiable) reference
+  - holding its argument as non-`const` (modifiable) reference
 
-   - that way "removing" value semantics from `std::bind` arguments
+  - that way "removing" value semantics from `std::bind` arguments
 
 http://en.cppreference.com/w/cpp/utility/functional/ref
 
@@ -3919,13 +3943,13 @@ int main() {
 
 * These are the most typical uses of `std::bind`:
 
-   - Reduce or alter the arguments of a given function …
+  - Reduce or alter the arguments of a given function …
 
-   - … to make it fit for a specific purpose
+  - … to make it fit for a specific purpose
 
-   - Specialize a (more) generic function …
+  - Specialize a (more) generic function …
 
-   - … to be applied to all elements in a container
+  - … to be applied to all elements in a container
 
 ---------------------------------------------------------------
 
@@ -3960,7 +3984,7 @@ public:
 };
 ```
 
-* Understand the above classes, as the next examples build on them.
+* Understand the above classes. The next examples builds on them.
 
 ---
 
@@ -4013,8 +4037,8 @@ public:
 std::ostringstream clazz::os;
 ```
 
-* Understand the above (demo) class, as the next examples builds on it.
-* What needs to be changed to turn it into a *move only* type?
+* Understand the above (demo) class. The next examples builds on it.
+* What needs to be changed to turn `clazz` into a *move only* type?
 
 ---
 
@@ -4209,16 +4233,21 @@ int main() {
 name: features_for_classes
 ## Features for Classes
 
-* Direct Member Initialisation
+* [Direct Member Initialisation](#direct_member_intialisation)
 
-* Constructor inheritance and delegation
+* Constructor
 
-* Explicit "automatic" type conversions
+  - [Inheritance](#ctor_inheritance) and
 
-* `final` and `override`
+  - [Delegation](#ctor_delegation)
+
+* [Explicit "automatic" type conversions](#explicit_conversions)
+
+* [`final` and `override`](#final_and_override)
 
 ---
 
+name: direct_member_intialisation
 ### Direct Member Initialisation
 
 * Data members may be initialised directly
@@ -4240,8 +4269,8 @@ class xy {
 public:
     const double xr = 0.0;
     const double yr = 0.0;
-    xy(double x, double y) : xr(x), yr(y) {}
-//  xy(double x = 0.0, double y = 0.0) : xr(x), yr(y) {} 
+    xy(double x, double y) : xr{}, yr{y} {}
+//  xy(double x = 0.0, double y = 0.0) : xr{x}, yr{y} {} 
 protected:
     xy() {}
 };
@@ -4263,15 +4292,16 @@ http://coliru.stacked-crooked.com/a/3e12686ae858f3b1
 
 ---
 
+name: ctor_delegation
 ### Constructor Delegation
 
 * Class constructor may call other constructor
 
 * Useful to have
 
-   - one "work-horse" constructor
+  - one "work-horse" constructor
 
-   - and several "convenience" constructors
+  - and several "convenience" constructors
 
 http://en.cppreference.com/w/cpp/language/initializer_list#Delegating_constructor
 
@@ -4368,19 +4398,20 @@ int main() {
 
 ---
 
+name: ctor_inheritance
 ### Constructor Inheritance
 
 * Base class constructors can be made visible
 
-   - `using`-syntax as for other members
+  - `using`-syntax as for other members
 
-   - overwriting still possible
+  - overwriting still possible
 
 * Specially useful if derived class
 
-   - add no members at all
+  - add no members at all
 
-   - or added members can be directly initialised
+  - or added members can be directly initialised
 
 http://en.cppreference.com/w/cpp/language/using_declaration#Inheriting_constructors
 
@@ -4417,11 +4448,12 @@ public:
 
 ### Class Specific Type Conversions
 
-* C++ provides automatic ways to automatically convert …
+* C++ provides ways **for a class `X`** to specify an automatic
+  conversion …
 
-   - … a type or class **into** some other class
+  - … of a type or class **into an `X` object**, and
 
-   - … some class **into** some other class or type
+  - … of an **`X` object **into** some other** class or type
 
 http://en.cppreference.com/w/cpp/language/converting_constructor
 
@@ -4455,21 +4487,22 @@ int main() {
 
 http://coliru.stacked-crooked.com/a/57b243b26d57175c
 
-* Learn more about automatic conversions by adding to the code above.
+* Learn more about automatic conversions by adding to the code.
 
 ---
 
+name: explicit_conversions
 #### `explicit` Conversions
 
 * Adding the keyword `explicit` disables automatic conversion
 
 * It is still available with
 
-   - Constructor call syntax
+  - Constructor call syntax
 
-   - Cast operation
+  - Cast operation
 
-   - Member function call syntax
+  - Member function call syntax
 
 http://en.cppreference.com/w/cpp/language/explicit
 
@@ -4500,9 +4533,9 @@ struct clazz {
 
 * `explicit` type cast operations to bool
 
-   - are still automatic in *boolean context*
+  - are still automatic in *boolean context*
 
-   - need to be carried out explicit otherwise
+  - need to be carried out explicit otherwise
 
 ------------------------------------------------------------------
 
@@ -4534,25 +4567,26 @@ int main() {
 
 ---
 
+name: final_and_override
 ### `final` and `override`
 
 * `final` locks a member function of a class against overwriting
 
-   - Mainly this allows the compiler to generate more efficient code
+  - Mainly this allows the compiler to generate more efficient code
 
-   - Also member functions cannot any more be unintentionally replaced
+  - Also member functions cannot any more be unintentionally replaced
 
 * `final` can also be applied to a whole class …
 
-   - … with the effect that cannot be derived from it any more
+  - … with the effect that cannot be derived from it any more
 
 * `override` expresses the intention that a overriding is intended
 
-   - The compiler can check for the existence in a base class
+  - The compiler can check for the existence in a base class
 
-   - If not it can provide better more meaningful message
+  - If not it can provide better more meaningful message
 
-   - (It can help much to avoid some hard to spot problems)
+  - (It can help much to avoid some hard to spot problems)
 
 ---
 
@@ -4579,8 +4613,8 @@ class other : public clazz {
 http://coliru.stacked-crooked.com/a/a22a7e3292779248
 
 * Switch between member functions (commented-out / not).
-   - After each change: Compile and watch the Errors.
-   - Explain! (Or better yet predict what will happen)
+  - After each change: Compile and watch the Errors.
+  - Explain! (Or better yet predict what will happen)
 * Also apply final to the whole class `clazz`.
 <!-- -->
 * Loosely related: Does `private:` / `public:` make a difference?
@@ -4591,9 +4625,9 @@ http://coliru.stacked-crooked.com/a/a22a7e3292779248
 
 * Variable can be templates too
 
-   - Useful for providing constants of different type
+  - Useful for providing constants of different type
 
-   - E.g. accessible from templated functions
+  - E.g. accessible from templated functions
 
 ---
 
@@ -4642,15 +4676,15 @@ name: unique_ownership
 
 * Unique pointers manage memory
 
-   - used by a single object (of type `T`)
+  - used by a single object (of type `T`)
 
-   - **or** used by `N` objects of type `T`
+  - **or** used by `N` objects of type `T`
 
 * Technically `std::unique_ptr` is an RAII-wrapper for
 
-   - heap allocations with `new T` or `new T[N]`
+  - heap allocations with `new T` or `new T[N]`
 
-   - automating `delete` **or** `delete[] operation
+  - automating `delete` **or** `delete[] operation
 
 * Performance and memory footprint same as for native pointer
 
@@ -4690,15 +4724,15 @@ http://coliru.stacked-crooked.com/a/fbef0dab3cdd9059
 
 * Either: by two consecutive operations:
 
-   - result from `new` saved in temporary native pointer …
+  - result from `new` saved in temporary native pointer …
 
-   - … then used to initialise the `std::unique_ptr` object
+  - … then used to initialise the `std::unique_ptr` object
 
 * Or: by using `std::make_unique`
 
-   - (officially introduced wth C++14)
+  - (officially introduced wth C++14)
 
-   - Simpler and no need to worry about throwing operations
+  - Simpler and no need to worry about throwing operations
 
 http://en.cppreference.com/w/cpp/memory/unique_ptr/make_unique
 
@@ -4794,15 +4828,15 @@ int main() {
 
 * If `std::unique_ptr` manages memory for **one** `T` access
 
-   - is by `operator*` (whole `T`),
+  - is by `operator*` (whole `T`),
 
-   - and `operator->` (member access)
+  - and `operator->` (member access)
 
 * If `std::unique_ptr` manages memory for an array of `T`
 
-   - access is by `operator[`*`i`*`]` (*`i`-th* element of array),
+  - access is by `operator[`*`i`*`]` (*`i`-th* element of array),
 
-   - may be followed by dot (`.`) for member access
+  - may be followed by dot (`.`) for member access
 
 http://en.cppreference.com/w/cpp/memory/unique_ptr/operator*
 
@@ -4839,13 +4873,13 @@ int main() …{
 
 * `get()`
 
-   - gives access to the pointer held
+  - gives access to the pointer held
 
-   - keeping ownership
+  - keeping ownership
 
 * `release()`
 
-   -  hands over the pointer held to new owner
+  -  hands over the pointer held to new owner
 
 http://de.cppreference.com/w/cpp/memory/unique_ptr/get
 
@@ -4875,17 +4909,17 @@ int main() {
 
 * `std::unique_ptr` is well suited to be used as data member
 
-   - The class in which it is used gets *move only* by default
+  - The class in which it is used gets *move only* by default
 
-   - Often there is no need to implement move operations
+  - Often there is no need to implement move operations
 
 * A copyable class with `std::unique_ptr` data members …
 
-   - … needs to be analyzed for its "cloning semantics
+  - … needs to be analyzed for its "cloning semantics
 
-   - This **either** leads to implementing copy operations
+  - This **either** leads to implementing copy operations
 
-   - **or** might turn out ownership isn't really unique
+  - **or** might turn out ownership isn't really unique
 
 --------------------------------------------------------------------
 
@@ -4932,9 +4966,9 @@ int main() {
 
 * Type definition does not match heap allocation:
 
-   - `std::unique_ptr<T> p{new T[N]};`
+  - `std::unique_ptr<T> p{new T[N]};`
 
-   - `std::unique_ptr<T[]> p{new T};`
+  - `std::unique_ptr<T[]> p{new T};`
 
 -----------------------------------------------------------------------
 
@@ -4963,8 +4997,8 @@ int main() {
 }
 ```
 
-* Explain why the commented-out lines would cause undefined behaviour.
-* (Also try to predict the point (and maybe kind) of failure.)
+* Why would the commented-out lines cause undefined behaviour?
+* (Also try to predict the point – and maybe kind – of failure.)
 
 ----------------------------------------------------------------------
 
@@ -4979,17 +5013,17 @@ name: shared_ownership
 
 * Shared pointers manage memory
 
-   - used by a single object of type `T`
+  - used by a single object of type `T`
 
-   - when there are (potentially) many referrers
+  - when there are (potentially) many referrers
 
 * Technically `std::shared_ptr` uses a reference count
 
-   - incrementing it when another (new) referrer occurs
+  - incrementing it when another (new) referrer occurs
 
-   - decrementing it when some referrer goes out of scope
+  - decrementing it when some referrer goes out of scope
 
-   - de-allocating the referred-to object when it drops to 0
+  - de-allocating the referred-to object when it drops to 0
 
 * Performance typically close to native pointer
 
@@ -5032,15 +5066,15 @@ http://coliru.stacked-crooked.com/a/0fc58836466e4dd6
 
 * Either: by two consecutive operations:
 
-   - result from `new` saved in temporary native pointer …
+  - result from `new` saved in temporary native pointer …
 
-   - … then used to initialise the `std::shared_ptr` object
+  - … then used to initialise the `std::shared_ptr` object
 
 * Or: by using `std::make_shared`
 
-   - Simpler and no need to worry about throwing operations
+  - Simpler and no need to worry about throwing operations
 
-   - Usually better performance and more efficient use of resources
+  - Usually better performance and more efficient use of resources
 
 http://en.cppreference.com/w/cpp/memory/shared_ptr/make_shared
 
@@ -5084,9 +5118,9 @@ int main() {
 
 * More possible tests:
 
-   - `use_count()` – number of referrers
+  - `use_count()` – number of referrers
 
-   - `unique` – whether there are other referrers
+  - `unique` – whether there are other referrers
 
 http://en.cppreference.com/w/cpp/memory/shared_ptr/use_count
 
@@ -5171,9 +5205,9 @@ int main() {
 
 * `std::unique_ptr` may have a custom deleter
 
-   - Releasing memory with `delete` is the default
+  - Releasing memory with `delete` is the default
 
-   - Custom deleter may increase memory footprint
+  - Custom deleter may increase memory footprint
 
 * `std::allocate_shared` may be used instead of `std::make_shared`
 
@@ -5216,9 +5250,9 @@ int main() {
 
 * Throwing operations during creation:
 
-   - `new` may throw because out-of-memory
+  - `new` may throw because out-of-memory
 
-   - Constructor may throw for any reason
+  - Constructor may throw for any reason
 
 * Same native pointer used to initialise several `std::shared_ptr`
 
@@ -5309,7 +5343,7 @@ http://coliru.stacked-crooked.com/a/47eabec6a5458bfb
 
 * **Problem still not solved with *Smart Pointers*:**
 
-   - Object may reference itself (directly or indirectly)
+  - Object may reference itself (directly or indirectly)
 
       - Class holds `std::shared_ptr` on its own type
 
@@ -5507,7 +5541,7 @@ int main() {
 
     For objects referencing their own class (type)
 
-   - For objects mutually referencing each other
+  - For objects mutually referencing each other
 
 http://en.cppreference.com/w/cpp/memory/weak_ptr
 
@@ -5551,13 +5585,13 @@ struct flight : std::enable_shared_from_this<flight> {
 
 * There is no direct access to pointed-to object
 
-   - **First needs to obtain shared pointer from weak pointer**
+  - **First needs to obtain shared pointer from weak pointer**
 
-   - Either via `std::shared_ptr` constructor
+  - Either via `std::shared_ptr` constructor
 
       - May throw if the weak pointer has lost the object
 
-   - Or via `lock()` operation
+  - Or via `lock()` operation
 
        - May return shared pointer to "no object"
 
@@ -5652,15 +5686,15 @@ name: garbage_collection_abi
 
 * Garbage collection **is NOT**
 
-   - part of C++11
+  - part of C++11
 
-   - nor C++14
+  - nor C++14
 
-   - nor C++1z
+  - nor C++1z
 
 * There is **only an interface specified** …
 
-   - … for "interested third parties"
+  - … for "interested third parties"
 
 http://en.cppreference.com/w/cpp/memory#Garbage_collector_support
 
@@ -5729,17 +5763,17 @@ name: chrono_durations
 
 * Durations are the first key abstraction of `std::chrono`
 
-   - A duration carries its *resolution* as part of its type
+  - A duration carries its *resolution* as part of its type
 
-   - Its base type is implementation defined
+  - Its base type is implementation defined
 
 * There are convenient type aliases for the usual "time units"
 
 * Operations result type is selected automatically …
 
-   - … at compile time, not to loose accuracy
+  - … at compile time, not to loose accuracy
 
-   - or else an `std::chrono::duration_cast` is necessary
+  - or else an `std::chrono::duration_cast` is necessary
 
 http://en.cppreference.com/w/cpp/chrono#Duration
 
@@ -5759,7 +5793,7 @@ int main() {
 }
 ```
 
-// http://coliru.stacked-crooked.com/a/5c6bc3bb243c5545
+http://coliru.stacked-crooked.com/a/5c6bc3bb243c5545
 
 * Is the output what you would expect from the online documentation?
 * Generate similar output for other standard durations.
@@ -5942,17 +5976,17 @@ name: chrono_clocks
 
 * Basically similar to a duration …
 
-   - … with special meaning for the value 0 – the *Epoch*
+  - … with special meaning for the value 0 – the *Epoch*
 
 * Access is mainly via the static member `::now()`
 
 * There are at least three clocks since C++11
 
-   - `std::system_clock` ("wall clock" - may be adjusted)
+  - `std::system_clock` ("wall clock" - may be adjusted)
 
-   - `std::steady_clock` (monotonically increasing values)
+  - `std::steady_clock` (monotonically increasing values)
 
-   - `std::high_resolution_clock` ("fastest running" clock)
+  - `std::high_resolution_clock` ("fastest running" clock)
 
 * Typically **but not necessarily** all three are different
 
@@ -6030,7 +6064,7 @@ holds: *"You are not expected to understand this."* :-)
 
 * Typically used when interfacing to users
 
-   - Conversions to and from calendar dates
+  - Conversions to and from calendar dates
 
       - gives expected results
 
@@ -6074,7 +6108,7 @@ int main() {
 
 * Typically used to measure time deltas
 
-   - Duration delta of accessing `::now()` consecutively  …
+  - Duration delta of accessing `::now()` consecutively  …
 
       - … are never expected to be negative
 
@@ -6120,7 +6154,7 @@ int main() {
 
 * Typically used to measure **very short** time deltas
 
-   - Difference of two consecutive access to `::now()` …
+  - Difference of two consecutive access to `::now()` …
 
       - … might be negative in rare cases?
 
@@ -6133,17 +6167,17 @@ http://en.cppreference.com/w/cpp/chrono/high_resolution_clock
 To train the brain two quick "back of the envelope" calculations:
 
 * A counter overflows a  `signed long` of 32 bit (31/3.1 ~ 10 digits)
-   - at 1 GHz (nsec resolution) in ~ (1e10 ÷ 1e9) ~ 10 seconds
-   - at 100 MHz in ~ 100 sec (less than two minutes)
-   - at 10 MHz in ~ 1000 sec (or a quarter of an hour) 
-   - at 1 MHz in (µsec resolution) **a few hours** (1 day = 86.400 sec)
+  - at 1 GHz (nsec resolution) in ~ (1e10 ÷ 1e9) ~ 10 seconds
+  - at 100 MHz in ~ 100 sec (less than two minutes)
+  - at 10 MHz in ~ 1000 sec (or a quarter of an hour) 
+  - at 1 MHz in (µsec resolution) **a few hours** (1 day = 86.400 sec)
 
 <!-- -->
 
 * Counting picoseconds (1e-12) in 64 bit unsigned (64/3.1 ~ 20 digits)
-   - overflows after ~ 1e8 (1e20 ÷ 1e12) seconds, or >3 years
-   - (1 year = 3600 × 24 × 365 [seconds × hours × days per year])
-   - (3.6e3 × 0.36e3 × 24 = ~ 1e6 × 1,25 × 24 = ~ 3e7)
+  - overflows after ~ 1e8 (1e20 ÷ 1e12) seconds, or >3 years
+  - (1 year = 3600 × 24 × 365 [seconds × hours × days per year])
+  - (3.6e3 × 0.36e3 × 24 = ~ 1e6 × 1,25 × 24 = ~ 3e7)
 
 ---
 
@@ -6152,7 +6186,7 @@ name: chrono_timepoints
 
 * Time points are the base abstraction for `std::chrono`-s clocks
 
-   - Basically it is a duration coupled to a clock …
+  - Basically it is a duration coupled to a clock …
 
        - … where the latter determines the "epoch" 
 
@@ -6160,15 +6194,15 @@ name: chrono_timepoints
 
 * The type is seldom used directly
 
-   - More convenient is to store clock values in `auto` variables
+  - More convenient is to store clock values in `auto` variables
 
 * If necessary, information on clock details can be retrieved from it
 
 * **Between durations, time points, and plain numbers …**
 
-   - **… only meaningful arithmetic operations are supported** …
+  - **… only meaningful arithmetic operations are supported** …
 
-   - **… everything else is turned into *Compile Errors* !**
+  - **… everything else is turned into *Compile Errors* !**
 
 http://en.cppreference.com/w/cpp/chrono#Time_point
 
@@ -6210,13 +6244,13 @@ name: chrono_to_classic
 
 * An interface between `std::chrono` and `std::time_t` is available
 
-   - via `std::chrono::system_clock::to_time_t`
+  - via `std::chrono::system_clock::to_time_t`
 
-   - and `std::chrono::system_clock::from_time_t`
+  - and `std::chrono::system_clock::from_time_t`
 
 * An interface between `std::chrono` and `std::clock_t` …
 
-   - … might be built based on `CLOCKS_PER_SECOND`
+  - … might be built based on `CLOCKS_PER_SECOND`
 
 http://en.cppreference.com/w/cpp/chrono/system_clock/to_time_t
 
@@ -6294,15 +6328,15 @@ name: regular_expressions
 
 * Regular expression are supported since C++11
 
-   - The standard mainly adopted what evolved as Boost.Regex
+  - The standard mainly adopted what evolved as Boost.Regex
 
-   - Who is familiar with regular expression will have a quick start
+  - Who is familiar with regular expression will have a quick start
 
 * This is **not** a general introduction to Regular Expressions
 
-   - Therefore the regular expression syntax is not further explained
+  - Therefore the regular expression syntax is not further explained
 
-   - The content of this section is limited to some very basic examples
+  - The content of this section is limited to some very basic examples
 
 http://en.cppreference.com/w/cpp/regex
 
@@ -6382,17 +6416,17 @@ name: random_numbers
 
 * Since C++11 random number generation has to main aspects:
 
-   - The generator producing *randomness* as such
+  - The generator producing *randomness* as such
 
-   - The distribution *drawing* from a well-defined set of values
+  - The distribution *drawing* from a well-defined set of values
 
 * Both are rather specialist areas
 
-   - Therefore they are not covered in any depth
+  - Therefore they are not covered in any depth
 
-   - Some few examples are given to demonstrate basic usage …
+  - Some few examples are given to demonstrate basic usage …
 
-   - … applicable in "cookbook-style" to non-demanding tasks
+  - … applicable in "cookbook-style" to non-demanding tasks
 
 http://en.cppreference.com/w/cpp/numeric/random
 
@@ -6402,11 +6436,11 @@ http://en.cppreference.com/w/cpp/numeric/random
 
 * In the C89 standard a random generator was specified
 
-   - It used a simple algorithm to produce pseudo-randomness
+  - It used a simple algorithm to produce pseudo-randomness
 
-   - For "true" randomness it could be "seeded"
+  - For "true" randomness it could be "seeded"
 
-   - Conforming implementations
+  - Conforming implementations
 
       - had to support a minimum range of 0 … 32767
 
@@ -6441,15 +6475,15 @@ http://coliru.stacked-crooked.com/a/b93e31046acda10f
 
 * The standard specifies a variety of random generators
 
-   - All are "pseudo random" in so far that they start repeating …
+  - All are "pseudo random" in so far that they start repeating …
 
-   - … but this may not happen before the world ends
+  - … but this may not happen before the world ends
 
 * Generators are defined as classes
 
-   - They may be seeded in via a constructor argument …
+  - They may be seeded in via a constructor argument …
 
-   - … which may be a real random source (system dependant)
+  - … which may be a real random source (system dependant)
 
 * Random values are retrieved via `operator()` with no arguments
 
@@ -6501,9 +6535,9 @@ must have:
 
 * There are many choices available
 
-   - Most may be of interest for experts on statistics only
+  - Most may be of interest for experts on statistics only
 
-   - Pure mortals will almost always use `std::uniform_distribution`
+  - Pure mortals will almost always use `std::uniform_distribution`
 
       - It is class constructed with two arguments:
 
@@ -6511,7 +6545,7 @@ must have:
 
          - **not** one beyond the maximum – **STL users be aware**
 
-   - (Other distributions will typically require other arguments)
+  - (Other distributions will typically require other arguments)
 
 http://en.cppreference.com/w/cpp/numeric/random#Random_number_distributions
 
@@ -6552,15 +6586,15 @@ name: stl_extensions
 
 * STL container and algorithms …
 
-   - … **are covered in overview style only** …
+  - … **are covered in overview style only** …
 
-   - … focusing on additions by C++11, C++14, and C++1z
+  - … focusing on additions by C++11, C++14, and C++1z
 
 * Also included here are additions to …
 
-   - … the `std::string` class itself and
+  - … the `std::string` class itself and
 
-   - … convenience functions related to it.
+  - … convenience functions related to it.
 
 http://en.cppreference.com/w/cpp/container
 
@@ -6642,11 +6676,11 @@ int main() {
 
 * Drop-in replacement for native arrays
 
-   - Same performance, same memory footprint
+  - Same performance, same memory footprint
 
-   - Does not decay to pointer to first element
+  - Does not decay to pointer to first element
 
-   - Bounds-checked member access with `at()`
+  - Bounds-checked member access with `at()`
 
 * **But**: size not automatically determined from initializer count
 
@@ -6658,19 +6692,19 @@ http://en.cppreference.com/w/cpp/container/array
 
 * Singly linked list with minimal memory overhead:
 
-   - Just one pointer (required) to access the list head
+  - Just one pointer (required) to access the list head
 
-   - Just one extra pointer (required) per element
+  - Just one extra pointer (required) per element
 
 * Consequence: changed semantics for some container operations
 
-   - `insert_after` (instead of `insert`)
+  - `insert_after` (instead of `insert`)
 
-   - `emplace_after` (instead of `emplace`)
+  - `emplace_after` (instead of `emplace`)
 
-   - `erase_after` (instead of `erase`)
+  - `erase_after` (instead of `erase`)
 
-   - no `size()`, only `empty()`
+  - no `size()`, only `empty()`
 
 http://en.cppreference.com/w/cpp/container/forward_list
 
@@ -6701,9 +6735,9 @@ existing C++98 code would be affected only in very rare cases.
 
 * `cbegin()`, `crbegin(), `cend()`, and `crend()`
 
-   - Get non-modifiable iterator for modifiable container
+  - Get non-modifiable iterator for modifiable container
 
-   - Available as members and global functions
+  - Available as members and global functions
 
 http://en.cppreference.com/w/cpp/iterator#Range_access
 
@@ -6713,11 +6747,11 @@ http://en.cppreference.com/w/cpp/iterator#Range_access
 
 * `emplace`-Variants to add elements
 
-   - Forward arguments to element constructor
+  - Forward arguments to element constructor
 
-   - May therefore avoid a temporary and copying
+  - May therefore avoid a temporary and copying
 
-   - **Works with *move only* types**
+  - **Works with *move only* types**
 
 http://en.cppreference.com/mwiki/index.php?title=Special%3ASearch&search=emplace
 
@@ -6755,17 +6789,17 @@ copy **and** move constructor of `my::clazz`.
 
 * Much like tree-based counterparts
 
-   - Lookup O(1) instead of O(log<sub>2</sub>(N))
+  - Lookup O(1) instead of O(log<sub>2</sub>(N))
 
-   - (also when taking place as part of other operations)
+  - (also when taking place as part of other operations)
 
 * No sorting relation for element type
 
 * Instead a hash function is required
 
-   - already defined for basic types
+  - already defined for basic types
 
-   - also STL container classes
+  - also STL container classes
 
 http://en.cppreference.com/w/cpp/container/unordered_set
 
@@ -6808,15 +6842,15 @@ int main() {
 
 * `at()`
 
-   - Returns element by reference only if it exists
+  - Returns element by reference only if it exists
 
-   - **Otherwise throws `std::out_of_range`**
+  - **Otherwise throws `std::out_of_range`**
 
 * `try_emplace()`
 
-   - Overwrites value only if key exists
+  - Overwrites value only if key exists
 
-   - **Otherwise does nothing**
+  - **Otherwise does nothing**
 
 http://en.cppreference.com/w/cpp/container/map/at
 
@@ -6834,15 +6868,15 @@ http://en.cppreference.com/w/cpp/container/unordered_map/try_emplace
 
 * Some express already supported functionality more clearly, like
 
-   - `std::copy_if` (copy container elements with given predicate)
+  - `std::copy_if` (copy container elements with given predicate)
 
-   - which can be done in C++98 with `std::remove_copy_if`
+  - which can be done in C++98 with `std::remove_copy_if`
 
 * In the same vein some additions were seemingly redundant, like
 
-   - `std::all_of`, `std::any_of`, and `std::none_of` …
+  - `std::all_of`, `std::any_of`, and `std::none_of` …
 
-   - … any of which can replace the two others
+  - … any of which can replace the two others
 
 --------------------------------------------------------------------
 
@@ -6910,9 +6944,9 @@ int main() {
 * How to express the same tests with `std::none_of`?
 * Insert the lambda-s directly into the calls that make use of it.
 * Loosely related:
-   - reuse `is_divisible` (from last page) to implement `divides_25`
-   - reuse `divides_25` to implement `not_divided_25`
-   - (Advanced: replace all lambdas with `std::bind`.)
+  - reuse `is_divisible` (from last page) to implement `divides_25`
+  - reuse `divides_25` to implement `not_divided_25`
+  - (Advanced: replace all lambdas with `std::bind`.)
 
 ---
 
@@ -6920,9 +6954,9 @@ int main() {
 
 * Tuples are collection of elements
 
-   - Element count is fixed at compile time
+  - Element count is fixed at compile time
 
-   - Element types may differ from each other
+  - Element types may differ from each other
 
 * Avoids to define utility structures
 
@@ -6967,11 +7001,11 @@ http://coliru.stacked-crooked.com/a/15a295275c123079
 
 * Tuples can be created in various ways:
 
-   - Constructor call (slightly inconvenient)
+  - Constructor call (slightly inconvenient)
 
-   - `std::make_tuple` (constructor arguments only)
+  - `std::make_tuple` (constructor arguments only)
 
-   - `std::tuple_cat` (from existing tuples)
+  - `std::tuple_cat` (from existing tuples)
 
 http://en.cppreference.com/w/cpp/utility/tuple/make_tuple
 
@@ -7025,9 +7059,9 @@ int main() {
 
 * Convenient alternative to `std::get`
 
-   - Especially for unpacking tuples returned from functions
+  - Especially for unpacking tuples returned from functions
 
-   - `std::ignore` may be used for elements not of interest
+  - `std::ignore` may be used for elements not of interest
 
 http://en.cppreference.com/w/cpp/utility/tuple/tie
 
@@ -7059,17 +7093,17 @@ int main() {
 
 * Tuples also have Compile Time operations
 
-   - Determine the size (number of elements)
+  - Determine the size (number of elements)
 
-   - Accessing the type of the i-th element
+  - Accessing the type of the i-th element
 
 * Both are implemented in the usual Meta Programming style
 
-   - The tuple is handed over as type of a template instantiation
+  - The tuple is handed over as type of a template instantiation
 
-   - A value result is accessed via `…::value`
+  - A value result is accessed via `…::value`
 
-   - A type result is access via `typename …::type`
+  - A type result is access via `typename …::type`
 
 http://en.cppreference.com/w/cpp/utility/tuple/tuple_size
 
@@ -7112,15 +7146,15 @@ int main() {
 
 * Tuples also support border cases:
 
-   - Just one element (wouldn't require tuple)
+  - Just one element (wouldn't require tuple)
 
-   - No elements at all (similar to `void`)
+  - No elements at all (similar to `void`)
 
 * Access by (unique) element type (since C++14)
 
-   - `std::get` also can access tuple elements by type
+  - `std::get` also can access tuple elements by type
 
-   - Often useful for small tuples and `std::pair`-s.
+  - Often useful for small tuples and `std::pair`-s.
 
 http://en.cppreference.com/w/cpp/utility/tuple/get
 
@@ -7207,7 +7241,7 @@ int main() {
 
 * Tuples are (or can be made) compatible with `std::array`
 
-   - Of course type conversions may need to take place
+  - Of course type conversions may need to take place
 
 http://en.cppreference.com/w/cpp/container/array/get
 
@@ -7219,7 +7253,7 @@ http://en.cppreference.com/w/cpp/utility/integer_sequence#Example
 
 * Additions related to `std::string` were motivated by:
 
-   - Providing easy conversions between arithmetic types, i.e.
+  - Providing easy conversions between arithmetic types, i.e.
 
       - **from** all integral types (base 10 only)
 
@@ -7227,7 +7261,7 @@ http://en.cppreference.com/w/cpp/utility/integer_sequence#Example
 
       - **to** and **from** all floating point types
 
-   - Closing the gap between `std::string`-s and `std::vector`-s, i.e.
+  - Closing the gap between `std::string`-s and `std::vector`-s, i.e.
 
       - `std::string` has (superset) of interface of `std::vector<char>`
 
@@ -7267,17 +7301,17 @@ http://coliru.stacked-crooked.com/a/78e0bd9b2829a48e
 
 * Type aliases are provided according to those for character types:
 
-   - `std::u16string` with elements (code units) of type `char16_t`
+  - `std::u16string` with elements (code units) of type `char16_t`
 
-   - `std::u32string` with elements (code units) of type `char32_t`
+  - `std::u32string` with elements (code units) of type `char32_t`
 
 * Class template `std::codevect` provides a base for conversions
 
-   - between UTF-8 and UCS2/UCS4 (`std::codecvt_utf8`)
+  - between UTF-8 and UCS2/UCS4 (`std::codecvt_utf8`)
 
-   - between UTF-16 and UCS2/UCS4 (`std::codecvt_utf16`)
+  - between UTF-16 and UCS2/UCS4 (`std::codecvt_utf16`)
 
-   - between UTF-8 and UTF-16 (`std::codecvt_utf8_utf16`)
+  - between UTF-8 and UTF-16 (`std::codecvt_utf8_utf16`)
 
 http://en.cppreference.com/w/cpp/locale/wstring_convert
 
@@ -7288,21 +7322,27 @@ http://en.cppreference.com/w/cpp/locale/codecvt
 name: noexcept
 ## `noexcept` (Specifier and Operator)
 
+* [Optimising with the `noxexcept` Specifier	](#optimising_with_noexcept)
+* [Conditional `noxexcept`                      ](#conditional_noexcept)
+* [Testing for `noxexcept`                      ](#testing_for_noexcept)
+* [`noexcept`-Based Move/Copy Selection		](#noexcept_based_move_copy)
+
 ---
 
-### Optimising with `noexcept` Specifier
+name: optimising_with_noexcept
+### Optimising with the `noexcept` Specifier
 
 * Only when the goal is to reduce book-keeping code …
 
-   - … add `noexcept` - to functions that actually cannot throw
+  - … add `noexcept` - to functions that actually cannot throw
 
-   - or when there is no meaningful way to continue after failure
+  - or when there is no meaningful way to continue after failure
 
 * **Diligently** write `catch`-blocks otherwise …
 
-   - … maybe even `catch(...) {}` (if nothing can be done) …
+  - … maybe even `catch(...) {}` (if nothing can be done) …
 
-   - … but care for channeling "out-of-band" failure indication
+  - … but care for channeling "out-of-band" failure indication
 
 http://en.cppreference.com/w/cpp/language/noexcept_spec
 
@@ -7315,13 +7355,14 @@ http://en.cppreference.com/w/cpp/error/set_terminate
 
 ---
 
+name: conditional_noexcept
 ### Conditional `noexcept`
 
 * Use `noexcept` as Compile-Time operation to indicate …
 
-   - a generic function will not throws by itself
+  - a generic function will not throws by itself
 
-   - but may throw depending on its instantiation arguments
+  - but may throw depending on its instantiation arguments
 
 http://en.cppreference.com/w/cpp/language/noexcept
 
@@ -7357,19 +7398,20 @@ http://coliru.stacked-crooked.com/a/f7ed04fd0ccac524
 
 ---
 
+name: testing_for_noexcept
 ### Testing for `noexcept`
 
 * SFINAE based techniques (or `std::enable_if`) may be used …
 
-   - … but usually not necessary to learn for C++ developers
+  - … but usually not necessary to learn for C++ developers
 
-   - … as most the common case is selecting between copy and move
+  - … as most the common case is selecting between copy and move
 
 * In the example only the core technique is presented
 
-   - Based on template specialization for `bool`
+  - Based on template specialization for `bool`
 
-   - More options come with *Template Meta Programming*
+  - More options come with *Template Meta Programming*
 
 ---
 
@@ -7398,25 +7440,26 @@ int main() {
 
 ---
 
+name: noexcept_based_move_copy
 ### `noexcept`-Based Move/Copy Selection
 
 * `std::move_is_noexcept` is a **conditional cast** with the effect to …
 
-   - … select the move constructor or assignment for its argument …
+  - … select the move constructor or assignment for its argument …
 
       - … **only when it is `noexcept`**
 
       - … thereby giving the guarantee of a non-throwing operation
 
-   - … select the copy constructor or assignment otherwise …
+  - … select the copy constructor or assignment otherwise …
 
       - … which may or may not throw
 
 * So the overall guarantee is
 
-   - **not** that the operation will always succeed, but
+  - **not** that the operation will always succeed, but
 
-   - only that its operand is untouched **if** it throws
+  - only that its operand is untouched **if** it throws
 
 http://en.cppreference.com/w/cpp/utility/move_if_noexcept
 
@@ -7453,9 +7496,14 @@ void move_or_copy() {
 name: multi_threading
 ## Multi-Threading (Overview)
 
-* Asynchronous Tasks
-
-* Mutexes and Locks
+* [Asynchronous Tasks			](#asynchronous_tasks)
+* [Packaged Tasks			](#packaged_tasks)
+* [Mutexes				](#mutexes)
+* [Locks				](#locks)
+* [Thread				][#threads)
+* [Condition Variables			](#condition_variables)
+* [Lock-free Algorithms			](#lock_free_algorithms))
+* [Direct Use of Threads		](#direct_use_of_threads)
 
 Note: The purpose of this chapter is only to give an overview.
 
@@ -7463,6 +7511,7 @@ The topic gets a more detailed coverage in specialised trainings.
 
 ---
 
+name: asynchronous_tasks
 ### Asynchronous Tasks
 
 * Give any callable as argument to `std::async`
@@ -7471,43 +7520,45 @@ The topic gets a more detailed coverage in specialised trainings.
 
 * At any time later call the `get()` member function
 
-   - This will wait for the callable to return
+  - This will wait for the callable to return
 
-   - Forwarding its result (if not `void`) …
+  - Forwarding its result (if not `void`) …
 
-   - … or an exception (if one were thrown)
+  - … or an exception (if one were thrown)
 
 * Very simple and straight forward …
 
-   - … as long as asynchronous tasks work on independent data
+  - … as long as asynchronous tasks work on independent data
 
-   -  **Access to shared resources must be serialized**
+  -  **Access to shared resources must be serialized**
 
 http://en.cppreference.com/w/cpp/thread/async
 
 ---
 
+name: packaged_tasks
 ### Packaged Tasks
 
 * Similar to asynchronous tasks
 
-   - With a little bit more of explicit control …
+  - With a little bit more of explicit control …
 
-   - … at the price of slightly more complicated use
+  - … at the price of slightly more complicated use
 
 http://en.cppreference.com/w/cpp/thread/packaged_task
 
 ---
 
+name_ promises_and_futures
 ### Promises and Futures
 
 * Connect tasks in separate thread and caller
 
 * Provides infra-structure to
 
-   - Announce availability of result in callee
+  - Announce availability of result in callee
 
-   - Wait for result in the caller
+  - Wait for result in the caller
 
 * Technically `std::async` returns an `std::future`
 
@@ -7519,52 +7570,56 @@ http://en.cppreference.com/w/cpp/thread/future
 
 ---
 
+name: mutexes
 ### Mutexes
 
 * Mutexes are used to serialize access to shared resources
 
 * Wrong use of mutexes may lead to
 
-   - Deadlocks (two threads waiting on each other)
+  - Deadlocks (two threads waiting on each other)
 
-   - Sub-optimal performance (bottle-necks)
+  - Sub-optimal performance (bottle-necks)
 
-   - Corrupted Data (if race conditions occur)
+  - Corrupted Data (if race conditions occur)
 
 http://en.cppreference.com/w/cpp/thread#Mutual_exclusion
 
 ---
 
+name: locks
 ### Locks
 
 * Locks are RAII-style wrappers to mutexes
 
-   - Wrong use of locks has same problems as mutexes …
+  - Wrong use of locks has same problems as mutexes …
 
-   - … except that lock release is a little less error prone
+  - … except that lock release is a little less error prone
 
 * There is also some support for deadlock avoidance
 
-   - Several locks may be acquired atomically
+  - Several locks may be acquired atomically
 
-   - Operation fails if not all are available
+  - Operation fails if not all are available
 
 http://en.cppreference.com/w/cpp/thread#Generic_mutex_management
 
 ---
 
+name: condition_variables
 ### Condition Variables
 
 * Useful for consumer/producer synchronization
 
-   - No busy waiting
+  - No busy waiting
 
-   - No sub-optimal latency
+  - No sub-optimal latency
 
 http://en.cppreference.com/w/cpp/thread/condition_variable
 
 ---
 
+name: lock_free_algorithms
 ### Lock Free Algorithms
 
 * Lock Free algorithms use special atomic operations
@@ -7573,15 +7628,16 @@ http://en.cppreference.com/w/cpp/atomic/atomic_compare_exchange
 
 ---
 
+name: direct_use_of_threads
 ### Direct Use of Threads
 
 * Simply hand-over callable to `std::thread`-constructor
 
 * But be aware that threads
 
-   - either must be joined
+  - either must be joined
 
-   - or detached
+  - or detached
 
 * **Otherwise thread object destructor terminates program**
 
@@ -7596,7 +7652,7 @@ http://en.cppreference.com/w/cpp/thread/thread
 ---
 
 name: alignas_and_alignof
-## `alignas` and `alignas`
+## `alignas` and `alignof`
 
 ---
 
@@ -7609,11 +7665,16 @@ name: alignas_and_alignof
 name: experimental_features
 ## Experimental Features
 
+* [File system access		](#file_system_access)
+* [Parallelism			](#parallelism)
+* [Other Library Extensions	](#other_library_extensions)
+
 ---
 
+name: file_system_access
 ### File System Access
 
-http://en.cppreference.com/w/cpp/experimental/fs
+http://en.cppreference.com/w/cpp/experimental/fs	
 
 ---
 
@@ -7623,12 +7684,14 @@ http://en.cppreference.com/w/cpp/experimental/fs
 
 ---
 
+name: parallelism
 ### Parallelism
 
 http://en.cppreference.com/w/cpp/experimental/parallelism
 
 ---
 
+name: other_library_extensions
 ### Other Library Extensions
 
 http://en.cppreference.com/w/cpp/experimental/lib_extensions
@@ -7639,9 +7702,9 @@ http://en.cppreference.com/w/cpp/experimental/lib_extensions
 
 * Optional data on stack
 
-   - avoids heap allocation
+  - avoids heap allocation
 
-   - may "waste" memory if unused
+  - may "waste" memory if unused
 
 * Alternative: Boost.Optional
 
@@ -7675,11 +7738,11 @@ http://en.cppreference.com/w/cpp/experimental/any
 
 * Non-owning shared strings
 
-   - Avoids hidden COW
+  - Avoids hidden COW
 
-   - Highly efficient …
+  - Highly efficient …
 
-   - … but may dangle
+  - … but may dangle
 
 http://en.cppreference.com/w/cpp/experimental/basic_string_view
 
@@ -7693,7 +7756,7 @@ http://en.cppreference.com/w/cpp/experimental/basic_string_view
 <!-- :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::: -->
 <!-- ::::::::::::::::::::: )-: ereh TNETNOCLAER fo dne :::::::::::::::::::: -->
 <!-- :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::: -->
-    <script src="../CppFor/Presentation/remark.min.js" type="text/javascript">
+    <script src="remark.min.js" type="text/javascript">
     </script>
     <script type="text/javascript">
       var slideshow = remark.create({
