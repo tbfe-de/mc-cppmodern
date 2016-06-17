@@ -1,5 +1,12 @@
 // http://coliru.stacked-crooked.com/a/64d0447ce5e6dc6e
 
+/*
+ * Variations to try:
+ * - USE_FUNCTOR_INSTEAD_OF_LAMBDA
+ *   in some places where lambdas are used as callables the
+ *   alternative functor use is shown as conditionally code
+*/
+
 #include <iostream>
 #include <string>
 #include <typeinfo>
@@ -105,19 +112,22 @@ std::string capture_nothing(const std::initializer_list<int>& values) {
     return os.str();
 }
 
+#define USE_FUNCTOR_INSTEAD_OF_LAMBDA 1
+
 std::string capture_value(int f, std::initializer_list<int> values) {
     std::ostringstream os; 
     my::copy_if(values.begin(), values.end(),
                 std::ostream_iterator<int>(os, " "), 
-        #if 0
+            #if USE_FUNCTOR_INSTEAD_OF_LAMBDA
                 check_divisible{f}
-        #else
+            #else
                 [f](int n) { return (n%f == 0); }
-        #endif
+            #endif
                );  
     return os.str();
 }
 
+#if USE_FUNCTOR_INSTEAD_OF_LAMBDA
 struct check_even_count_odd {
     int& odd;
     check_even_count_odd(int& odd_) : odd(odd_) {}
@@ -128,23 +138,24 @@ struct check_even_count_odd {
         return false;
     }   
 };
+#endif
 
 std::string capture_reference(std::initializer_list<int> values) {
     std::ostringstream os; 
     int dropped{0};
     my::copy_if(values.begin(), values.end(),
                 std::ostream_iterator<int>(os, " "), 
-        #if 1
+            #if USE_FUNCTOR_INSTEAD_OF_LAMBDA
                 check_even_count_odd{dropped}
-        #else
+            #else
                 [&dropped](int n) {
                     if (n%2 == 0)
                         return true;
-                    ++odd;
+                    ++dropped;
                     return false;
                 }   
-        #endif
-               );  
+            #endif
+               );
     os << "(" << dropped << " dropped)";
     return os.str();
 }
@@ -164,14 +175,14 @@ public:
     }   
 };
 
-std::string capture_init(std::initializer_list<int> values) {
+std::string capture_init(std::initializer_list<double> values) {
     std::ostringstream os; 
     my::copy_if(values.begin(), values.end(),
-                std::ostream_iterator<int>(os, " "), 
+                std::ostream_iterator<double>(os, " "), 
         #if 0
                 check_unique{}
         #else
-                [known = std::set<int>{}](int n) mutable {
+                [known = std::set<double>{}](double n) mutable {
                     return known.insert(n).second;
                 }   
         #endif
@@ -208,7 +219,7 @@ void copy_if_demo() {
     PX(capture_value(2, {3, 6, 7, 2, 5, 4, 8, 1, 3, 2}));
     PX(capture_value(3, {3, 6, 7, 2, 5, 4, 8, 1, 3, 2}));
     PX(capture_reference({3, 6, 7, 2, 5, 4, 8, 1, 3, 2}));
-    PX(capture_init({3, 6, 7, 2, 5, 4, 8, 1, 3, 2}));
+    PX(capture_init({3, 6, 7, 0.2, 5, 4, 8, 1, 3, 2}));
     PX(generic_lambda({8, -9, 10, -11, 12}));
     PX(generic_lambda({.8, -.9, 1.0, -1.1, 2.2}));
 }
@@ -226,9 +237,13 @@ void capture_basics() {
     PX(     []() {return &x;}                   ());
     
     auto f1 = []() {return &x;}         (); PT(decltype(f1));
+                                         // PX(f1());
     auto f2 = []() {return &x;}           ; PT(decltype(f2));
+                                            PX(f2());
     auto f3 = []() -> void* {return &x;}(); PT(decltype(f3));
-    auto f4 = []() {return (x) ? &x : nullptr;};
+                                         // PX(f3());
+    auto f4 = []() {return (x) ? &x : nullptr;}; PT(decltype(f4));
+                                            PX(f4());
 //  auto f5 = []() {if (x) return &x; else return nullptr; };
     auto f6 = []() -> const int* {if (x) return &x; else return nullptr;};
     
@@ -237,6 +252,7 @@ void capture_basics() {
     PX(     [y]   {return y;}                   ());
     PX(     [y]() mutable {return ++y;}         ());
 //  PX(     [y]   mutable {return ++y;}         ());
+    PX(     [y]   {return y;}                   ());
     PX(     [&y]() {return ++y;}                ());
     PX(     [y]() {return &y;}                  ());
     PX(     [&y]() {return y;}                  ());
@@ -266,10 +282,10 @@ void capture_init_array() {
 int main() {
     std::cout.setf(std::ios::boolalpha);
 
-    callable_basics();
+//  callable_basics();
     copy_if_demo();
-    capture_basics();
-    capture_init_array();
+//  capture_basics();
+//  capture_init_array();
 }
 
 

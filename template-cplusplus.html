@@ -554,14 +554,14 @@ but simply to show the effect.
 template<typename T>
 struct add_ptr {using type = T*;};
 
-template<typename T>
-struct remove_ptr;
+template<typename T> struct remove_ptr;
 template<typename T>
 struct remove_ptr<T*> {using type = T;};
 
-struct remove_all_ptr {using type = T;};
-template<typename T>
-struct remove_all_ptr<T*> {using type = remove_all_ptr<T>;};
+template<typename T> struct remove_all_ptr {using type = T;};
+template<typename T> struct remove_all_ptr<T*> {
+    using type = typename remove_all_ptr<T>::type;
+};
 
 template<unsigned N>
 struct countbits {

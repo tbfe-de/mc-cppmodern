@@ -192,23 +192,23 @@ If you need suggestions what to try (add or modify) you will find
 some in this presentation and a lot more usually in the example
 code itself.
 
-There are two basic forms:
+There are two basic forms:._[]
 
-* **Conditional code `#if … #else … #endif`**
+* **Conditional code `#if` … `#else` … `#endif`**
 
   - Usually both versions work, demonstrating alternative ways to
-     solve the particular problem at hand
+    solve the particular problem at hand
   - Sometimes not all versions are compatible with C++11 but may
-     require C++14 or even C++14 features
+    require C++14 or even C++17 features
 
 * **Commented-out lines – sometimes with alternatives**
 
   - Sometimes these are shown because they **do not compile** and
-     should indicate that a particular solution that may even seem
-     attractive at first glance is **not** the way to go.
+    should indicate that a particular solution that may even seem
+    attractive at first glance is **not** the way to go.
   - Furthermore, if removing the comment often some other line
-     (in close proximity, typically the previous or next one) needs
-     to be commented.
+    (in close proximity, typically the previous or next one) needs
+    to be commented.
 
 **Understanding the code by trying variations is the crucial step
 to actually internalise the topics covered!**
@@ -223,20 +223,24 @@ to actually internalise the topics covered!**
 
   - Look-up the reference documentation
 
-      - Grasp what you (seem to) understand at from a cursory look
+    - Grasp what you (seem to) understand at from a cursory look
 
-      - **Test your understanding by tweaking the example!**
+    - **Test your understanding by tweaking the example!**
 
-      - Maybe go back to documentation …
+    - Maybe go back to documentation …
 
-         - … but do not loop endlessly
+      - … but do not loop endlessly
 
 --------------------------------------------------------------------------------
 
-Most language features and library classes in C++ are designed
-to work exactly as you would expect it …
+Most language features and library classes in C++ are designed to work exactly
+as you would expect it … except those that work differently.._[]
 
-… except those that work differently.
+.F[:
+According to information theory the latter ones, i.e. areas you find surprising,
+contribute more to the "amount" you learned as those where everything behaves
+according to your expectations.
+]
 
 ---
 
@@ -325,7 +329,7 @@ int main() {
 ```
 
 * Useful helpers for writing test `main` programs:
-  - Simple expression printer macro (`PT`)
+  - Simple expression printer macro (`PX`)
   - [Boost.Type_index] based type printer macro (`PT`)
 
 [Boost.Type_index]: http://www.boost.org/doc/libs/master/doc/html/boost_typeindex/getting_started.html
@@ -345,22 +349,21 @@ name: live_examples
 
 * **Coliru is provided freely - do not overly stress it!**
 
--------------------------------------------------------------
+-------------------------------------------------------------------------------
 
-Consider to copy the code from the (coliru) example and try it
-on a locally installed compiler.
+Consider to copy the code from the ([Coliru]) example and try it on your
+locally installed compiler.
 
-Advantage: you may not be trapped by "Modern C++" features not
-(yet) supported by your production use compiler.
+Advantage: you may not be trapped by "Modern C++" features not (yet) supported
+by your production use compiler.
 
-Turn to Coliru (or another online compile service) only in case
-of problems with your local compiler.
+Turn to [Coliru] (or another online compile service) only in case of problems
+with your local compiler.._[]
 
--------------------------------------------------------------
-
-If you come to the conclusion [Coliru] (or some other free
-internet service) is a **real big boon**, consider making
-a donation.
+.F[:
+If you come to the conclusion [Coliru] – or some other free online compile
+service is a real big boon consider to make a donation to its provider.
+]
 
 [Coliru]: http://coliru.stacked-crooked.com
 
@@ -770,7 +773,7 @@ name: types_vs_values
 
 #### Show Expression Value
 
-* At Run-Time `operator>>` works for
+* At Run-Time `operator<<` works for
 
   - **All** basic types
 
@@ -3007,7 +3010,7 @@ public:
     rgb_it(rgb c_) : c(c_) {}
     rgb operator*() const {return c;}
     rgb_it operator++() {c = next(c); return *this;}
-    rgb_it operator++(int) {return rgb_it(next(c));}
+    rgb_it operator++(int) {auto old = *this; next(c); return old;}
 };
 bool operator==(rgb_it lhs, rgb_it rhs) {return *lhs == *rhs;}
 bool operator!=(rgb_it lhs, rgb_it rhs) {return *lhs != *rhs;}
@@ -4329,11 +4332,11 @@ public:
     using rect = ctor_tag<rect_tag>;     // (which is not the
     using pol = ctor_tag<pol_tag>;       // topic covered here)
     xy(double x, double y, rect) // c'tor for rectangular
-        : xr(x), yr(y)
-        , rad(std::sqrt(x*x + y*y)), deg(std::atan2(x, y)) {}
+        : xy(x, y, std::sqrt(x*x + y*y), std::atan2(x, y))s
+    {}
     xy(double r, double d, pol) // c'tor for polar
-        : xr(r*std::cos(d)), yr(r*std::sin(d))
-        , rad(r), deg(d) {}
+        : xy(r*std::cos(d), r*std::sin(d), r, d)
+    {}
 }
 ```
 
@@ -6001,7 +6004,7 @@ http://www.boost.org/doc/libs/release/doc/html/chrono.html
 
 ---
 
-##### Example: chrono_clocks/demo.cpp`
+##### Example: `chrono_clocks/demo.cpp`
 
 ```
 int main() {
@@ -6030,7 +6033,7 @@ http://coliru.stacked-crooked.com/a/74ddb26044bb44e9
 
 ---
 
-##### Example (cont.): chrono_clocks/demo.cpp`
+##### Example (cont.): `chrono_clocks/demo.cpp`
 
 ```
 namespace my {

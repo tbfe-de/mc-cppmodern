@@ -110,13 +110,18 @@ GEN_ref_and_ptr(*)
 
 #endif
 
+template<typename T> struct w;
+
 #define PT(type) std::cout << #type << " --> "\
                            << showtype<type>::str() << std::endl;
                            
 int main() {
     int* p = nullptr;
+    using mytype = int;
     PT(int);
     PT(decltype(p));
+    PT(decltype(&p));
+    PT(decltype(*p));
     PT(void*);
     PT(decltype(nullptr));
     PT(const char **);
