@@ -2115,7 +2115,7 @@ int main() {
 http://coliru.stacked-crooked.com/a/b46ba3d4b3e78bd6
 
 * Demonstrate basic behaviour of references.
-* Try more combinations (especially in grey araeas).
+* Try more combinations (especially in grey areas).
 
 ---
 
@@ -2191,7 +2191,7 @@ int main() {
 http://coliru.stacked-crooked.com/a/15009e8c6e05f61c
 
 * Demonstrate reference based overloading.
-* Try more combinations (especially in grey araeas).
+* Try more combinations (especially in grey areas).
 
 ---
 
@@ -2363,6 +2363,7 @@ http://coliru.stacked-crooked.com/a/2b9ac3df84185215
 * Most easily used in Cookbook fashion:
 
 ```
+template<typename T>
 void foo( … , T&& arg, … )
     …
     … // maybe non-move/non-forward uses of `arg`
@@ -3248,8 +3249,8 @@ https://isocpp.org/wiki/faq/cpp14-language#generic-lambdas
 ##### Optional Example (cont.): callable_lambda/demo.cpp
 
 ```
-template<typename T>
 class check_positive {
+    template<typename T>
     bool operator()(T n) {return (n > 0); 
 };
 
@@ -4195,7 +4196,7 @@ int main() {
 }
 ```
 
-* Understand how the lambda aobve achieves the adaption.
+* Understand how the lambda above achieves the adaption.
 * Note that `std::bind` is **not** powerful enough to do this!
 * On which assumption does the code still rely?
 * What to change if C++14 *init captures* are not available?
@@ -4272,7 +4273,7 @@ class xy {
 public:
     const double xr = 0.0;
     const double yr = 0.0;
-    xy(double x, double y) : xr{}, yr{y} {}
+    xy(double x, double y) : xr{x}, yr{y} {}
 //  xy(double x = 0.0, double y = 0.0) : xr{x}, yr{y} {} 
 protected:
     xy() {}
@@ -4332,7 +4333,7 @@ public:
     using rect = ctor_tag<rect_tag>;     // (which is not the
     using pol = ctor_tag<pol_tag>;       // topic covered here)
     xy(double x, double y, rect) // c'tor for rectangular
-        : xy(x, y, std::sqrt(x*x + y*y), std::atan2(x, y))s
+        : xy(x, y, std::sqrt(x*x + y*y), std::atan2(x, y))
     {}
     xy(double r, double d, pol) // c'tor for polar
         : xy(r*std::cos(d), r*std::sin(d), r, d)
@@ -4638,8 +4639,8 @@ http://coliru.stacked-crooked.com/a/a22a7e3292779248
 
 ```
 template<typename T> const T PI;
-template<> const double PI<float> = 2*std::acos(0.f);
-template<> const double PI<double> = 2*std::acos(0.0);
+template<> const auto PI<float> = 2*std::acos(0.f);
+template<> const auto PI<double> = 2*std::acos(0.0);
 
 int main() {
     std::cout.precision(10);
@@ -4656,7 +4657,7 @@ int main() {
 }
 ```
 
-http://coliru.stacked-crooked.com/a/3e583356c574d16f
+http://coliru.stacked-crooked.com/a/26af2158b47ca143
 
 * Is there a difference between the `PI<float>` and the `PI<double>`?
 * If yes, how big?

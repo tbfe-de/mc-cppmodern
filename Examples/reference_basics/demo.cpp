@@ -8,14 +8,14 @@
               << (__VA_ARGS__) << std::endl;
 
 void plain_reference_usage() {
-    int x = 0;                  PX(x)
+    int x[2] = {0, 1};                  PX(x)
     const int cx = 101;         PX(cx)
-    int &xr = x;                PX(xr)
+    int &xr = x[0];                PX(xr)
                                 PX(++xr)
                                 PX(x)
     const int &cxr = cx;        PX(cxr)
 //                              PX(++cxr)
-    int&& z = 2*x;              PX(z)
+    int&& z = x[0]+0;              PX(z)
                                 PX(++z)
                                 PX(x)
 }

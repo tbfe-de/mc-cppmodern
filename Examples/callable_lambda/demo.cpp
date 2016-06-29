@@ -190,9 +190,9 @@ std::string capture_init(std::initializer_list<double> values) {
     return os.str();
 }
 
-template<typename T>
 class check_positive {
 public:
+    template<typename T>
     bool operator()(T n) {
         return (n > 0); 
     }   
@@ -203,7 +203,7 @@ std::string generic_lambda(std::initializer_list<T> values) {
     std::ostringstream os; 
     my::copy_if(values.begin(), values.end(),
                 std::ostream_iterator<T>(os, " "), 
-        #if 0
+        #if 1
                 check_positive{}
         #else
              // [](int n) { return n > 0; }
@@ -215,7 +215,7 @@ std::string generic_lambda(std::initializer_list<T> values) {
 }
 
 void copy_if_demo() {
-    PX(capture_nothing({3, 6, 7, 2, 5, 4, 8, 1, 3, 2}));
+	    PX(capture_nothing({3, 6, 7, 2, 5, 4, 8, 1, 3, 2}));
     PX(capture_value(2, {3, 6, 7, 2, 5, 4, 8, 1, 3, 2}));
     PX(capture_value(3, {3, 6, 7, 2, 5, 4, 8, 1, 3, 2}));
     PX(capture_reference({3, 6, 7, 2, 5, 4, 8, 1, 3, 2}));
