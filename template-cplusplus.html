@@ -334,14 +334,14 @@ int main() {
     PX(tp<double>::str());
     int i = 42;
     PX(tp<decltype(i)>::str());
-    PX(tp<decltype(i&)>::str());
+    PX(tp<decltype(&i)>::str());
     int cri = i;
     PX(tp<decltype(cri)>::str());
 }
 ```
 
 * Identify the *Primary Template* in the code above.
-* Identify its *Full* and *Partial Specialisations.
+* Identify its *Full* and *Partial* Specialisations.
 * Further flesh-out the code to make it usable for the examples.
 
 ---
@@ -403,7 +403,43 @@ http://coliru.stacked-crooked.com/a/08d2a5bf1ceffd78
 
    - Generic name in argument list may be adorned
 
-   - **Be sure to understand what exactly is deduced**
+   - **Be sure to understand what exactly is deduced**._[]
+
+
+.pull-left[
+```
+template<typename T>
+void foo(T arg) {
+    … // type of `T` same
+    … // as type of `arg`
+}
+template<typename T>
+void bar(const T& arg) {
+    … // what is the type
+    … // of `arg` here ...?
+    … // NOT same as `T`!
+}
+```
+]
+.pull-right[
+Assume calls like:
+```
+int i = 10;
+foo(i); bar(i);
+
+const int k = 20;
+foo(k); bar(k);
+
+foo(std::atof("10.1"));
+bar(std::atof("10.2"));
+```
+]
+
+.F[:
+Type deduction for template arguents is not limited to trvial or
+close to trial cases as is shown in the examples given here:
+http://coliru.stacked-crooked.com/a/96c78740a1c689f5
+]
 
 ---
 
@@ -441,7 +477,7 @@ int main() {
 
    - **… or Compile-Error if not unique**
 
-* Finally, function templates ma also be **fully** specialised
+* Finally, function templates may also be **fully** specialised
 
 
 http://en.cppreference.com/w/cpp/language/overload_resolution
@@ -1166,7 +1202,7 @@ name: type_traits
 
 * Traits usually are stored in header files …
 
-* … and made available by `#include`-ing it
+* … and made available by `#include`-ing these
 
 ---
 
