@@ -1,0 +1,1295 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>C++11 Concurrency</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <!-- when changing the stylesheet file please see also remark below -->
+    <link rel="stylesheet" type="text/css" href="styling2.css" />
+  </head>
+  <body>
+<!-- :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::: -->
+<!-- :::::::::: template pages come first ... skip to REALCONTENT ::::::::: -->
+<!-- :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::: -->
+<textarea id="source">
+
+layout: true
+name: blank
+styling: styling.css
+styling-by: Martin Weitzel
+
+<!--
+  *****************************************************************************
+  Template used for title page (only)
+  *****************************************************************************
+  Please change the 'styling-by:' attribute if you change the style-sheet.
+-->
+
+.stylehint[
+Styled with [{{styling}}]({{styling}}) by {{styling-by}}
+]
+
+---
+layout: true
+name: plain
+copyright: (CC) BY-SA
+branding:  [Dipl.-Ing. Martin Weitzel](http://tbfe.de)
+customer:  [im Auftrag von MicroConsult Training & Consulting GmbH](http://microconsult.de)
+
+<!--
+  *****************************************************************************
+  Template used for for pages NOT referring to any Info-Graphic
+  *****************************************************************************
+  The following attributes are mandatory FOR THE TEMPLATE PAGE and should
+  simply be left empty if not meaningful.
+
+  copyright: will be reproduced in each page footer first
+  branding: will reproduced in each page footer next
+  customer: will be reproduced in each page footer last
+
+  As the above attributes are part of several page templates a global replace
+  should be used for consistent changes.
+
+  On pages USING THIS TEMPLATE the following attributes must be set:
+
+  header: ## and header text (i.e. including the markdown formatting indicator)
+
+-->
+
+{{header}}
+
+.pagefooter[
+{{copyright}}: {{branding}} {{customer}} .microconsult-logo[]
+]
+
+---
+layout: true
+name: refersto
+copyright: (CC) BY-SA
+branding:  [Dipl.-Ing. Martin Weitzel](http://tbfe.de)
+customer:  [im Auftrag von MicroConsult Training & Consulting GmbH](http://microconsult.de)
+
+<!--
+  *****************************************************************************
+  Template used for pages holding a "refers to" notice
+  *****************************************************************************
+
+  On pages USING THIS TEMPLATE the following attributes must be set:
+
+  see_also: free text (usually reference to book and chapter or page)
+  header: ## and header text (i.e. including the markdown formatting indicator)
+
+-->
+
+{{header}}
+
+.refersto.right[
+See also {{see_also}}
+]
+
+.pagefooter[
+{{copyright}}: {{branding}} {{customer}} .microconsult-logo[]
+]
+
+---
+layout: true
+name: see_BoostBook
+copyright: (CC) BY-SA
+branding:  [Dipl.-Ing. Martin Weitzel](http://tbfe.de)
+customer:  [im Auftrag von MicroConsult Training & Consulting GmbH](http://microconsult.de)
+
+<!--
+  *****************************************************************************
+  Template used for pages displaying a link to documentation in Boost-Book
+  *****************************************************************************
+
+  On pages USING THIS TEMPLATE the following attributes must be set:
+
+  link_to: partial URL of link into chapter of Boost Book (see usage below)
+  header: ## and header text (i.e. including the markdown formatting indicator)
+
+-->
+
+{{header}}
+
+.refersto.right[
+[Quick Link to  
+Introduction](http://www.boost.org/doc/libs/release/doc/html/{{link_to}}.html)
+]
+
+.pagefooter[
+{{copyright}}: {{branding}} {{customer}} .microconsult-logo[]
+]
+
+---
+layout: true
+name: see_BoostDocs
+copyright: (CC) BY-SA
+branding:  [Dipl.-Ing. Martin Weitzel](http://tbfe.de)
+customer:  [im Auftrag von MicroConsult Training & Consulting GmbH](http://microconsult.de)
+
+<!--
+  *****************************************************************************
+  Template used for pages displaying a link to Boost documentation
+  *****************************************************************************
+
+  On pages USING THIS TEMPLATE the following attributes must be set:
+
+  link_to: file path to of the infographic EXCLUDING the suffix.
+  header: ## and header text (i.e. including the markdown formatting indicator)
+
+-->
+
+{{header}}
+
+.refersto.right[
+[Quick Link to  
+Introduction](http://www.boost.org/doc/libs/release/libs/{{link_to}}.html)
+]
+
+.pagefooter[
+{{copyright}}: {{branding}} {{customer}} .microconsult-logo[]
+]
+
+
+---
+layout: true
+name: withinfo
+copyright: (CC) BY-SA
+branding:  [Dipl.-Ing. Martin Weitzel](http://tbfe.de)
+customer:  [im Auftrag von MicroConsult Training & Consulting GmbH](http://microconsult.de)
+
+<!-- :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::: -->
+<!-- end of templates ... below comes the REALCONTENT - TNETNOCLAER ends it -->
+<!-- :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::: -->
+
+template: refersto
+see_also: Josuttis: 18.1
+name: cpp11_concurrency_basics
+header: ## C++11: Concurrency Basics 
+
+With C++11 support for multi-threading was introduced.._[]
+
+---------------------------------------------------------------------------
+
+* [Parallelizing Independent Tasks	](#parallelizing_tasks)
+* [Synchronisation with Mutexes		](#mutex_synchronisation)
+* [One-Time Execution			](#onetime_execution)
+* [Messaging with Condition Variables	](#condition_variables)
+* [Atomic Operations			](#atomic_operations)
+* [Direct Use of Threads		](#direct_use_of_threads)
+* [Native Threading Model Handles	](#native_thread_handles)
+* [Concurrency Recommendations		](#concurrency_recommendations)
+
+---------------------------------------------------------------------------
+
+This part of the presentation was written with the intent to give an overview
+of the provided features only, it is by far not exhaustive!
+
+.F[:
+Concurrency features in C++11 may appear "as just some more library classes and
+functions", but especially in the area of allowed optimisations and how to
+provide [Cache Coherence] on modern multi-core CPUs, it is also closely
+intertwined with code generation.  For more information see:  
+http://en.cppreference.com/w/cpp/language/memory_model and  
+http://en.cppreference.com/w/cpp/language/memory_order
+]
+
+[Cache Coherence]: http://en.wikipedia.org/wiki/Cache_coherence
+
+---
+template: plain
+name: parallelizing_tasks
+header: ### Parallelizing Independent Tasks
+
+For complex tasks that can be split into independent parts, concurrency **and
+scalability to multiple cores** can be easily achieved by following a simple
+recipe:
+
+1. Separate the task into a number of different functions (or calls of the same
+   function with different arguments).
+2. Run each such function by handing it over to `std::async`, storing the
+  `future` that is returned (easiest in an `auto`-typed variable).
+3. Fetch (and combine) the results by calling the member function `get` for
+   each `future`.
+
+That way all the functions may run concurrently and the last step synchronizes
+by waiting for completion.
+
+.I[
+For more information on parallelizing independent task that way see:
+http://en.cppreference.com/w/cpp/thread/async
+]
+
+.F[:
+Technically the return value of `std::async` is an `std::future` but as this
+is a template and the type is usually somewhat different to spell out, most
+usages of `std::async` store the result in an `auto`-typed variable.
+]
+
+---
+template: plain
+name: futures_and_promises
+header: #### Foundation: Futures and Promises
+
+The foundation on which parallelizing tasks is build are [Futures and Promises].
+
+These need not be fully understood to apply the API (exemplified on the next
+pages), but may help to understand the basic machinery:
+
+* A future is the concrete handle which a client can use to fetch the result,
+  presumably made available by a different thread of execution.
+
+* A promise is a helper class which may be used in a separate thread to make
+  a result available for a client.
+
+.I[
+For more information on promises and futures see:
+http://en.cppreference.com/w/cpp/thread/future
+http://en.cppreference.com/w/cpp/thread/promise
+http://en.cppreference.com/w/cpp/thread/packaged_task
+]
+
+[Futures and Promises]: http://en.wikipedia.org/wiki/Futures_and_promises
+
+---
+template: plain
+name: parallelizing_example
+header: #### Parallelizing Example
+
+The following example calculates the sum of the first `N` elements in `data`
+by splitting the work of `std::accumulate`, into two separate function calls,
+that may run concurrently:._[]
+```
+// calculate sum of first N values in data
+//
+long long sum(const int data[], std::size_t N) {
+    auto lower_part_sum = std::async(
+        [=]{ return std::accumulate(&data[0], &data[N/2], 0LL); }
+    );
+    auto upper_part_sum = std::async(
+        [=]{ return std::accumulate(&data[N/2], &data[N], 0LL); }
+    );
+    return lower_part_sum.get()
+         + upper_part_sum.get();
+}
+```
+
+.F[:
+Note the use of lambdas above – the actual call to `std::accumulate` will only
+happen when the lambda gets executed! A similar effect can be achieved as
+follows:
+```
+  // preparing the callable for std::async with std::bind:
+… std::async(std::bind(std::accumulate, &data[0], &data[N/2], 0LL)) …
+… std::async(std::bind(std::accumulate, &data[N/2], &data[N], 0LL)) …
+```
+]
+
+---
+template: plain
+header: #### Default Launch Policy
+
+The default behavior is that the systems decides on its own whether an
+asynchronously started task is run concurrently.._[]
+
+Using `std::async` **without an explicit launch policy**
+
+* **is just a hint** that it is acceptable to run a callable unit of code
+  concurrently,
+
+* as long as it has finished (and possibly returned a result) latest when
+  the `get`-call returns, which has bee invoked on the `std::future`.
+
+.W[
+Be sure **not** to use the default launch policy but specify concurrent
+execution explicitly (see next page) whenever it is essential that two
+callable run concurrently.
+]
+
+.F[:
+It is a well known effect that too many parallel threads of execution may rather
+degrade performance. Especially if threads are CPU bound, it makes little sense
+to have more threads as cores. Therefore the standard gives considerable freedom
+to the implementation, which might implement concurrency with `std::async` with
+a thread pool and turn to synchronous execution or lazy evaluation at a certain
+threshold.
+]
+
+---
+template: plain
+header: #### Explicit Launch Policies
+
+There is a second version of `std::async` which has a first argument to specify
+the launch strategy. 
+
+The standard defines two values:
+
+* `std::launch::async`  
+  if **not set** the callable will **not** run on its own thread;._[]
+
+* `std::launch::deferred`
+  of **set** the callable will **not** be called before `get` is invoked.
+
+.I[
+For more information on launch policies see:
+http://en.cppreference.com/w/cpp/thread/launch
+]
+
+.F[:
+One case in which this setting this flag may make sense is to test the program
+logic independent from possible problems created through race conditions or
+deadlocks, originating from dependencies between the "independent tasks", that
+had been overlooked.
+]
+
+---
+template: plain
+header: #### Catching Exceptions
+
+If the callable started via `std::async` throws an exception, it will appear as
+if it were thrown from the call to get.
+
+Hence, if the asynchronously run task may throw, fetching the result should be
+done in a try block:
+```
+auto task1 = std::async( … ); // whatever-is-to-do (and may throw)
+auto task2 = std::async( … ); // whatelse-is-to-do (and may throw)
+…
+try { … task1.get() … }
+} catch ( … ) { // what may be thrown from whatever-is-to-do
+   … // handle the case that whatever-is-to-do threw
+}
+try { … task2.get() … }
+} catch ( … ) { // what may be thrown from whatelse-is-to-do
+   … // handle the case that whatelse-is-to-do threw
+}
+```
+
+---
+template: plain
+header: #### Communication between Independent Tasks
+
+First of all: If the need arises to communicate between independent tasks, this
+should be taken **as a strong warning** that such tasks are actually not
+independent.
+
+.W[
+If parallel tasks are not independent, further needs follow quickly with respect
+to synchronize access to shared data … **with all the further intricacies following
+from this**.._[]
+]
+
+Nevertheless there is one common case that requires a simple form of
+communication between otherwise independent tasks.
+
+.N[
+
+* If there are several tasks working towards a common goal
+* of which one fails, making the goal unattainable,
+* the others should not waste CPU-time needlessly.
+
+]
+
+.F[:
+In other words: Pandora's proverbial can of worms opens quickly and widely …
+]
+
+---
+template: plain
+header: #### Communicate Failure between Concurrent Tasks
+
+A basic design that communicates failure between partners working towards a
+common goal is outlined in the following example.._[]
+.pull-left[
+The workers could look about so …
+```
+void foo ( … , bool &die) {
+    …
+    for ( … ) {
+        if (die) return;
+        …
+        … // some complex
+        … // algorithm
+        …
+        // may fail here
+        if ( … ) {
+            die = true;
+            return;
+        }
+    }
+}
+```
+]
+.pull-right[
+… being run by that code:
+```
+bool die = false;
+auto task1 = std::async(
+    [&die]{ foo( … , die); }
+);
+auto task2 = std::async(
+    [&die]{ foo( … , die); }
+);
+…
+… task1.get() …
+… task2.get() …
+…
+if (die) {
+    // goal not reached
+    …
+}
+```
+]
+
+.F[:
+To keep this code simple it just returns in case of problems, though it requires
+only a few changes if problems should be communicated to the caller via exceptions.
+]
+
+---
+template: plain
+name: mutex_synchronisation
+header: ### Synchronisation with Mutexes
+
+The word *Mutex* abbreviates *Mutual Exclusion* and describe the basic purpose
+of the feature.
+
+* Allow only one thread to enter a [Critical Section], typically non-atomically
+  executed sequence of statements
+* which temporarily invalidate an [Class Invariant], or
+* in other ways accesses a resource not designed for shared use.
+
+.N[
+In general, mutexes have at least two operations._[] for
+
+* **lock**-ing and
+
+* **unlock**-ing,
+
+but frequently provide additional features to make their practical use more
+convenient or less error prone.
+]
+
+[Critical Section]: http://en.wikipedia.org/wiki/Critical_section
+[Class Invariant]: http://en.wikipedia.org/wiki/Class_invariant
+
+.F[:
+Though the operations may not be spelled exactly *lock* and *unlock* …
+(especially as mutexes are somewhat related to [Semaphores], which originally
+named their lock (-like) acquire operation *P* and their unlock (-like) release
+operation *V*.
+]
+
+---
+template: plain
+name: mutex_example_1
+header: #### Mutex Example (1)
+
+The following example calculates one table from another one:._[]
+```
+template<typename In, typename Out, typename Transformation>
+void worker(const In data[], std::size_t data_size,
+            Out result[], std::size_t &total_progress,
+            Transformation func) {
+    static std::mutex critical_section;
+    while (total_progress < data_size) {
+        critical_section.lock();
+        constexpr auto chunks = std::size_t{100};
+        const auto beg = total_progress;
+        const auto end = ((data_size - total_progress) > chunks)
+                 ? total_progress += chunks
+                 : total_progress = data_size;
+        critical_section.unlock();
+        std::transform(&data[beg], &data[end], &result[beg], func);
+    }
+}
+```
+
+.F[:
+The work is shared by any number of `worker` task run concurrently, each
+fetches and transforms a fixed number of values. This can be advantageous to
+splitting the work by calculating fixed-size regions of the table in advance, if
+the transformation function has a largely varying runtime depending on the
+argument value.
+]
+
+---
+template: plain
+name: mutex_example_2
+header: #### Mutex Example (2)
+
+Assuming the transformation is to calculate square roots and there are
+two arrays of size `N`, say
+
+  * `data` (filled with values to transform), and
+  * `sqrts` to store the results
+
+workers may be created (to be handed over to `std::async`) as follows:._[]
+```
+std::size_t processed_count = 0;
+auto worker_task =
+    [&]() { worker(data, N, sqrts, processed_count,
+                   [](double e) { return std::sqrt(e); });
+    };
+```
+
+.F[:
+Given the above, a particular nifty way to create and run workers were:
+```
+  // assuming NCORES holds the number of cores to use by workers:
+std::array<std::future<void>, NCORES> workers;
+for (auto &w : workers)
+    w = std::async(worker_task);
+for (auto &w : workers)
+    try { w.get(); } catch (...) {}
+```
+]
+
+---
+template: plain
+name: mutexes_and_raii
+header: #### Mutexes and RAII
+
+As the mutex operations **lock** and **unlock** need to come correctly paired,
+they make a good candidate to apply a technique called [RAII].._[]
+
+It works by creating a wrapper class, executing
+
+* the acquiring operation (or *lock*-ing in this case) in its constructor, and
+* the releasing operation (or *unlock*-ing) in its destructor.
+
+Such helper classes are available in C++11 `std::lock_guard`.
+
+The big advantage is that unlocking the mutex is guaranteed for code blocks
+defining a RAII-style (guard) object locally, no matter whether control
+flow reached its end, or by `break`, `return`, or some exception.
+
+.I[
+For more information on the RAII-style use of mutexes see:
+http://en.cppreference.com/w/cpp/thread/lock_guard
+]
+
+.F[:
+This [TLA] is an abbreviation Bjarne Stroustrup once coined for *Resource
+Acquisition is Initialisation*. In a recent interview Stroustrup revealed that he
+is not particularly happy with the term he once choose. But to change it would
+require to travel back in a time machine and suggest something more appropriate
+to him, as today the term RAII is in much too widespread use to be replaced
+by something else.
+]
+
+[RAII]: http://en.wikipedia.org/wiki/Resource_Acquisition_Is_Initialization
+[TLA]: http://www.catb.org/jargon/html/T/TLA.html
+
+---
+template: plain
+name: mutexes_and_raii
+header: #### Mutex Variants
+
+Mutexes in C++11 come in a number of flavours, which controlling their behaviour
+with respect to the following details:
+
+* Whether or not some thread that already locked a mutex may lock it once more
+  (and needs to release it as often).
+
+* Whether or not a thread waits if it finds a mutex locked by some other thread,
+  and in the latter case until *when* (clock-based time point) or or *how long*
+  (duration) it waits.
+
+For all mutex variants there are also variants of RAII-style lock guards.
+
+.I[
+For more information on the different variants of mutexes and RAII-style
+wrappers see:
+http://en.cppreference.com/w/cpp/thread/recursive_mutex
+http://en.cppreference.com/w/cpp/thread/timed_mutex
+http://en.cppreference.com/w/cpp/thread/recursive_timed_mutex and
+http://en.cppreference.com/w/cpp/thread/unique_lock
+ 
+]
+  
+---
+template: plain
+name: mutexes_and_raii
+header: #### C++14: Upgradable Locks
+
+C++14 added the class `std::shared_lock`, supporting a frequent necessity:._[]
+
+.N.center[
+[Multiple Reader/Single Write Locking Schemes](http://en.wikipedia.org/wiki/Readers%E2%80%93writer_lock)
+]
+
+* Any number of (reader) threads may successfully `shared_lock` that kind of
+  mutex …
+* … but only one single (writer) thread is allowed to actually `lock` it
+  (unshared).
+
+C++14 also provides a RAII-style wrapper for shared locking.
+
+.I[
+For more information on shared locking see:
+http://en.cppreference.com/w/cpp/thread/shared_timed_mutex and
+http://en.cppreference.com/w/cpp/thread/shared_lock
+]
+
+.F[:
+Note that the terms "reader" and "writer" indicates the typical use of that kind
+of mutex, assuming that it is sufficient for readers to obtain the lock shared,
+as it guarantees the invariants hold but no modifications are made, while writers
+will need to temporarily break invariants.
+]
+
+---
+template: plain
+name: mutexes_and_raii
+header: #### Defeating Deadlocks Caused by Mutex-Locking
+
+As a potentially blocking mechanism mutexes are famous for creating deadlocks, i.e
+
+* in the situation where two resources *A* and *B* are required,
+* one thread acquires these in the order *first A, then B* and
+* another thread acquires these in the order *first B, then A*.._[]
+
+The obvious counter measure is to acquire locks always in the same order,
+as achievable with `std::lock` and `std::try_lock`.
+
+.I[
+For more information on locking several mutexes semantically atomic (i.e.
+without creating the potential for dead-locks) see:
+http://en.cppreference.com/w/cpp/thread/lock and
+http://en.cppreference.com/w/cpp/thread/try_lock
+]
+
+.F[:
+In practice, the potential for deadlocks is often not as obvious as in this
+example but much more intricate and close to impossible to spot, even in
+scrutinising code reviews. So, if (accidental) deadlocks cannot be avoided,
+sometimes a "self-healing" strategy is applied that works follows:  
+**If more than one lock needs to be acquired, acquire at least all others with
+setting a time-out.** If that hits, **release all locks** acquired so far,
+**delay** for some small amount of time (usually determined in a window with
+some slight randomness), then **try again** (and maybe in a different order).
+]
+
+---
+template: plain
+name: onetime_execution
+header: ### One-Time Execution
+
+For a particular scenario that would otherwise require the use of mutex-es to
+avoid a [Race Condition], there is pre-built solution in C++11.
+
+Executing a piece of code exactly once can be achieved in a cookbook-style as
+follows:
+```
+// in a scope reachable from all usage points:
+std::once_flag this_code_once;
+…
+std::call_once(this_code_once, …some callable… ); // somewhere
+…
+std::call_once(this_code_once, … ); // maybe somewhere else
+```
+
+For any of the callables associated with the same instance of an
+`std::once_flag` via `std::call_once`, without further protection via mutexes
+it is guaranteed that **at most one** is executed **at most once**.
+
+.I[
+For more information on guaranteed one time execution see:
+http://en.cppreference.com/w/cpp/thread/once_flag and
+http://en.cppreference.com/w/cpp/thread/call_once
+]
+
+[Race Condition]: http://en.wikipedia.org/wiki/Race_condition
+
+---
+template: plain
+name: onetime_execution
+header: #### One-Time Execution Example
+
+A typical use case for guaranteed one-time execution is some initialisation,
+that may be expensive and is therefore delayed until a function that depends
+on it is called the first time.
+
+The following fragment avoids parallel initialisations of `table`:
+```
+… foo( … ) {
+    static std::once_flag init;
+    static std::array<int, 1000> table;
+    std::call_once(init, [&table]) {
+        … // precalculate table when foo runs for the first time
+    });
+    … //
+}
+```
+
+.F[:
+The example code shown does **not** guarantee that from several concurrently
+executing threads all will see a **fully** initialised table – it only
+guarantees sure that the callable to precalculate the content will be executed
+exactly once and from exactly one thread.
+]
+
+---
+template: plain
+name: onetime_execution
+header: #### Local `static` Initialisation
+
+Since C++11 supports multi-threading in the core language, initialising local
+`static` variables is protected to be executed at most once:
+```
+… foo( … ) {
+   static const int z = expensive_calculation();
+   … //
+}
+```
+
+As since C++11 compilers are required to wrap the necessary protection around
+the initialisation of static locals, also this is guaranteed to work:._[]
+```
+class Singleton {
+    … //
+public:
+    static Singleton &getInstance() {
+        static Singleton instance;
+        return instance;
+    }
+};
+```
+
+.F[:
+Non-believers should consider to copy the above code, paste it to
+https://gcc.godbolt.org/ (or similar) after adding a member with a
+runtime-dependant initialisation, and view the assembler output … 
+]
+
+---
+template: plain
+name: condition_variables
+header: ### Notifications with Condition Variables
+
+A well-known abstraction in concurrent programming are
+combining mutexes with a signalling mechanism.
+
+One main use of condition variables is to **avoid busy waiting** in
+producer-consumer designs,
+
+* where consumer and producer run concurrently,
+
+* exchanging data over some buffer data structure.
+
+.I[
+For more information on condition variables see:
+http://en.cppreference.com/w/cpp/thread/condition_variable
+]
+
+---
+template: plain
+name: condition_variables
+header: #### Condition Variable Example (1)
+
+The following *RingBuffer* class can put condition variables to good use …
+```
+template<typename T, std::size_t N>
+class RingBuffer {
+    std::array<T, N+1> buf;
+    std::size_t p = 0, g = 0;
+    bool empty() const { return p == g; }
+    bool full() const { return (p+1) % buf.size() == g; }
+public:
+    void put(const T &val) {
+        if (full())
+            … // handle case no space is available
+        buf[p++] = val; p %= buf.size();
+    }
+    void get(T &val) {
+        if (empty())
+            … // handle case no data is available
+        val = buf[g++]; g %= buf.size();
+    }
+};
+```
+… exactly at the currently omitted points.
+
+---
+template: plain
+name: condition_variables
+header: #### Condition Variable Example (2)
+
+Obviously there are two conditions, that need special attention:
+
+* The buffer may be full when `put` is called, or
+* it may be empty, when `get` is called.
+
+Therefore two condition variables._[] are added, furthermore a mutex to protect
+accessing the buffer:
+```
+class RingBuffer {
+    … //
+    … // as before
+    … //
+    std::condition_variable data_available;
+    std::condition_variable space_available;
+    std::mutex buffer_access;
+public:
+    … // see next page
+};
+```
+
+.F[:
+As the buffer space cannot be full and empty at the same time, technically
+one condition variable would suffice, but for this introductory example using
+two different instances seems to be clearer.
+]
+
+---
+template: plain
+name: condition_variables
+header: #### Condition Variable Example (3)
+
+There are two operations (of interest here), applicable to condition variables,
+**sending** and **waiting for** notifications:._[]
+```
+class RingBuffer
+   … // see previous page
+public:
+    void put(const T &val) {
+        std::unique_lock<std::mutex> lock(buffer_access);
+        space_available.wait(lock, [this]{ return !full(); });
+        buf[p++] = val; p %= buf.size();
+        data_available.notify_one();
+    }
+    void get(T &val) {
+        std::unique_lock<std::mutex> lock(buffer_access);
+        data_available.wait(lock, [this]{ return !empty(); });
+        val = buf[g++]; g %= buf.size();
+        space_available.notify_one();
+    }
+};
+```
+
+.F[:
+Essential here is also the connection between the condition variables, the mutex
+protecting the `RingBuffer` invariants, and the conditions checked as part of
+waiting, which are detailed on the next page.
+]
+
+---
+template: plain
+name: waiting_in_details
+header: #### Waiting Anatomy
+
+Waiting on a condition variable – as shown on the last page – with
+```
+// as part of put:
+   std::unique_lock<std::mutex> lock(buffer_access);
+   space_available.wait(lock, [this]{ return !full(); });
+```
+```
+// as part of get:
+   std::unique_lock<std::mutex> lock(buffer_access);
+   data_available.wait(lock, [this]{ return !empty(); });
+```
+
+is equivalent to the following, **with the mutex being locked before**:
+
+.pull-left[
+```
+// as part of put:
+   while (full()) { // !!full()
+       buffer_access.unlock();
+       // wait for notification
+       buffer_access.lock();
+   }
+```
+]
+.pull-right[
+```
+// as part of get:
+   while (empty()) { // !!empty
+       buffer_access.unlock();
+       // wait for notification
+       buffer_access.lock();
+   }
+```
+]
+
+At this point **the mutex is locked** (again) and **the condition is true.**
+
+---
+template: plain
+name: spurious_wakeups
+header: #### Spurious Wakeups
+
+In the example code before, the loop (in the equivalent of `wait`-ing) may seem
+unnecessary, as the respective notification will be sent only after some action
+has made the condition true.
+
+Nevertheless it makes sense and may even be necessary:
+
+* **First of all, an implementation is allowed to give [Spurious Wake-Up]s,
+  so the loop is necessary anyway.**
+
+* If notifications are sent while nobody waits on the condition variable, it is
+  simply discarded, therefore
+
+  * a producer-consumer scenario is more robust if it tends to send "too many"
+    notifications (of which some are discarded) …
+  * … while sending "too few" could cause some thread to wait forever.
+
+.N[
+Specifying the condition check in combination with `wait`-ing *does it right*
+and hence should be preferred over writing a loop explicitly.._[]
+]
+
+[Spurious Wake-Up]: http://en.wikipedia.org/wiki/Spurious_wakeup
+   
+
+.F[:
+Thus avoiding some later maintainer considers the `while` "unnecessary" and
+replace it with `if` …
+]
+
+---
+template: plain
+name: atomic_operations
+header: ### Atomic Operation Support
+
+With the support for atomic operations C++11 multi-threading allows to implement
+ 
+* [Wait-Free Algorithms](http://en.wikipedia.org/wiki/Non-blocking_algorithm#Wait-freedom),
+
+* [Lock-Free Algorithms](http://en.wikipedia.org/wiki/Non-blocking_algorithm#Lock-freedom),
+  and
+
+* [Obstruction-Free Algorithms](http://en.wikipedia.org/wiki/Non-blocking_algorithm#Obstruction-freedom).
+
+The basic concept is to provide a way to know whether a certain modification of
+some memory location was caused by the current thread or by another one.
+
+.I[
+For more information about atomic operation support see:
+http://en.cppreference.com/w/cpp/atomic
+]
+
+---
+template: plain
+name: atomic_operations_example
+header: #### Atomic Operations Example
+
+The following example, demonstrating the lock-free approach with operations
+(instead of using mutexes) modifies a [former example](#mutex_example_1):
+```
+template<typename T1, typename T2, typename Transformation>
+void worker(T1 args[], std::size_t data_size, T2 result,
+            std::atomic_size_t &total_progress,
+            Transformation func) {
+    while (total_progress < data_size) {
+        constexpr auto chunks = std::size_t{100};
+        std::size_t beg = total_progress.load();
+        std::size_t end;
+        do {
+            end = ((data_size - beg) > chunks)
+                ? beg + chunks
+                : data_size;
+        } while (!total_progress.compare_exchange_weak(beg, end));
+        std::transform(&data[beg], &data[end], &sqrts[beg], func);
+    }
+}
+```
+
+.N[
+Be sure to understand that the loop controlled by the return value of
+`compare_exchange_weak` guarantees the prior calculations are (still) valid.
+]
+
+---
+template: plain
+name: memory_order
+header: #### Memory Order (and Dependencies)
+
+Memory order *"specifies how regular, non-atomic memory accesses are to be ordered
+around an atomic operation*".._[]
+
+There are a number of different models to select from,
+
+* with the default providing *"sequentially consistent ordering"*,
+
+* being closest to what most developers would expect,
+
+* but (possibly) not with the optimal performance for a given use case.
+
+.I[
+For more information on memory order see:
+http://en.cppreference.com/w/cpp/atomic/memory_order
+]
+
+.F[:
+Cited from the reference further down on this page.
+]
+
+---
+template: plain
+name: atomic_operations
+header: #### Atomic Operations Recommendation
+
+.N[
+
+* Except for the potential of deadlocks the challenges are similar to algorithms
+  using locks:._[]
+
+  * Problems may only show for a critical timing and may be reproducible in
+    particular test environments only.
+
+  * In general, a failed test may show the presence of errors, but even many
+    successful tests do not guarantee their absence.
+
+]
+.W[
+Beyond trivial cases – like the one shown in the example –, implementing
+multi-threaded programs with atomic operations requires **substantial
+expertise**.
+
+Be sure to keep the design **as simple as possible** and have it reviewed by
+other developers experienced in that particular fields, maybe both, colleagues
+and hired consultants too.
+]
+
+.F[:
+It may very well be the case that problematic situations depend on hardware
+features like the size of cache-lines, the depth of an instruction pipeline,
+or the way branch prediction works.
+]
+
+---
+template: plain
+name: direct_use_of_threads
+header: ### Using Class `std::thread`
+
+In the examples before the class `std::thread` was used only indirectly (via
+`std::async`, building on [Futures and Promises](#futures_and_promises).
+
+* There is also a class `std::thread`
+* taking any runnable code as constructor argument,
+* executing it in a separate thread.
+
+.I[
+For more information on the `std::thread` class see:
+http://en.cppreference.com/w/cpp/thread
+]
+
+**There are explicitly no means provided to forcefully terminate one thread
+from another one.**
+
+.W[
+Any non-portable way._[] to forcefully terminate a thread risks to entail
+serious consequences later, as e.g. locks may not be released or awaited
+notifications not be sent.
+]
+
+.F[:
+Such as potentially existing *interrupt* or *kill* functions reachable via a
+[Native Interface Handle](#native_thread_handles).
+]
+
+---
+template: plain
+header: #### Example for Using Class `std::thread`
+
+In case worker **returns no value** and **throws no exception**, like in a
+[former example](#mutex_example_1) (and assuming the
+[same set-up](#mutex_example_2)), using class `std::thread` directly can be
+straight forward (left) or done in the "nifty" way (right):
+
+.pull-left[
+```
+// starting some workers
+// multi-threaded ...
+std::thread t1{worker_task};
+std::thread t2{worker_task};
+…
+// ... and waiting for them
+// to finish:
+t1.join();
+t2.join();
+…
+```
+]
+.pull-right[
+```
+using namespace std;
+constexpr auto NCORES = 4;
+// starting one worker-thread
+// per core ...
+array<thread, NCORES> threads;
+for (auto &t : threads)
+    t = thread{worker_task};
+// ... and wait for all to
+// finish:
+for (auto &t : threads)
+    t.join();
+```
+]
+
+An alternative to [`join`]-ing with a thread is [`detach`]-ing it.
+
+[`join`]: http://en.cppreference.com/w/cpp/thread/thread/join
+[`detach`]: http://en.cppreference.com/w/cpp/thread/thread/detach
+
+.W[
+A program will immediately terminate if an instance of class
+`std::thread` referring to an active thread gets destructed.
+]
+
+---
+template: plain
+header: #### Recommendations for Using Class `std::thread`
+
+.N[
+
+* In trivial cases (no exceptions, no result to fetch) using threads via
+  instances of class `std::thread` may be considered.
+
+* Nevertheless understand the peculiarities and know how to avoid race
+  conditions, especially when `std::thread` objects go out of scope.._[]
+
+]
+.W[
+It causes the program to terminate if the callable started throws an
+exception or an instance of `std::thread` is still in *joinable state*
+when it goes out of scope and gets destructed.
+]
+
+.F[:
+At [1:00:47] the following video by Scott Meyers gives a good introduction to
+the problem and some recipes how it can be avoided:
+http://channel9.msdn.com/Events/GoingNative/2013/An-Effective-Cpp11-14-Sampler
+]
+
+[1:00:47]: https://www.youtube.com/watch?feature=player_detailpage&v=BezbcQIuCsY#t=3646
+
+---
+template: plain
+name: native_thread_handles
+header: ### Native Handles
+
+Last and finally, most C++11 multi-threading implementation build on a
+threading model provided by their execution environment.
+
+.N[
+The requirements in the standard are rather the intersection of the features
+provided by well-known threading models.
+]
+
+Usually and typically the standard does not mandate any any extensions thereof,
+but in some cases provides a way to "reach through" to the native thread model:
+
+* E.g. `std::thread::native_handle` could provide ways to manipulate thread
+  priorities, maybe including ways to specify protocols for [Priority Ceiling]
+  or other means to circumvent [Priority Inversion].
+
+* Also the classes for condition variables and the various kinds of mutexes have
+  member functions `native_handle`.
+
+* The enumeration `std::launch` may provide more (named) values to control
+  implementation specific details in the behavior of `std::async`.
+
+[Priority Ceiling]: http://en.wikipedia.org/wiki/Priority_ceiling_protocol
+[Priority Inversion]: http://en.wikipedia.org/wiki/Priority_inversion
+
+---
+template: plain
+name: concurrency_recommendations
+header: ### Concurrency Recommendations
+
+So far the presentation of C++11 concurrency support was only meant as an
+overview.
+
+.W[
+Practically using concurrency features beyond parallelizing independent tasks
+requires much more knowledge and experience in this area, what this presentation
+can not provide.
+]
+
+A good and near to exhaustive coverage of the concurrency part of C++11 is:
+
+.N.center[
+C++ Concurrency in Action  
+Practical Multithreading  
+by Anthony Williams  
+[ISBN-13: 978-1-9334988-77-1](http://www.cplusplusconcurrencyinaction.com)
+]
+
+---
+template: refersto
+see_also: Schäling: 6
+name: boost_thread
+header: ## Boost: Threads Library
+
+[Boost.Thread]: http://www.boost.org/doc/libs/release/doc/html/thread.html
+
+As C++11 threads emerged from [Boost.Thread] there is little difference.
+
+Some differences between C++11 and Boost may exist (depending on the version
+of the latter) and new features may appear and be tried in Boost first before
+eventually getting part of an upcoming C++ standard.
+
+.N[
+There are many reasons why a pure library solution may have practical
+difficulties to properly support concurrency.
+
+Most important is in the memory model, which needs to be clearly defined so
+that optimising compilers are restricted to the necessary limits – but not
+(too far) beyond these.._[]
+]
+
+.F[:
+A related, easy to recognize problem that demonstrates why concurrency cannot
+be added as a library alone but must be part of the core language part, can be
+seen when considering a long-existing features of C which is also part of C++:
+the initialization of local `static` variables. By definition this takes place
+when the definition is reached in the program flow for the first time and hence,
+in the general case must be protected with a mutex (or similar) to avoid race
+conditions (except for initialisation with a compile-time constant that can be
+loaded at program startup).
+]
+
+---
+template: refersto
+see_also: Schäling: 7
+name: boost_asio
+header: ## Boost: Asio
+
+[Boost.Asio]: http://www.boost.org/doc/libs/release/doc/html/boost_asio.html
+
+The purpose of [Boost.Asio] is to support event-driven program designs by
+providing a framework to dispatch incoming events to previously registered event
+handlers:
+
+* The largest group of events deals with I/O, especially the arrival of data
+  from asynchronous sources (like sockets).
+
+* Besides that it allows also an applications to send events to itself, maybe
+  with a specified delay.
+
+Event handlers are run single-threaded and hence there is no need for
+synchronisation as is in multi-threaded designs. For good responsiveness an
+event driven program design must keep event handlers small.
+
+.N[
+Especially an event handler should **never** delay or wait for responses of
+an external client – rather register an handler to be started when the
+response arrives.
+]
+
+</textarea>
+<!-- :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::: -->
+<!-- ::::::::::::::::::::: )-: ereh TNETNOCLAER fo dne :::::::::::::::::::: -->
+<!-- :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::: -->
+    <script src="remark.min2.js" type="text/javascript">
+    </script>
+    <script type="text/javascript">
+      var slideshow = remark.create({ highlightLanguage: 'cpp', highlightStyle: 'docco' });
+    </script>
+  </body>
+</html>

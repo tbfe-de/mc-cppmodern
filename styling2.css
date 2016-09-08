@@ -1,0 +1,605 @@
+/*
+   ============================================================================
+   Styling for TCW25 (TBFE Courseware For the Next 25 Years)
+   ============================================================================
+   This file was originally authored by Martin Weitzel
+                                        Technische Beratung für EDV
+                                        D-64380 Rossdorf, Germany
+                                        Internet: http://tbfe.de
+   It is distributed under the Creative-Commons Licensing (CC) BY-SA
+   For details see: http://creativecommons.org/licenses/by-sa/3.0/
+
+   ----------------------------------------------------------------------------
+
+   The following outlines the general Directions.
+
+   - Overall Theme
+     - mainly "black & white"
+     - decently colored (a bit "blue-ish")
+     - WHITE BACKGROUND
+       - improves contrast on beamer
+       - conserves toner on printer
+
+   - Headings
+     - Use of Levels
+       - # part of a presentation that will typically be given "in single run"
+       - ## pages giving overview of things to come
+       - ### a major section, may list and link to sub-sections
+       - #### a sub-section
+       - ##### a detail of a sub-sections
+     - first level might be used only once
+     - levels 2 and 3 may contain explicit navigation aids
+     - up to level 4 a new page should be started
+     - level 5 pages
+       - may start a new page of themselve
+      -  or continue a level 4 page
+
+   - Links
+     - generally do NOT make stand-out too much
+   - - when visited make stand-out even lesser
+     - give some feedback on hover
+     - succinct feedback when clicked
+     - internal targets
+       ... (TBD) ...
+     - external targets
+       ... (TBD) ...
+
+   - Body Part
+     - NOT TOO SMALL (think of the visually impaired!)
+     - rather split page into two (easily done with remark.js)
+
+   - Footnotes
+     - generally preferred over note pages (left for private annotations)
+     - used for details not necessary at first glance
+     - principle page must be understandable witout reading
+     - CURRENTLY CONSIDERING: make invisible, only show by hover
+
+   - Fonts
+     - nothing "fancy" which must be dowloaded first
+     - mainly two sizes
+       - body-part
+       - footnotes
+     - constant width for things to type verbatim
+       - commands to type
+       - keywords of programming language
+       - references to source code fragments
+
+    - Source Code
+      - similar to to verbatim text
+      - using JavaScript highlighting tool
+
+    The following is specific to remark.js
+
+    - Naming Pages
+      - basically optional
+      - use english also in German documents
+      - use CamelCaseNaming up and including level 3 targets
+      - use lower_case_naming - from level 4
+
+    - Standard Classes remark.js
+      ... (TBD)
+
+    - TWC25 Templates
+      - blank - nothing but a blank sheet
+      - title - typically used once only at start page
+
+      - plain - page footer only (n info-graphic)
+        - referenced attributes (madatory on same page!)
+	  - copyright -- e.g.: (CC) BY-SA
+	  - branding -- e.g.: Dipl.-Ing. Martin Weitzel
+          - customer -- who ordered the presentation
+      - withinfo - as before but has info-graphic
+        - references attributes (madatory! on same page)
+          - graphic (names the info-graphic)
+          - section (a part thereof - just leave empty if none )
+
+
+    - TWC25 short class names (for use in page body where necessary)
+      - -_ = footnote indicator in body text
+        - typically used as: ... for this there is a note._[]
+        - alternative use may be: ... first note on this page._[1]
+        - of course then there should follow: ... and second._[2]
+      - .N = notice (made stand out "just a little bit")
+      - .I = important (as before but with an icon added)
+      - .W = warning (similar, but made looking "more grave")
+      - .F = footnote (optionally, should be last of page
+         - you MUST include ALL footnotes for a page inside the brackets
+         - if only ONE unnumbered footnote on a page, start with a colon
+         - if several footnotes (numbered), start EACH with "1:", "2:" etc.
+
+    - TWC25 long name classes (mainly for use in templates
+      - infolink -- link to the info graphics
+*/
+
+/*
+  -----------------------------------------------------------------------------
+  General Appearance Of Presentation Pages
+  -----------------------------------------------------------------------------
+*/
+
+/* -------------------------------------------------------------------- BULK */
+body { /* Bulk */
+	font-family: 'Sans';
+	font-size: 20px;
+	color: #2F4F4F;
+}
+
+p {
+	border-top: -0.5em;
+}
+
+/* ---------------------------------------------------------------- HEADINGS */
+h1, h2, h3 {
+	font-weight: 400;
+	margin-bottom: 0.5em;
+}
+h1 {
+	font-size: 2.5em;
+	text-align: center;
+}
+h2 {
+	font-size: 2em;
+	margin-bottom: 0.3em;
+}
+h3 {
+	font-size: 1.5em;
+}
+h2 code.cpp.remark-code,
+h3 code.cpp.remark-code {
+	font-size: 90%;
+}
+h4 {
+	font-size: 1.2em;
+	margin-bottom: 0;
+}
+
+/* ------------------------------------------------------------------- LINKS */
+a:link {
+	color: #00008B;
+}
+a:visited {
+	color: #00008B;
+}
+a:hover {
+	background: #E6F9FF;
+}
+a:active {
+	background: #CCCCE8;
+}
+
+/*
+ * TBD
+*/
+li p { line-height: 1.25em; }
+.red { color: #fa0000; }
+.large { font-size: 2em; }
+a, a > code {
+	color: blue;
+	text-decoration: none;
+}
+.remark-code {
+	-moz-border-radius: 5px;
+	-web-border-radius: 5px;
+	background: #f8f8ff;
+	font-family: monospace;
+	font-size: 18px;
+}
+.F .remark-code {
+	font-size: 12px;
+}
+.remark-notes-area .remark-code {
+	font-size: 80%;
+}
+/*
+  -----------------------------------------------------------------------------
+  Special Formatting of Special Remark elements
+  -----------------------------------------------------------------------------
+*/
+
+div.remark-slide-number {
+	padding-bottom: 4px;
+	font-size: 90%
+}
+div.remark-notes-area {
+	font-size: 12px
+}
+div.remark-slide-notes {
+	font-size: 12px
+}
+
+/*
+  -----------------------------------------------------------------------------
+  Special Formatting of Certain Styled Sections
+  -----------------------------------------------------------------------------
+*/
+
+/* ---------------------------------------------- (intended for consistency) */
+#slide-frontmatter {
+	text-align: center;
+}
+#slide-frontmatter .title {
+	padding-top: 1em;
+	padding-bottom: 0.3em;
+	font-size: 300%;
+	color: #000099;
+	background: white;
+	border: solid 12px;
+	border-color: white;
+	text-shadow: 0 0 20px #333;
+}
+#slide-frontmatter .subtitle {
+	-moz-box-shadow: 10px 10px 5px #888;
+	-webkit-box-shadow: 10px 10px 5px #888;
+	box-shadow: 10px 10px 5px lightgray;
+	padding: 8px;
+	border: solid medium darkgrey;
+	padding: 0.7em;
+	font-size: 28px;
+	color: #000099;
+	background: white;
+	line-height: 150%;
+}
+#slide-frontmatter .author {
+	padding-top: 2em;
+	font-size: 15px;
+}
+#slide-frontmatter .client {
+	padding-top: 2em;
+	font-size: 15px;
+}
+
+/* ---- FOOTNOTE INDICATOR -------------------------- (for use in body text) */
+._ {
+	font-size: 0.8em;
+	vertical-align: super;
+	color: blue;
+}
+._:before {
+	font-weight: bold;
+	content: "*";
+}
+
+/* ---- TABLE -------------------------------- add border lines around cells */
+table {
+    border-collapse: collapse;
+}
+table td, table th {
+        border: 2px solid blue;
+}
+/* ---- NOTICE ------------ make block standing a little bit over usual text */
+.N {
+	-moz-box-shadow: 10px 10px 5px #888;
+	-webkit-box-shadow: 10px 10px 5px #888;
+	box-shadow: 10px 10px 5px lightgray;
+	padding: 8px;
+	border: solid medium darkgrey;
+}
+
+/* ---- IMPORTANT --------------------- much like before but more emphasized */
+.I {
+	-moz-box-shadow: 10px 10px 5px #888;
+	-webkit-box-shadow: 10px 10px 5px #888;
+	box-shadow: 10px 10px 5px #888;
+	min-height: 60px;
+	padding: 8px;
+	border: solid medium darkgrey;
+	background: yellow;
+}
+.I:before {
+	content: "";
+	display: block;
+	float: left;
+	width: 24mm;
+}
+@media screen { /* This is a workaround ... */
+	.I:before {
+		background: url("../PNG/important-M.png") no-repeat;
+		height: 24mm;
+	}
+}
+@media print { /* ... as the above does not work in PDFs */
+	.I:before {
+		content: "(i)";
+		font-size: 40pt;
+		font-family: 'Serif';
+		font-weight: bold;
+		color: yellow;
+		text-align: center;
+	}
+}
+
+/* ---- WARINING ---------------------- much like before but more emphasized */
+.W { 	/* WARNING - again like before but MUCH more emphasized */
+	-moz-box-shadow: 10px 10px 5px #888;
+	-webkit-box-shadow: 10px 10px 5px #888;
+	box-shadow: 10px 10px 5px #888;
+	padding: 8px;
+	min-height: 60px;
+	border: solid medium darkgrey;
+	background: red;
+	color: white;
+}
+.W code.cpp.remark-code {
+	color: black;
+}
+@media print { /* For a more uniform appperance */
+	.W {
+		background: white;
+		color: black;
+	}
+}
+.W:before {
+	content: "";
+	display: block;
+	width: 24mm;
+	float: left;
+}
+@media screen { /* This is a workaround ... */
+	.W:before {
+		height: 24mm;
+		background: url("../PNG/warning-M.png") no-repeat;
+	}
+}
+@media print { /* ... as the above does not work in PDFs */
+	.W:before {
+		content: "[!]";
+		font-size: 40pt;
+		font-family: 'Serif';
+		font-weight: bold;
+		color: red;
+		text-align: center;
+	}
+}
+
+
+/* ---- FOOTNOTE ------------------------ special area at the bottom of page */
+.F {
+	border-top: thin solid blue;
+	padding-top: 6px;
+	font-size: 0.7em;
+	position: absolute;
+	bottom: 5em;
+	left: 6em;
+	padding-left: 1.3em;
+	margin-right: 5em;
+	text-align: justify;
+	text-indent: -1.3em;
+}
+.F:before {
+	font-size: 0.8em;
+	vertical-align: super;
+	color: blue;
+	content: "*";
+}
+@media screen {
+        .F {
+		color: lightgray;
+	}
+	.F a, a > code {
+		color: lightblue;
+	}
+	.F:hover {
+		color: black;
+	}
+	.F:hover a {
+		color: blue;
+	}
+}
+@media print {
+	.F {
+        	color: darkgray;
+	}
+	.F a {
+        	color: blue;
+	}
+}
+/* ---- GRAPHIC ------------------------------- small preview of Info-Grapic */
+div.infographic {
+	float: right;
+	width: 60%;
+	-webkit-transform-origin-x: 0%;
+	-webkit-transform-origin-y: 0%;
+	-webkit-transform: scale(0.3);
+}
+
+/* ---- INFOLINK -------------------- special area to link to a info-graphic */
+div.infolink {
+	font-size: 0.5em;
+	color: gray;
+	position: absolute;
+	top: 2em;
+	right: 2em;
+}
+
+/* ---- DOCULINK --------------------- special area to link to documentation */
+div.refersto {
+	font-size: 0.5em;
+	color: gray;
+	position: absolute;
+	top: 2em;
+	right: 2em;
+}
+
+/* ---- PAGEFOOTER ------------------- special area to display a page footer */
+.pagefooter {
+        position: absolute;
+        padding-top: 7px;
+	padding-left: 50px;
+        font-size: 8pt;
+        color: white;
+        background: #00CED1;
+        text-align: left;
+        height: 1.9em;
+	bottom: 12px;
+        left: 40px;
+	right: 85px;
+}
+
+@media screen {
+	.pagefooter:before {
+		content: "";
+		display: block;
+		background: url("../PNG/logo-MW-12x12.png") no-repeat;
+		position: absolute;
+		bottom: -4.7em;
+		left: -3px;
+		width: 36mm;
+		height: 24mm;
+		float: left;
+	}
+}
+
+.pagefooter a:link {
+	color: white;
+}
+.pagefooter a:hover {
+	color: black;
+}
+
+.stylehint {
+        position: absolute;
+        padding-top: 6px;
+        font-size: 8pt;
+        color: #CCCCCC;
+        text-align: center;
+        height: 1.8em;
+	bottom: 15px;
+        left: 40px;
+}
+.stylehint a {
+	color: #CCCCCC;
+}
+
+/* ---- LEFT/RIGHT -------------------------------- put content side by side */
+.pull-left {
+	float: left;
+	width: 47%;
+}
+.pull-right {
+	float: right;
+	width: 47%;
+}
+.pull-right ~ p {
+	clear: both;
+}
+
+#slideshow .slide .content code {
+	font-size: 0.8em;
+}
+#slideshow .slide .content pre code {
+	font-size: 0.9em;
+	padding: 15px;
+}
+.inverse {
+	background: #272822;
+	color: #777872;
+	text-shadow: 0 0 20px #333;
+}
+.inverse h1, .inverse h2 {
+	color: #f3f3f3;
+	line-height: 0.8em;
+}
+/*
+  -----------------------------------------------------------------------------
+  For TOC-like stuff - currently not (yet) used
+  -----------------------------------------------------------------------------
+*/
+div.agenda li {
+	font-size: 0.85em;
+}
+
+div.linkpage {
+	font-size: 0.85em;
+	text-align-last: right;
+	max-width: 52em;
+	padding: 0;
+	overflow-x: hidden;
+	list-style: none;
+}
+div.linkpage li:before {
+	float: left;
+	width: 0;
+	white-space: nowrap;
+	content: ". . . . . . . . . . . . . . . . . . . . "
+		 ". . . . . . . . . . . . . . . . . . . . "
+		 ". . . . . . . . . . . . . . . . . . . . "
+		 ". . . . . . . . . . . . . . . . . . . . "
+}
+div.linkpage li:first-child {
+	padding-right: 0.33em;
+	background: yellow;
+}
+div.linkpage span.X {
+	float: right;
+	padding-left: 0.33em;
+	background: white;
+}
+
+/*
+  -----------------------------------------------------------------------------
+  Customer Specific Logos (used on demand)
+  -----------------------------------------------------------------------------
+*/
+.microconsult-logo {
+        position: absolute;
+        font-size: 8pt;
+	top: 2px;
+	right: 2px;
+	height: 10mm;
+	width: 50mm;
+	background: url("../PNG/logo-MC-50x6.png") no-repeat;
+}
+
+/*
+  -----------------------------------------------------------------------------
+  Special Page Setup for Printouts
+  -----------------------------------------------------------------------------
+*/
+@media print {
+	.remark-container {
+		overflow: visible;
+		background-color: #fff;
+	}
+	.remark-slide-container {
+		display: block;
+		position: relative;
+	}
+	.remark-slide-scaler {
+		-moz-box-shadow: none;
+		-webkit-box-shadow: none;
+		box-shadow: none;
+	}
+	.remark-container.remark-presenter-mode .remark-slide-notes {
+		width: 708px;
+	}
+	@page {
+		size: 21cm 29.7cm;
+	}
+}
+
+@page {
+	margin: 0;
+}
+
+/*
+  -----------------------------------------------------------------------------
+  Some Left-Overs from the Original Remark.js CSS (may be useful some day)
+  -----------------------------------------------------------------------------
+*/
+
+/* Two-column layout */
+	.left-column {
+	color: #777;
+	width: 20%;
+	height: 92%;
+	float: left;
+}
+.left-column h2:last-of-type, .left-column h3:last-child {
+	color: #000;
+}
+.right-column {
+	width: 75%;
+	float: right;
+	padding-top: 2em;
+}
+
