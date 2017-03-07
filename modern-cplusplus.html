@@ -1090,7 +1090,7 @@ http://coliru.stacked-crooked.com/a/9a58d5a76693422e
 name: const_vs_constexpr
 ## `const` vs. `constexpr`
 
-* [`const` has always there](#const_is_for_write_protection)
+* [`const` has always existed](#const_is_for_write_protection)
 
   - Actually introduced by C++
 
@@ -1106,6 +1106,7 @@ name: const_vs_constexpr
 
 ---
 
+name: const_is_for_write_protection
 ### `const` is for write protection
 
 * No code generated on behalf of `const`
@@ -2824,7 +2825,7 @@ int main() {
     auto li3 = {1, 2, 3};           PT(decltype(li3));
 //  auto li3{1, 2, 3};
     auto li1 = {1};                 PT(decltype(li1));
-    auto i{1};                      PT(decltype(li));
+    auto i{1};                      PT(decltype(i));
 ```
 
 http://coliru.stacked-crooked.com/a/c1512f80224d37c9
@@ -2953,7 +2954,7 @@ auto all_colors = { R, G, B };
 // ...
 int main() {
     for (auto c : all_colors)
-	std::cout << c << ' '
+        std::cout << c << ' '
     std::cout << std::endl;
 }
 ```
@@ -2979,6 +2980,33 @@ int main() {
 ---
 
 ##### Example (cont.): range_for/demo.cpp
+
+```
+class primes {
+    const std::size_t count;
+public:
+    primes(int c) : count(c) {}
+    class iterator;
+    iterator begin();
+    iterator end();
+};
+class primes::iterator {
+    mutable std::vector<int> known = {3};
+    std::size_t current;
+    iterator(std::size_t n) : current(n) {}
+    friend class primes;
+public:
+    int operator*() const {
+        // ...
+        return known.at(current-1);
+    }
+    iterator& operator++() { ++current; return *this; }
+    iterator operator++(int) { return iterator{current+1}; }
+}
+```
+
+* Speculate how a `primes::iterator` calculates primes "on demand" …
+* … and may use `known` as a cache for already calculated primes.
 
 ---
 
@@ -3251,7 +3279,7 @@ https://isocpp.org/wiki/faq/cpp14-language#generic-lambdas
 ##### Optional Example (cont.): callable_lambda/demo.cpp
 
 ```
-class check_positive {
+struct check_positive {
     template<typename T>
     bool operator()(T n) {return (n > 0); 
 };
@@ -3264,7 +3292,7 @@ void generic_lambda(std::initializer_list<T> values) {
          // check_positive{}
          // [](T n) { return n > 0; }
          // [](auto n) { return n > 0; }
-           );  
+    );  
 }
 ```
 
@@ -3305,11 +3333,11 @@ http://en.cppreference.com/w/cpp/language/lambda#Lambda_capture
 
   - local `static` variables
 
-* In **member functions** of a class …
+* A lambda inside **member functions** of some class …
 
-  - …  also `this` can be capture …
+  - … may also capture the `this`-pointer …
 
-  - … giving access to all members
+  - … and access all members of that class
 
 ---
 
@@ -3377,7 +3405,7 @@ void capture_basics() {
 
   - **NEVER** call it after the defining context is discarded
 
-* The capture list syntax `[=]` may be used as short-hand.
+* The capture list syntax `[&]` may be used as short-hand.
 
 ---
 
@@ -3537,7 +3565,7 @@ int main() {
 
 http://coliru.stacked-crooked.com/a/cb9ba4b36734e074
 
-* Make sure to understand the difference between types and values.)
+* Make sure to understand the difference between types and values.
 * Why is the type the same for `is_odd` and `is_even`?
 * Why is the type different for `check_odd` and `check_even`?
 
