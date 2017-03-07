@@ -2360,7 +2360,7 @@ http://coliru.stacked-crooked.com/a/2b9ac3df84185215
 
 * Works by special rules for template reference arguments
 
-* Most easily used in Cookbook fashion:
+* Most easily used in Cookbook fashion:._[]
 
 ```
 template<typename T>
@@ -2373,15 +2373,18 @@ void foo( … , T&& arg, … )
 }
 ```
 
------------------------------------------------------------
-
-* [*"You are not expected to understand this"*][uxc] (the reference link below):
-
-http://en.cppreference.com/w/cpp/language/template_argument_deduction
-
-* If you are eager to grasp the background rather read this:
-
-http://thbecker.net/articles/rvalue_references/section_07.html
+.F[:
+[*"You are not expected to understand this"*][uxc] (or at least not
+required to), but in case you really, **really**, REALLY want to read
+the full reference documentation for that feature, you
+find it here:  
+http://en.cppreference.com/w/cpp/language/template_argument_deduction  
+Though you might prefer a less formal "step by step" introduction:  
+http://thbecker.net/articles/rvalue_references/section_07.html  
+Or how about an excerpt from a talk given by Scott Meyers?  
+https://youtu.be/BezbcQIuCsY?t=248  
+(for a funny intro [start a bit earlier](https://youtu.be/BezbcQIuCsY?t=165))
+]
 
 [uxc]: https://www.netogram.com/hackersdictionaryy.htm#You%20are%20not%20expected%20to%20understand%20this
 
@@ -2473,8 +2476,8 @@ int main() {
     const auto& f = e;      PT(decltype(f))
     auto& g = c;            PT(decltype(g))
     auto h = &a;            PT(decltype(h))
-    auto i = &c;            PT(decltype(h))
-    auto* j = &a;           PT(decltype(h))
+    auto i = &c;            PT(decltype(i))
+    auto* j = &a;           PT(decltype(j))
 //  auto* k= a;             PT(decltype(k))
     auto z = 'z' /*+1*/;    PT(decltype(z))
 }
@@ -2701,9 +2704,8 @@ http://coliru.stacked-crooked.com/a/c1512f80224d37c9
 
 -----------------------------------------------------------
 
-Initializer are **never** deduced as templated argument, only
-the initializer element type can be deduced – example follows
-later.
+Initializer liste are **never** deduced as templated argument, only
+the initializer element type can be deduced – example follows later.
 
 ---
 
