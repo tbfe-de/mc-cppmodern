@@ -2983,6 +2983,7 @@ int main() {
 
 ```
 class primes {
+    std::vector<int> known = {3};
     const std::size_t count;
 public:
     primes(int c) : count(c) {}
@@ -2990,23 +2991,23 @@ public:
     iterator begin();
     iterator end();
 };
+std::vector<int> primes::known = {3};
 class primes::iterator {
-    mutable std::vector<int> known = {3};
+    friend class primes;
     std::size_t current;
     iterator(std::size_t n) : current(n) {}
-    friend class primes;
 public:
     int operator*() const {
         // ...
-        return known.at(current-1);
+        return primes::known.at(current-1);
     }
     iterator& operator++() { ++current; return *this; }
     iterator operator++(int) { return iterator{current+1}; }
 }
 ```
 
-* Speculate how a `primes::iterator` calculates primes "on demand" …
-* … and may use `known` as a cache for already calculated primes.
+The strategy (in the omitted part above is to caculates primes on
+demand, storing them in the class member `known` to be used again.
 
 ---
 
@@ -3566,8 +3567,8 @@ int main() {
 http://coliru.stacked-crooked.com/a/cb9ba4b36734e074
 
 * Make sure to understand the difference between types and values.
-* Why is the type the same for `is_odd` and `is_even`?
-* Why is the type different for `check_odd` and `check_even`?
+* Why is the type the (nearly) the same for `is_odd` and `is_even`?
+* Why is the type completely different for `check_odd` and `check_even`?
 
 ---
 
@@ -3685,16 +3686,17 @@ finally prints.)
 int main() {
     std::function<bool(int)> f;         PT(decltype(f));
     std::function<int(short)> f2;       PT(decltype(f2));
-                                        PT(decltype(f2 = f));
-                                        PT(decltype(f = f2));
-    std::function<void(int)> f3{f2};    PT(decltype(f3 = f));
-                                     // PT(decltype(f = f3));
-                                     // PT(decltype(f3 = f2));
+                                     // assignment compatibility:
+                                        PT(decltype(  f2 = f  ));
+                                        PT(decltype(  f = f2  ));
+    std::function<void(int)> f3{f2};    PT(decltype(  f3 = f  ));
+                                     // PT(decltype(  f = f3  ));
+                                     // PT(decltype(  f3 = f2 ));
 
-    PX(f ? "nullptr" : "not nullptr");
+    PX(f ? "can be called" : "CANNOT (currently) be called");
     PX((bool)(f = nullptr));
 //  PX(      (f = nullptr));
-    PX(f ? "nullptr" : "not nullptr");
+    PX(f ? "can be called" : "CANNOT (currently) be called");
     PX(f == nullptr); PX(nullptr == f);
     PX(f != nullptr); PX(nullptr != f);
 //  PX(f == f);
@@ -4304,8 +4306,7 @@ public:
     const double xr = 0.0;
     const double yr = 0.0;
     xy(double x, double y) : xr{x}, yr{y} {}
-//  xy(double x = 0.0, double y = 0.0) : xr{x}, yr{y} {} 
-protected:
+//  xy(double x = 0.0, double y = 0.0) : xr{x}, yr{y} {}
     xy() {}
 };
 
@@ -4317,12 +4318,12 @@ int main() {
 }
 ```
 
-http://coliru.stacked-crooked.com/a/3e12686ae858f3b1
+http://coliru.stacked-crooked.com/a/208c413723fc0b40
 
 * How is this different from default values to constructor arguments?
-* What effect has the `protected` default constructor?
-* Is uniform initialisation possible two?
-* May an initializer refer another (already initialized) member?
+* What changes if there is **no** `public` default constructor?
+* Is the uniform brace initialisation syntax here possible too?
+* May an initializer refer to an (already initialized) member?
 
 ---
 
@@ -4381,54 +4382,56 @@ public:
 
 ```
 struct clazz {
-    std::ostream &os;
-    ~clazz() {
-        os << "clazz d'tor executed";
-    }
-    clazz(std::ostream& os_, bool b) try : os(os_) {
-        if (b) throw "clazz(bool) c'tor body";
-    } catch(const char *thrown_by) {
-        os << "caught in clazz(bool) c'tor: " << thrown_by;
+    clazz(bool b1) try {
+        if (b1) throw "exception in clazz(bool) c'tor body\n";
+        std::cout << "clazz(bool) c'tor completed\n"; 
+    } catch(const char *ex) {
+        std::cout << "caught in clazz(bool) c'tor: " << ex;
     };
-    clazz(std::ostream &os_, int x) try : clazz(os_, x == 0) {
-        if (x == 1) throw "clazz(int) c'tor body";
-    } catch(const char *thrown_by) {
-        os << "caught in clazz(int) c'tor: " << thrown_by;
+    clazz(bool b1, bool b2) try : clazz(b1) {
+        if (b2) throw "exception in clazz(bool, bool) c'tor body\n";
+        std::cout << "clazz(bool, bool) c'tor completed\n"; 
+    } catch(const char *ex) {
+        std::cout << "caught in clazz(bool, bool) c'tor: " << ex;
+    }
+    ~clazz() {
+        std::cout << "clazz d'tor executed\n";
     }
 };
 ```
 
-* Analyze the code example for constructor delegation.
-* Predict behaviour when constructor argument `x` is `false`.
-* As before, for `true`, `0`, `1`, and `42` (of course :-)).
+* Analyze the code example to identify constructor delegation.
+* Predict behaviour for the calls as listed on the next page.
 
 ---
 
 ##### Optional Example (cont.): member_init/demo.cpp
 
 ```
-struct clazz {
-    // ... as shown before
-};
-
 int main() {
-    std::cout.setf(std::ios::boolalpha);
-    std::ostringstream os;
     try {
-        auto arg = false;                     PX(arg);
-    //  auto arg = true;                      PX(arg);
-    //  auto arg = 0;                         PX(arg);
-    //  auto arg = 1;                         PX(arg);
-    //  auto arg = 42;                        PX(arg);
-        PX(clazz{os, arg}, os.str());         PX(os.str());
-    } catch (const char *thrown_by) {
-        PX("caught in test context", thrown_by);
+    // ------------------------------- NO exceptions thrown
+    //  clazz obj(false);           // direct c'tor
+    //  clazz obj(false, false);    // delegating c'tor
+    // ------------------------------- exception thrown in ...
+    //  clazz obj(true);        // ... direct c'tor
+    //  clazz obj(false, true); // ... delegating c'tor
+        clazz obj(true, false); // ... delegated-to c'tor
+        std::cout << "clazz object ready\n";
+    } catch (const char *ex) {
+        std::cout << "caught in test context: " << ex;
     }
 }
 ```
 
-* Try with various argument types and values and explain the output.
-* Understand differences to ordinary `try`-`catch` chaining.
+* Verify the following from the output:
+  * The d'tor is exected for …
+    * … a completely constructed object;
+    * … when a **delegated-to** c'tor ends normally.
+  * Vice versa **no** d'tor is called when …
+    * … neither a directly called c'tor
+    * … nor a delegated-to c'tor ends normally.
+  * Exceptions **caught** in c'tor are re-thrown automatically.
 
 ---
 
@@ -4581,6 +4584,8 @@ http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2007/n2333.html
 
 ```
 // assuming class `clazz` from the previous examples ...
+
+extern void fbool(bool);
 
 int main() {
     clazz z;
@@ -5067,6 +5072,24 @@ http://en.cppreference.com/w/cpp/memory/shared_ptr
 
 ---
 
+#### Creating `std::shared_ptr`
+
+* Either: by two consecutive operations:
+
+  - result from `new` saved in temporary native pointer …
+
+  - … then used to initialise the `std::shared_ptr` object
+
+* Or: by using `std::make_shared`
+
+  - Simpler and no need to worry about throwing operations
+
+  - Usually better performance and more efficient use of resources
+
+http://en.cppreference.com/w/cpp/memory/shared_ptr/make_shared
+
+---
+
 ##### Example: shared_pointer/demo.cpp
 
 ```
@@ -5093,24 +5116,6 @@ int main() {
 http://coliru.stacked-crooked.com/a/0fc58836466e4dd6
 
 * Add as much code as necessary to improve your understanding.
-
----
-
-#### Creating `std::shared_ptr`
-
-* Either: by two consecutive operations:
-
-  - result from `new` saved in temporary native pointer …
-
-  - … then used to initialise the `std::shared_ptr` object
-
-* Or: by using `std::make_shared`
-
-  - Simpler and no need to worry about throwing operations
-
-  - Usually better performance and more efficient use of resources
-
-http://en.cppreference.com/w/cpp/memory/shared_ptr/make_shared
 
 ---
 
@@ -6767,7 +6772,7 @@ existing C++98 code would be affected only in very rare cases.
 
 #### New Ways to Obtain Iterators
 
-* `cbegin()`, `crbegin(), `cend()`, and `crend()`
+* `cbegin()`, `crbegin()`, `cend()`, and `crend()`
 
   - Get non-modifiable iterator for modifiable container
 
