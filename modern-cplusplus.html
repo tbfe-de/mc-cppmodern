@@ -4378,7 +4378,7 @@ public:
 
 ---
 
-##### Optional Example (cont.): member_init/demo.cpp
+##### Optional Example: ctor_delegation_throw/demo.cpp
 
 ```
 struct clazz {
@@ -4400,23 +4400,25 @@ struct clazz {
 };
 ```
 
+http://coliru.stacked-crooked.com/a/1557f78c8e102b0c
+
 * Analyze the code example to identify constructor delegation.
 * Predict behaviour for the calls as listed on the next page.
 
 ---
 
-##### Optional Example (cont.): member_init/demo.cpp
+##### Optional Example (cont.): ctor_delegation_throw/demo.cpp
 
 ```
 int main() {
     try {
     // ------------------------------- NO exceptions thrown
-    //  clazz obj(false);           // direct c'tor
-    //  clazz obj(false, false);    // delegating c'tor
+    //  clazz obj{false};           // direct c'tor
+    //  clazz obj{false, false};    // delegating c'tor
     // ------------------------------- exception thrown in ...
-    //  clazz obj(true);        // ... direct c'tor
-    //  clazz obj(false, true); // ... delegating c'tor
-        clazz obj(true, false); // ... delegated-to c'tor
+    //  clazz obj{true};        // ... direct c'tor
+    //  clazz obj{false, true}; // ... delegating c'tor
+        clazz obj{true, false}; // ... delegated-to c'tor
         std::cout << "clazz object ready\n";
     } catch (const char *ex) {
         std::cout << "caught in test context: " << ex;
@@ -4424,14 +4426,14 @@ int main() {
 }
 ```
 
-* Verify the following from the output:
-  * The d'tor is exected for …
+* Uncomment each of the above constructors in turn and verify:
+  * The d'tor is executed for …
     * … a completely constructed object;
-    * … when a **delegated-to** c'tor ends normally.
+    * … when a delegated-to c'tor ends normally.
   * Vice versa **no** d'tor is called when …
     * … neither a directly called c'tor
     * … nor a delegated-to c'tor ends normally.
-  * Exceptions **caught** in c'tor are re-thrown automatically.
+  * Exceptions caught in c'tor are re-thrown automatically.
 
 ---
 
