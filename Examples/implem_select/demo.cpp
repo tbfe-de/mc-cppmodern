@@ -2,9 +2,20 @@
 #include <string>
 #include <type_traits>
 
-#if 0
+#if 1
+
+template<typename T>
+auto clear_if_has_clear(T arg) -> decltype(arg.clear()) {
+	arg.clear();
+	std::cout << "... clear called ...\n";
+}
+void clear_if_has_clear(...)     {}
+
 template<typename ArgType>
 void do_it(ArgType arg) {
+#if 1
+	clear_if_has_clear(arg);
+#else
 	if (std::is_floating_point<ArgType>::value) {
 		std::cout << "... floating type argument ...\n";
 		return;
@@ -23,6 +34,7 @@ void do_it(ArgType arg) {
 		std::cout << "???\n";
 		return;
 	}
+#endif
 }
 #else
 enum class Sel { Invalid, Integral, Floating, String };
@@ -74,5 +86,5 @@ void do_it(ArgType arg) {
 
 int main() {
 	using namespace std::literals::string_literals;
-  	do_it(""s);
+  	do_it(0.f);
 }
