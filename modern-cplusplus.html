@@ -5971,7 +5971,7 @@ int main() {
               // + minutes(100)
                  + seconds(59)
                  + milliseconds(500)
-	         + nanoseconds(12)
+                 + nanoseconds(12)
                  ;
     PT(decltype(z));
     PX(duration_cast<hours>(z).count());
@@ -6283,7 +6283,7 @@ int main() {                        // additive ------------------
 name: chrono_to_classic
 ### Classic Interface (`std::time_t` / `std::clock_t`)
 
-* An interface between `std::chrono` and `std::time_t` is available
+* An interface between `std::chrono` and `std::time_t` is available._[]
 
   - via `std::chrono::system_clock::to_time_t`
 
@@ -6300,6 +6300,14 @@ http://en.cppreference.com/w/cpp/chrono/system_clock/from_time_t
 http://en.cppreference.com/w/c/chrono/clock_t
 
 http://en.cppreference.com/w/cpp/chrono/c/CLOCKS_PER_SEC
+
+.F[:
+Much extended versatility with respect to calendar dates is offered by this approach:  
+https://github.com/HowardHinnant/date  
+(If you are willing to spend an hour of your time to get an overview you might want
+to watch [this comprehensive talk](https://www.youtube.com/watch?v=tzyGjOm8AKo) by
+the library's author (Howard Hinnant).
+]
 
 ---
 
@@ -6425,7 +6433,7 @@ http://coliru.stacked-crooked.com/a/749f61cf01481d90
 ##### Example: regular_expressions/demo.cpp
 
 ```
-void int main() {
+int main() {
     const std::string re{
         "\\s*([^;]*);\\s*([^;]*);\\s*([^;]*);?.*"
     };

@@ -5,8 +5,8 @@
 #if 1
 
 template<typename T>
-auto clear_if_has_clear(T arg) -> decltype(arg.clear()) {
-	arg.clear();
+auto clear_if_has_clear(T arg) -> decltype(arg.size(), std::declval<T>()) {
+	arg.size();
 	std::cout << "... clear called ...\n";
 }
 void clear_if_has_clear(...)     {}

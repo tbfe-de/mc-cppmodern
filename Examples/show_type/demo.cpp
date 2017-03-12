@@ -10,7 +10,7 @@ template<typename T> struct showtype;
 // is to demonstrate the basic technique only and NOT meant
 // to work as reliable type printer!
 
-#if 0
+#if 1
     
 template<> struct showtype<void>
 {static std::string str() {return "void";}};
