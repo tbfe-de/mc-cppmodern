@@ -71,7 +71,7 @@ Focusing
 
 * C++11/14/17 Extensions
 
-© 2016: [Creative Commons BY-SA]
+© 2017: [Creative Commons BY-SA]
 
 * by: [Dipl.-Ing. Martin Weitzel](http://tbfe.de)
 
@@ -83,8 +83,9 @@ Focusing
 
 -----------------------------------------------------------
 * [Notice to the Reader		](#notice_to_the_reader)
-* [Some_useful_stuff		](#some_useful_stuff)
+* [Some useful stuff		](#some_useful_stuff)
 * [`const` vs. `constexpr`	](#const_vs_constexpr)
+* [Type-Dependant Coding	](#type_dependant_coding)
 * [New Kinds of Literals	](#new_kinds_of_literals)
 * [Strongly Typed Enumerations	](#strongly_typed_enums)
 * [Copying vs. Moving		](#copying_vs_moving)
@@ -101,7 +102,6 @@ Focusing
 * [Random Numbers 		](#random_numbers)
 * [`noexcept`			](#noexcept)
 * [Multi-Threading		](#multi_threading)
-* [`alignas` and `alignof`	](#alignas_and_alignof)
 * [Experimental Features	](#experimental_features)
 ------------------------------------------------------------
 
@@ -1086,8 +1086,8 @@ http://coliru.stacked-crooked.com/a/9a58d5a76693422e
 * How does it compare to `typeid( … ).name()` in this respect?
 
 ---
-
 name: const_vs_constexpr
+
 ## `const` vs. `constexpr`
 
 * [`const` has always existed](#const_is_for_write_protection)
@@ -1105,8 +1105,8 @@ name: const_vs_constexpr
 * C++14 improved `constexpr` functions
 
 ---
-
 name: const_is_for_write_protection
+
 ### `const` is for write protection
 
 * No code generated on behalf of `const`
@@ -1464,6 +1464,153 @@ http://coliru.stacked-crooked.com/a/babf9e34714a33fb
 
 ---
 
+name: type_dependant_coding
+
+## Type-dependant Coding
+
+.N.center[
+The following section may appear a bit too "advanced" at this point!
+
+Maybe you have written already some generic code that posed the problem.
+
+OK - then you can probably see where the example aims to.
+
+Otherwise be patient for a few minutes.
+]
+
+---
+### The Preprocessor Runs Too Early
+
+Probably most everybody had written cone line this, sometimes:
+
+```
+void foo() {
+    // ... whatever ...
+    #if some-compile-time-condition
+        // ... more code ...
+    #endif
+}
+```
+
+Admittedly this is not very beautiful code, nevertheless it may have some uses.
+
+* Did you ever write code like this?
+* In which way is testing *`some-compile-time-condition`* limited?
+
+---
+
+### C++11 Added Ways to Inspect Types
+
+Assuming `foo` used on the previous page is a template parametrized in two types:
+
+```
+template<typename T1, typename T2>
+void foo() {
+    // ...
+    // whatever
+    // ...
+    #if ???
+       // optional code, syntactically valid
+       // only if T1 is convertible to T2
+    #endif
+}
+```
+
+* What condition might be used to test this?._[]
+* Why isn't it applicable here?
+
+.F[:
+Hint: lookup `std::is_convertible` in the standard header file `type_traits`.
+]
+
+---
+
+### A Clumsy Way to Get What You Need
+
+Since C++11 `std::enable_if` is defined in `<type_traits>` too. Before it was
+available via the C++ extensions from Boost.
+
+```
+template<typename T1, typename T2>
+typename std::enable_if<std::is_convertible<T1, T2>::value>>::type
+foo() {
+    // ...
+    // whatever
+    // ...
+    // code requiring T1 is convertible to T2
+}
+
+template<typename T1, typename T2>
+typename std::enable_if<!std::is_convertible<T1, T2>::value>>::type
+foo() {
+    // ...
+    // whatever (again)
+    // ...
+}
+```
+
+---
+
+### Only A Bit But Not Really Much Nicer with C++14
+
+```
+template<typename T1, typename T2>
+std::enable_if_t<std::is_convertible<T1, T2>::value>>
+foo() {
+    // ...
+    // whatever
+    // ...
+    // code requiring T1 is convertible to T2
+}
+
+template<typename T1, typename T2>
+std::enable_if_t<!std::is_convertible<T1, T2>::value>>
+foo() {
+    // ...
+    // whatever (again)
+    // ...
+}
+```
+
+---
+
+### A More Straight-Forward Solution – ONLY for C++17
+
+```
+template<typename T1, typename T2>
+void foo() {
+    // ...
+    // whatever
+    // ...
+    if constexpr(std::is_convertible<T1, T2>::value) {
+        // optional code, requiring T1 is convertible to T2
+    }
+}
+```
+
+.F[:
+Besides that of course an `else`-clause may follow the conditional part, in
+C++17 another abbreviation may be used, allowing to drop the explicit `::value`
+member access:
+
+```
+template<typename T1, typename T2>
+void foo() {
+    // ...
+    // whatever
+    // ...
+    if constexpr(std::is_convertible_v<T1, T2>) {
+        // optional code, requiring T1 is convertible to T2
+    }
+    else {
+        // alternative code
+    }
+}
+```
+]
+
+---
+
 name: new_kinds_of_literals
 ## New Kinds of Literals
 
@@ -1704,24 +1851,24 @@ http://en.cppreference.com/w/cpp/locale/wstring_convert
 #### Extended Forms of Character Literals
 
 * Like in C in C++98 `L` for a character literal
-
   - changes its type to `wchar_t`
-
   - which (typically) may be either 16 or 32 bit
+<!-- -->
 
 * C++11 added the prefixes
 
-  - `u8` – request use of UTF-8 encoding
-
   - `u` (lower case) – request use of UTF-16 encoding
-
       - Changes its type to `char16_t`
-
       - **Compile error if character outside of BMP**
-
   - `U` (upper case) – request use of UTF-32 encoding
-
       - Changes its type to `char32_t` 
+<!-- -->
+
+* C++17 added the prefix
+  - `u8` – request use of "UTF-8" encoding
+      - **Compile error if character outside 7-bit ASCII**
+<!-- -->
+
 
 http://en.cppreference.com/w/cpp/language/character_literal
 
@@ -4725,7 +4872,7 @@ name: unique_ownership
 
   - heap allocations with `new T` or `new T[N]`
 
-  - automating `delete` **or** `delete[] operation
+  - automating `delete` **or** `delete[]` operation
 
 * Performance and memory footprint same as for native pointer
 
@@ -7707,23 +7854,16 @@ http://en.cppreference.com/w/cpp/thread/thread
 
 ---
 
-name: alignas_and_alignof
-## `alignas` and `alignof`
-
----
-
-##### Example: aligned_memory/demo.cpp
-
-– will be given live on request –
-
----
-
 name: experimental_features
 ## Experimental Features
 
 * [File system access		](#file_system_access)
 * [Parallelism			](#parallelism)
 * [Other Library Extensions	](#other_library_extensions)
+
+.N[
+Note that in C++17 much of that became regular language features.
+]
 
 ---
 
@@ -7756,13 +7896,15 @@ http://en.cppreference.com/w/cpp/experimental/lib_extensions
 
 #### `std::experimental::optional`
 
+  [Boost.Optional]: http://www.boost.org/doc/libs/release/libs/optional/doc/html/index.html
+
 * Optional data on stack
 
   - avoids heap allocation
 
   - may "waste" memory if unused
 
-* Alternative: Boost.Optional
+* Alternative: [Boost.Optional]
 
 http://en.cppreference.com/w/cpp/experimental/optional
 
@@ -7776,15 +7918,35 @@ http://en.cppreference.com/w/cpp/experimental/optional
 
 #### `std::experimental::any`
 
+[Boost.Any]: http://www.boost.org/doc/libs/release/libs/any/doc/html/index.html
+
 * Most general type erasure
 
-* Alternative: Boost.Any
+* Alternative: [Boost.Any]
 
 http://en.cppreference.com/w/cpp/experimental/any
 
 ---
 
 ##### Example: experimental_any/demo.cpp
+
+– will be given live on request –
+
+---
+
+#### `std::experimental::variant`
+
+[Boost.Variant]: http://www.boost.org/doc/libs/release/libs/variant/doc/html/index.html
+
+* Most general type erasure
+
+* Alternative: Boost.Variant
+
+http://en.cppreference.com/w/cpp/experimental/variant
+
+---
+
+##### Example: experimental_variant/demo.cpp
 
 – will be given live on request –
 

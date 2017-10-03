@@ -8,14 +8,18 @@
                                         Internet: http://tbfe.de
    It is distributed under the Creative-Commons Licensing (CC) BY-SA
    For details see: http://creativecommons.org/licenses/by-sa/3.0/
+
    ----------------------------------------------------------------------------
+
    The following outlines the general Directions.
+
    - Overall Theme
      - mainly "black & white"
      - decently colored (a bit "blue-ish")
      - WHITE BACKGROUND
        - improves contrast on beamer
        - conserves toner on printer
+
    - Headings
      - Use of Levels
        - # part of a presentation that will typically be given "in single run"
@@ -29,6 +33,7 @@
      - level 5 pages
        - may start a new page of themselve
       -  or continue a level 4 page
+
    - Links
      - generally do NOT make stand-out too much
    - - when visited make stand-out even lesser
@@ -38,14 +43,17 @@
        ... (TBD) ...
      - external targets
        ... (TBD) ...
+
    - Body Part
      - NOT TOO SMALL (think of the visually impaired!)
      - rather split page into two (easily done with remark.js)
+
    - Footnotes
      - generally preferred over note pages (left for private annotations)
      - used for details not necessary at first glance
      - principle page must be understandable witout reading
      - CURRENTLY CONSIDERING: make invisible, only show by hover
+
    - Fonts
      - nothing "fancy" which must be dowloaded first
      - mainly two sizes
@@ -55,20 +63,26 @@
        - commands to type
        - keywords of programming language
        - references to source code fragments
+
     - Source Code
       - similar to to verbatim text
       - using JavaScript highlighting tool
+
     The following is specific to remark.js
+
     - Naming Pages
       - basically optional
       - use english also in German documents
       - use CamelCaseNaming up and including level 3 targets
       - use lower_case_naming - from level 4
+
     - Standard Classes remark.js
       ... (TBD)
+
     - TWC25 Templates
       - blank - nothing but a blank sheet
       - title - typically used once only at start page
+
       - plain - page footer only (n info-graphic)
         - referenced attributes (madatory on same page!)
 	  - copyright -- e.g.: (CC) BY-SA
@@ -78,6 +92,8 @@
         - references attributes (madatory! on same page)
           - graphic (names the info-graphic)
           - section (a part thereof - just leave empty if none )
+
+
     - TWC25 short class names (for use in page body where necessary)
       - -_ = footnote indicator in body text
         - typically used as: ... for this there is a note._[]
@@ -90,6 +106,7 @@
          - you MUST include ALL footnotes for a page inside the brackets
          - if only ONE unnumbered footnote on a page, start with a colon
          - if several footnotes (numbered), start EACH with "1:", "2:" etc.
+
     - TWC25 long name classes (mainly for use in templates
       - infolink -- link to the info graphics
 */
@@ -102,31 +119,44 @@
 
 /* -------------------------------------------------------------------- BULK */
 body { /* Bulk */
-	font-family: 'Sans';
+	font-family: Sans, Helvetica;
 	font-size: 20px;
 	color: #2F4F4F;
 }
 
-p {
-	border-top: -0.5em;
+.I p,
+.N p,
+.F p,
+.W p,
+.pagefooter p {
+	margin-top: 0;
+	margin-bottom: 0;
+}
+
+.F p {
+	display: inline;
+}
+
+.F pre {
+	text-indent: 0;
 }
 
 /* ---------------------------------------------------------------- HEADINGS */
-h1, h2, h3 {
+.remark-slide-content h1, h2, h3 {
 	font-weight: 400;
 	margin-bottom: 0.8em;
 }
-h1 {
+.remark-slide-content h1 {
 	font-size: 2.5em;
 	text-align: center;
 }
-h2 {
+.remark-slide-content h2 {
 	font-size: 2em;
 }
-h3 {
+.remark-slide-content h3 {
 	font-size: 1.3em;
 }
-h4 {
+.remark-slide-content h4 {
 	font-size: 1.0em;
 }
 
@@ -175,6 +205,7 @@ a, a > code {
 
 div.remark-slide-number {
 	padding-bottom: 4px;
+	padding-right: 4px;
 	font-size: 90%
 }
 div.remark-notes {
@@ -192,9 +223,9 @@ div.remark-notes {
 	text-align: center;
 }
 #slide-frontmatter .title {
-	padding-top: 1em;
-	padding-bottom: 0.3em;
-	font-size: 350%;
+	padding-top: 0.2em;
+	padding-bottom: 0.1em;
+	font-size: 250%;
 	color: #000099;
 	background: white;
 	border: solid 12px;
@@ -205,10 +236,9 @@ div.remark-notes {
 	-moz-box-shadow: 10px 10px 5px #888;
 	-webkit-box-shadow: 10px 10px 5px #888;
 	box-shadow: 10px 10px 5px lightgray;
-	padding: 8px;
 	border: solid medium darkgrey;
-	padding: 0.7em;
-	font-size: 28px;
+	padding: 0.3em;
+	font-size: 20px;
 	color: #000099;
 	background: white;
 	line-height: 150%;
@@ -225,6 +255,17 @@ div.remark-notes {
 	padding-top: 8em;
 	font-size: 14px;
 }
+
+/* ---- TABLE -------------------------------- add border lines around cells */
+table {
+        margin-left: auto;
+        margin-right: auto;
+	border-collapse: collapse;
+}
+table td, table th {
+	border: 2px solid blue;
+}
+
 
 /* ---- FOOTNOTE INDICATOR -------------------------- (for use in body text) */
 ._ {
@@ -364,13 +405,24 @@ div.remark-notes {
         	color: blue;
 	}
 }
-/* ---- GRAPHIC ------------------------------- small preview of Info-Grapic */
+/* ---- GRAPHIC ------------------------------ small preview of Info-Graphic */
 div.infographic {
 	float: right;
 	width: 60%;
 	-webkit-transform-origin-x: 0%;
 	-webkit-transform-origin-y: 0%;
 	-webkit-transform: scale(0.3);
+	transform-origin: 0% 0%;
+	transform: scale(0.3);
+}
+
+/* ---- GRAPHIC ---------------------------------- full view of Info-Graphic */
+div.infographic-full {
+	-webkit-transform-origin-x: 0%;
+	-webkit-transform-origin-y: 0%;
+	-webkit-transform: scale(0.47);
+	transform-origin: 0% 0%;
+	transform: scale(0.47);
 }
 
 /* ---- INFOLINK -------------------- special area to link to a info-graphic */
@@ -394,21 +446,19 @@ div.infolink {
         height: 1.9em;
 	bottom: 12px;
         left: 40px;
-	right: 110px;
+	right: 130px;
 }
 
-@media screen {
-	.pagefooter:before {
-		content: "";
-		display: block;
-		background: url("logo-MW-12x12.png") no-repeat;
-		position: absolute;
-		bottom: -4.7em;
-		left: -3px;
-		width: 36mm;
-		height: 24mm;
-		float: left;
-	}
+.pagefooter:before {
+	content: "";
+	display: block;
+	background: url("logo-MW-12x12.png") no-repeat;
+	position: absolute;
+	bottom: -4.7em;
+	left: -3px;
+	width: 36mm;
+	height: 24mm;
+	float: left;
 }
 
 .pagefooter a:link {
@@ -467,7 +517,7 @@ div.infolink {
   -----------------------------------------------------------------------------
 */
 div.agenda li {
-	font-size: 0.85em;
+	/*font-size: 0.85em;*/
 }
 
 div.linkpage {
@@ -531,10 +581,10 @@ div.linkpage span.X {
 		-webkit-box-shadow: none;
 		box-shadow: none;
 	}
-}
 @page {
 	size: A4;
-	margin: 0;
+	margin-right: 1cm;
+}
 }
 
 /*
@@ -558,3 +608,4 @@ div.linkpage span.X {
 	float: right;
 	padding-top: 2em;
 }
+
