@@ -1,4 +1,4 @@
-// http://coliru.stacked-crooked.com/a/28201c30df7e03d1
+// http://coliru.stacked-crooked.com/a/ddc7f2f6c14732d4
 
 #include <iostream>
 
@@ -33,7 +33,7 @@ void classic_varargs() {
    
 
 namespace my {
-    void stream_all(std::ostream &os) {}
+//    void stream_all(std::ostream &os) {}
     template<typename T, typename... Ts>
     void stream_all(std::ostream &os, const T& arg, const Ts&... args) {
         os << arg;

@@ -1,4 +1,4 @@
-// http://coliru.stacked-crooked.com/a/858b38e592ff754f
+http://coliru.stacked-crooked.com/a/45634dc767e71332
 
 #include <iostream>
 
@@ -49,7 +49,7 @@ namespace my {
     
     template<>
     struct tuple<> {};
-#if 1
+#if 0
     #define ITH_TYPE_ONLY
     template<typename T1>
     struct tuple<T1> {
