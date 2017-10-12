@@ -2133,7 +2133,7 @@ enum Color : unsigned char {
 };
 
 int main() {
-    PX(static_cast<char>(Ajust::L)
+    PX(static_cast<char>(Adjust::L))
     …
     PX(R|B)
 }
@@ -2631,7 +2631,7 @@ int main() {
 }
 ```
 
-http://coliru.stacked-crooked.com/a/eaef38306c4db828
+http://coliru.stacked-crooked.com/a/2e2bc754de48c6d2
 
 * Explain (or even predict) the output.
 * Also explain Compile-Errors.
@@ -3130,7 +3130,7 @@ int main() {
 
 ```
 class primes {
-    std::vector<int> known = {3};
+    static std::vector<int> known;
     const std::size_t count;
 public:
     primes(int c) : count(c) {}
@@ -4007,7 +4007,7 @@ http://en.cppreference.com/w/cpp/utility/functional/reference_wrapper
 
 #### `std::cref` and `std::ref`
 
-* `std::ref` returns an `std::reference_wrapper`
+* `std::cref` returns an `std::reference_wrapper`
 
   - holding its argument as `const` (non-modifiable) reference
 
@@ -4015,7 +4015,7 @@ http://en.cppreference.com/w/cpp/utility/functional/reference_wrapper
 
   - and also improves performances for types expensive to copy
 
-* `std::cref` returns an `std::reference_wrapper`
+* `std::ref` returns an `std::reference_wrapper`
 
   - holding its argument as non-`const` (modifiable) reference
 
@@ -4671,7 +4671,7 @@ int main() {
 }
 ```
 
-http://coliru.stacked-crooked.com/a/57b243b26d57175c
+http://coliru.stacked-crooked.com/a/c83a1a2b8e7c0d86
 
 * Learn more about automatic conversions by adding to the code.
 
@@ -4719,9 +4719,9 @@ struct clazz {
 
 * `explicit` type cast operations to bool
 
-  - are still automatic in *boolean context*
+  - are still **automatic** in *direct boolean context*
 
-  - need to be carried out explicit otherwise
+  - and need to be carried out *explicit* otherwise
 
 ------------------------------------------------------------------
 
@@ -4736,21 +4736,24 @@ http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2007/n2333.html
 
 extern void fbool(bool);
 
-int main() {
-    clazz z;
-//  bool b{z};
-//  fbool(z);
-    fbool(bool(z));
-//  fbool(bool{z});
-    fbool((bool)z);
-    fbool(static_cast<bool>(z));
-    if (z) {}
-    if (!z) {}
-//  if (z == true) {}
+int main() {      
+    int i = 12;
+    clazz z;           // a "direct boolean context" is given when
+    bool b{z};         // initializing variable directly
+//  bool b2 = z;       // but NOT for copy initialization 
+//  fbool(z);          // also NOT when used as an argument, so
+    fbool(bool(z));              // some form of cast is required
+    fbool(bool{z});              // (... alternatively ...)
+    fbool((bool)z);              // (... alternatively ...)
+    fbool(static_cast<bool>(z)); // (... alternatively ...)
+    if (z) {}          // again a direct boolean context
+    if (!z) {}         // ... here too
+    if (i<10 && z) {}  // ... here too
+//  if (z == true) {}  // but NOT here (i.e. in a comparison)
 }
 ```
 
-* Understand the rules for **`explicit`** `operator bool()`.
+* Understand the rules for **`explicit`** `operator bool()` as outlined.
 * (Enable commented-out lines and watch the Compile Errors.)
 
 ---
@@ -4783,6 +4786,7 @@ name: final_and_override
 ```
 class clazz {
 public:
+    virtual void m1() const {}
  // virtual void m2() {}
     virtual void m2() final {}
  // void m3() override {}
@@ -4870,13 +4874,20 @@ name: unique_ownership
 
 * Technically `std::unique_ptr` is an RAII-wrapper for
 
-  - heap allocations with `new T` or `new T[N]`
+  - heap allocations with `new T` or `new T[N]`._[]
 
   - automating `delete` **or** `delete[]` operation
 
 * Performance and memory footprint same as for native pointer
 
 http://en.cppreference.com/w/cpp/memory/unique_ptr
+
+.F[:
+Note that **if the array dimension `N`** above is a compile time constant an
+`std::uniq_ptr` pointing to an `std::array<clazz, N>` is usually a good
+alternative to an array allocated on the heap and accessed through an
+`std::unique_ptr
+]
 
 ---
 
@@ -4901,7 +4912,7 @@ struct clazz {
 };
 ```
 
-http://coliru.stacked-crooked.com/a/fbef0dab3cdd9059
+http://coliru.stacked-crooked.com/a/ad52850bca02f25d
 
 * Understand how the above class (`clazz`) tracks c'tor and d'tor calls.
 * (The class is used in all of the `std::unique_ptr` examples.)
@@ -4926,7 +4937,7 @@ http://en.cppreference.com/w/cpp/memory/unique_ptr/make_unique
 
 ---
 
-##### Example: unique_pointer/demo.cpp
+##### Example (cont.): unique_pointer/demo.cpp
 
 ```
 std::unique_ptr<clazz> factory(int a, int b) {
