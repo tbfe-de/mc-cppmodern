@@ -81,7 +81,7 @@ namespace my {
     template<typename T, typename... Ts>
     auto cat_to_string(const std::string& sep, T&& arg, Ts&&... args) -> std::string {
         return to_string(std::forward<T>(arg))
-             + (sizeof...(args) ? sep + cat_to_string(sep, args...) : "");
+             + (sizeof...(args) ? sep + cat_to_string(sep, std::forward<Ts>(args)...) : "");
     }
 #else
     using namespace std::literals::string_literals;
@@ -111,7 +111,7 @@ namespace my {
     template<typename T, typename... Ts>
     auto cat_to_string(const std::string& sep, T&& arg, Ts&&... args) {
         return to_string(std::forward<T>(arg))
-             + (sizeof...(args) ? sep + cat_to_string(sep, args...) : "");
+             + (sizeof...(args) ? sep + cat_to_string(sep, std::foreward<Ts>(args)...) : "");
     }
 #endif
 }
