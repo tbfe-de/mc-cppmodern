@@ -1,4 +1,4 @@
-// http://coliru.stacked-crooked.com/a/751d1eea4423a98e
+// http://coliru.stacked-crooked.com/a/858b38e592ff754f
 
 #include <iostream>
 
@@ -49,7 +49,7 @@ namespace my {
     
     template<>
     struct tuple<> {};
-#if 0   
+#if 1
     #define ITH_TYPE_ONLY
     template<typename T1>
     struct tuple<T1> {
@@ -149,6 +149,7 @@ namespace my {
    
 }
 
+#ifndef ITH_TYPE_ONLY
 #include <string>
 #include <sstream>
 #include <utility>
@@ -170,7 +171,7 @@ namespace my {
     template<typename... Ts, std::size_t... Is>
     auto to_string_helper(const tuple<Ts...> &t, std::index_sequence<Is...> = std::index_sequence_for<Ts...>{}) {
         std::ostringstream s;
-    #if 0
+    #if __cplusplus < 201703L
         using left_to_right = int[];
         static_cast<void>(
             // only the side effects of the following are of interest
@@ -189,6 +190,7 @@ namespace my {
     }
 #endif
 }
+#endif
 
 void tuple_creation() {
     my::tuple<> t0;
