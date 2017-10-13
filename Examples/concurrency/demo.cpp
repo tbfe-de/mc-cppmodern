@@ -10,7 +10,7 @@ std::array<double, 100000> data;
 
 #include <algorithm>
 
-void async_demo() {
+void synchr_demo() {
 	auto result = std::accumulate(data.begin(), data.end(), 0.0);
 	PX(result);
 }
@@ -18,11 +18,13 @@ void async_demo() {
 #include <future>
 void async_2_demo() {
 	const auto split_point = data.begin() + data.size()/2;
-	auto lower = std::async([split_point] {
-		return std::accumulate(data.begin(), split_point, 0.0);
+	auto lower = std::async(std::launch::async,
+		[split_point] {
+			return std::accumulate(data.begin(), split_point, 0.0);
 	});
-	auto upper = std::async([split_point] {
-		return std::accumulate(split_point, data.end(), 0.0);
+	auto upper = std::async(std::launch::async,
+		[split_point] {
+			return std::accumulate(split_point, data.end(), 0.0);
 	});
 	auto result = lower.get() + upper.get();
 	PX(result);
@@ -30,15 +32,18 @@ void async_2_demo() {
 
 constexpr auto NTHREAD = 4;
 void async_n_demo() {
-	constexpr auto chunk = data.size() / NTHREAD;
 	std::array<std::future<double>, NTHREAD> part;
 	auto split_point = data.cbegin();
+	auto worker = [](auto from, auto upto) {
+		return std::accumulate(from, upto, 0.0);
+	};
 	for (auto &e : part) {
+		constexpr auto chunk = (data.size()%4 != 0)
+				? data.size()/NTHREAD + 1
+				: data.size()/NTHREAD;
 		const auto next_split = ((data.cend() - split_point) < chunk)
 					? data.cend() : split_point + chunk;
-		e = std::async([split_point, next_split] {
-			return std::accumulate(split_point, next_split, 0.0);
-		});
+		e = std::async(std::launch::async, worker, split_point, next_split);
 		split_point = next_split;
 	}
 	auto result = 0.0;
@@ -49,28 +54,30 @@ void async_n_demo() {
 
 #include <atomic>
 void async_x_demo() {
-	constexpr auto chunk = data.size() / NTHREAD;
+	std::atomic_bool die{false};
+	auto worker = [&die](auto from, auto upto) {
+		return std::accumulate(from, upto, 0.0,
+			[&die](auto partial_sum, auto e) {
+			using namespace std::literals::string_literals;
+				if (die)
+					throw "stopping prematurely"s;
+				if (e < 0.0) {
+					die = true;
+					throw "bad data: "s + std::to_string(e);
+				}
+				return partial_sum + e;;
+			});
+	};
 	std::array<std::future<double>, NTHREAD> part;
 	auto split_point = data.cbegin();
-	std::atomic_bool die{false};
-//	data.at(1*data.size()/8) = -1.0;
+//	data.at(3*data.size()/8) = -1.0;
 	for (auto &e : part) {
+		constexpr auto chunk = (data.size()%4 != 0)
+				? data.size()/NTHREAD + 1
+				: data.size()/NTHREAD;
 		const auto next_split = ((data.cend() - split_point) < chunk)
 					? data.cend() : split_point + chunk;
-		e = std::async([split_point, next_split, &die] {
-			double part_result = 0.0;
-			std::for_each(split_point, next_split,
-				 [&part_result, &die](auto e) {
-					using namespace std::literals::string_literals;
-					if (die)
-						throw "stopping prematurely"s;
-					if (e < 0.0) {
-						throw "bad data: "s + std::to_string(e);
-					}
-					part_result += e;
-			});
-			return part_result;
-		});
+		e = std::async(std::launch::async, worker, split_point, next_split);
 		split_point = next_split;
 	}
 	double result{};
@@ -80,7 +87,6 @@ void async_x_demo() {
 		}
 		catch (const std::string& err) {
 			PX(err);
-			die = true;
 		}
 	}
 	if (!die) PX(result);
@@ -95,17 +101,16 @@ void mutex_demo() {
 	auto worker = [&]() {
 		auto part_result = 0.0;
 		while (progress < data.end()) {
- 			constexpr std::size_t chunk = 100;
 		        progress_update.lock();
 			const auto split_point = progress;
+ 			constexpr std::size_t chunk = 4096;
 			const auto next_split = ((data.cend() - split_point) < chunk)
                  				? data.cend() : split_point + chunk;
 			progress = next_split;
         		progress_update.unlock();
        			const auto r = std::accumulate(split_point, next_split, 0.0);
-        		result_update.lock();
+        		std::unique_lock<std::mutex> lock(result_update);
 			result += r;
-        		result_update.unlock();
 		}
 	};
 	std::array<std::future<void>, NTHREAD> part;
@@ -162,7 +167,7 @@ void queue_demo() {
 	std::array<std::future<double>, NTHREAD> part;
 	for (auto &e : part)
 		e = std::async(std::launch::async, worker);
-               	// NOTE THIS:  ^^^^^^^^^^^^^^^^^^ (might block otherwise)
+               	// IMPORTANT:  ^^^^^^^^^^^^^^^^^^ (might block otherwise)
 	for (auto e : data)
 		buf.put(e);
 	buf.close();
@@ -178,10 +183,10 @@ void atomic_demo() {
 	auto worker = [&]() {
 		auto part_result = 0.0;
 		while (progress < data.size()) {
- 			constexpr std::size_t chunk = 100;
 			std::size_t beg = progress.load();
 			std::size_t end;
 			do {
+ 				constexpr std::size_t chunk = 4096;
 				end = ((data.size() - beg) < chunk)
                  			? data.size() : beg + chunk;
 			} while (!progress.compare_exchange_weak(beg, end));
@@ -194,20 +199,31 @@ void atomic_demo() {
 	};
 	std::array<std::future<void>, NTHREAD> part;
 	for (auto &e : part)
-		e = std::async(worker);
+		e = std::async(std::launch::async, worker);
 	for (auto &e : part)
 		e.get();
 	PX(result);
+}
+
+void task_demo() { // TO-DO
+	// implement workers as packaged task,
+	// explicitly using promises and futures
+}
+
+void thread_demo() { // TO-DO
+	// run workers as low-level threads
 }
 	
 int main() {
 	std::cout.setf(std::ios::boolalpha);
 	std::iota(data.begin(), data.end(), 0);
-	async_demo();
+	synchr_demo();
 	async_2_demo();
 	async_n_demo();
 	async_x_demo();
 	mutex_demo();
 	queue_demo();
 	atomic_demo();
+//	task_demo();
+//	thread_demo();
 }

@@ -1,4 +1,4 @@
-http://coliru.stacked-crooked.com/a/45634dc767e71332
+// http://coliru.stacked-crooked.com/a/45634dc767e71332
 
 #include <iostream>
 
@@ -114,7 +114,7 @@ namespace my {
     };
     #endif
 //  ------------------------------------------
-#else
+#elif 0 // tuple with data recursion via member
     template<typename T1, typename... Ts>
     struct tuple<T1, Ts...> {
         T1 m1;
@@ -137,6 +137,33 @@ namespace my {
     }
     template<std::size_t I, typename T>
     auto get(const T& arg) -> typename std::enable_if<I == 0, typename ith_type<I, T>::type>::type {
+        return arg.m1;
+    }
+#else // tuple with data recursion via base class
+    template<std::size_t I, typename T>
+    struct ith_type;
+    template<typename T1, typename... Ts>
+    struct tuple<T1, Ts...> : private tuple<Ts...> {
+        T1 m1;
+        tuple(const T1& m1_, const Ts&... ms_) : m1(m1_), tuple<Ts...>(ms_...) {}
+        template<std::size_t I_, typename T_, typename... Ts_>
+        friend
+        auto get(const tuple<T_, Ts_...>&) -> typename ith_type<I_, tuple<T_, Ts_...>>::type;
+    };
+    template<std::size_t I, typename T1, typename... Ts>
+    struct ith_type<I, tuple<T1, Ts...>> {
+        using type = typename ith_type<I-1, tuple<Ts...>>::type; 
+    };
+    template<typename T1, typename... Ts>
+    struct ith_type<0, tuple<T1, Ts...>> {
+        using type = T1;
+    };
+    template<std::size_t I, typename T, typename... Ts>
+    auto get(const tuple<T, Ts...>& arg) -> typename std::enable_if<I != 0, typename ith_type<I, tuple<T, Ts...>>::type>::type {
+        return get<I-1>(static_cast<const tuple<Ts...> &>(arg));
+    }
+    template<std::size_t I, typename T, typename... Ts>
+    auto get(const tuple<T, Ts...>& arg) -> typename std::enable_if<I == 0, typename ith_type<I, tuple<T, Ts...>>::type>::type {
         return arg.m1;
     }
 
