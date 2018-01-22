@@ -2,7 +2,7 @@
 
 #include "rectangular_coord.h"
 
-PN_(Some Basic Tests of `my::rectangular_coord`)
+PN_(Some Basic Tests of my::rectangular_coord)
 
 #include <cmath>
 

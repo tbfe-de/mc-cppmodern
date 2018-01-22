@@ -1,6 +1,6 @@
 #include "../pxtn.h"
 
-PN_(Some Basic Tests of `my::lenth`)
+PN_(Some Basic Tests of `my::length`)
 
 #include "length.h"
 
@@ -25,4 +25,11 @@ int main() {
 
 	std::cout.precision(2);
 	PX_("0.16", ((equator_length + one_meter)/(2*PI) - earth_radius).value());
+
+	std::cout.precision(4);
+	PX_("0.9746", (one_meter - one_inch).value());
+
+	using my::operator"" _m;
+	using my::operator"" _inch;
+	PX_("0.9746", (1_m - 1_inch).value());
 }

@@ -1,10 +1,10 @@
 #include "pxtn.h"
 
+PN_(A Basic Demo of TDD ...)
+
 int main() {
-	const auto &v1 = 123;
-	auto &v2 = v1;
-	PX(v1);
-	PX(v2);
-	PX(++v2);
-	PX(v1);
+	PX_("true", true);
+	std::cout.setf(std::ios::boolalpha);
+	PX_("true", true);
+	PT_("int", bool);
 }	
