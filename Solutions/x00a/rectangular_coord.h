@@ -22,14 +22,14 @@ namespace my {
 		auto y() const {
 			return _y;
 		}
-		auto xy(value_type x, const value_type y) {
+		void xy(value_type x, value_type y) {
 			_x = x;
 			_y = y;
 		}
-		auto x(value_type x) {
+		void x(value_type x) {
 			_x = x;
 		}
-		auto y(value_type y) {
+		void y(value_type y) {
 			_y = y;
 		}
 	};

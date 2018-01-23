@@ -1,12 +1,13 @@
-#include "../pxtn.h"
+#include "pxtn.h"
 
-PN_(Some Basic Tests of `my::lenth`)
+PN_(Some Basic Tests of `my::length`)
 
 #include "length.h"
 
 #include <cmath>
 
 int main() {
+
 	std::cout.setf(std::ios::fixed);
 	std::cout.precision(4);
 	constexpr auto PI = 2*std::acos(0.0);

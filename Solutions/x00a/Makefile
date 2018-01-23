@@ -1,4 +1,4 @@
-COMPILE_CPP = g++ -std=c++14
+COMPILE_CPP = g++ -std=c++14 -I..
 
 ALL_TESTS =\
 	length_test\
