@@ -1,0 +1,100 @@
+		Die etwas kürzere Übung für nach der Mittagspause
+		=================================================
+
+Schreiben Sie eine Template-Klasse `my::fixarray` welche ein Array fester Größe
+auf dem Heap anlegt.
+
+GENAU WIE  beim `std::array` ist die Klasse der Elemente eingeschränkt
+           hinsichtlich dessen, dass diese einen Default-Konstrukor besitzen
+	   muss und direkt beim Anlegen alle Elemente mit diesem initialisiert
+	   werden.
+
+ANDERS ALS beim `std::array` muss die Anzahl der Elemente aber NICHT schon zur
+           Compilezeit sondern erst zur Laufzeit festgelegt werden. 
+
+ANDERS ALS beim `std::vector` soll die Implementierung NUR EINEN
+           `std::unique_ptr` sowie die Anzahl der Elemente speichern.
+
+= = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
+
+Schritt 1:
+
+Beginnen Sie mit folgendem Minimalumfang indem Sie dort die mit ?? TO-DO ??
+markierten Stellen ergänzen … oder auch löschen, wenn sie überflüssig sind.
+
+#include <memory>
+
+namespace my {
+	template<typename T>
+	class fixarray {
+		const std::unique_ptr<T[]> arr;
+		const std::size_t sz = ?? TO-DO ??
+	public:
+		fixarray(std::size_t s)
+			: arr{new ?? TO-DO ??}, sz{?? TO-DO ??}
+		{}
+		fixarray(const fixarray&)            ?? TO-DO ??
+		fixarray(fixarray&&)                 ?? TO-DO ??
+		fixarray()                           ?? TO-DO ??
+		~fixarray()                          ?? TO-DO ??
+		fixarray& operator=(const fixarray&) ?? TO-DO ??
+		fixarray& operator=(fixarray&&)      ?? TO-DO ??
+		
+		auto size() const { return sz; }
+
+		T& operator[](std::size_t idx) {
+			return arr[idx];
+		}
+		const T& operator()(std::size_t idx) const {
+			return arr[idx];
+		}
+
+		T* data() { return arr.get(); }
+		const T* data() const { return arr.get(); };
+	};
+}
+
+Fragen:
+1. Braucht die obige Klasse noch einen Destruktor?
+2. Sollte man für die obige Klasse den "Copy-Constructor" und "-Assignment"
+   sicherheitshalber verbieten?
+3. Muss man für die obige Klasse den "Move-Constructor" und "-Assignment" –
+   wenn gewünscht – selbst implentieren?
+4. Warum ist sind die Member-Funktionen `operator[]` und `data` zweimal mit
+   (scheinbar) ein und derselben Implementierung vorhanden?
+
+= = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
+
+Schritt 2:
+
+Schreiben Sie dann einige Tests ähnlich den folgenden:
+
+// COLIRU => http://coliru.stacked-crooked.com/a/66bf5ba65a057092
+
+#include <cassert>
+
+int main() {
+	my::fixarray<double> a{3};	assert(a.size() == 3);
+	a[0] = 2.5;			assert(a[0] == 2.5);
+	a[1] = a[0]/2;			assert(a[1] == 1.25);
+	a[2] = a[0] + a[1];		assert(a[2] == 3.75);
+					assert(*a.data() == 2.5);
+}
+
+= = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
+
+Schritt 3:
+
+Fügen Sie nun weitere Member-Funktionen hinzu, die bei STL-Containern üblich
+sind, z.B.
+
+* `at()` für den Zugriff mit Indexprüfung;
+* Kopierkonstruktor und Zuweisung zwischen zwei Objekten der Klasse (dabei aber
+  die mögicherweise unterschiedliche Größe beachten!);
+* eine Standard-Iteratorschnittstelle damit die Klasse mit STL-Algorithmen
+  und der bereichsbasierten `for`-Schleife verwendet werden kann;
+* … und ggf. noch mehr …
+
+Und natürlich auch: fügen Sie einige Tests für alle Features hinzu,
+die sie implementieren. (TDD wäre: Sie fügen ERST den Test hinzu,
+also was die Klasse unterstützen SOLL, und implementieren erst DANN).

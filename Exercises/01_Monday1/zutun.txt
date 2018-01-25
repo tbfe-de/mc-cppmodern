@@ -1,0 +1,86 @@
+		Die etwas kürzere Übung für nach der Mittagspause
+		=================================================
+
+Wiederholungen zum Thema `const` (noch C++98, nicht C++11)
+
+Schulungsunterlage Seite 52:
+----------------------------
+
+Demonstrieren (und erklären) Sie mit Hilfe des Coliru-Beispiels
+
+(a) durch Entfernen des Kommentars in der Zeile mit `PX(++::v)` dass die
+    GLOBALE Variable `v` unveränderbar ist (= Compile-Fehler); 
+
+(b) dass die über `const_cast` erzwungene Änderung an der LOKALEN Variablen
+    `v` beim DIREKTEN Zugriff nicht sichtbar ist, wohl aber beim Zugriff über
+    Zeiger;
+
+(c) durch Auskommentieren der Zeile, in der die LOKALE Variable `v` vereinbart
+    ist, dass das per `const_cast` erzwungene Inkrement der GLOBALEN Variablen
+    `v` zum Programmabsturz führt.
+
+Schulungsunterlage Seite 54:
+----------------------------
+
+Demonstrieren (und erklären) Sie mit Hilfe des Coliru-Beispiels
+
+(a) dass `const` bei VERÄNDERNDEN Memberfunktionen (wie den "Settern" für `x`
+    und `y` sowie `shift_x` und `shift_y`) einen Compile-Fehler auslöst;
+
+(b) ebenso die Verwendung einer `const`-Referenz beim ersten Argument der
+    globalen Funktion `shift_xy`.
+
+= = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
+
+OPTIONAL Wiederholung zum Thema `mutable` vs. `const_cast`
+
+Schulungsunterlage Seite 55:
+----------------------------
+
+Demonstrieren Sie mit Hilfe des Coliru-Beispiels
+
+(a) dass das ENTFERNEN von `mutable` bei `radius`, `angle` und `mod` zunächst
+    zu einem Compile-Fehler IN der Funktion `sync_ra` führt
+
+(b) der zwar dadurch beseitigt werden kann, dass man bei `sync_ra` den Zusatz
+    `const` entfernt …
+
+(c) … was nun aber zu einem Compile-Fehler an den AUFRUF-Stellen von `sync_ra`
+   führt …
+
+(d) … den man wiederum beseitigen kann, indem man `sync_ra` mit einem explizit
+    vorangestellten `this->` aufruft, dem per `const_cast` das `const`
+    weggenommen wurde.
+ 
+= = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
+
+C++11 Thematik `constexpr`
+
+Schulungsunterlage Seite 57:
+----------------------------
+
+(a) Kompilieren Sie das Coliru-Beispiel mit C++11 und C++14. 
+
+(b) Zeigen Sie, dass die Variable `x` auch `constexpr` sein kann.
+
+(c) Verwenden Sie `auto` an weiteren Stellen, an denen das möglich ist, sowohl
+    für Variablen, als auch für Funktionsergebnisse.
+
+Schulungsunterlage Seite 59:
+----------------------------
+
+Demonstrieren (und erklären) Sie mit Hilfe des Coliru-Beispiels
+
+(a) dass `circle_area` und `sphere_surface` nur dann `constexpr` sein können,
+    wenn auch `PI` `constexpr` ist,
+
+(b) dies aber NUR der Kompilierung mit `g++` möglich ist, NICHT aber mit
+    `clang++` …
+
+(c) … es sei denn, Sie initialisieren die Variable mit dem Literal 3.14159.
+
+Zusatzfrage: wie groß ist der Unterschied zwischen dem Wert `3.14159` und dem
+genaueren Wert, den `2*std::acos(0.0)` liefert, wie groß ist der Unterschied
+zu `2*std::acos(0.0f)` sowie `2*std::acos(0.0L)` und warum unterscheiden sich
+diese Werte überhaupt?
+

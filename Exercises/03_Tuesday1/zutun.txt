@@ -1,0 +1,53 @@
+		Die etwas kürzere Übung für nach der Mittagspause
+		=================================================
+
+Schreiben Sie einen Ausgabeoperator für "Initializer-Listen".
+
+Falls notwendig, zur Erinnerung: Ein klassenspezifischer Ausgabeoperator ist
+prinzipiell wie folgt zu definieren:
+
+std::ostream& operator<<(std::ostream& lhs, ?? TO-DO ??) {
+	??
+	?? ... TO-DO ...
+	??
+	return lhs;
+}
+
+Gemäß den "TO-DO"s ist oben sowohl das Übergabeargument zu definieren
+(i.d.R.  als konstante Referenz übergeben, da es durch die Ausgabe nicht
+verändert werden soll) wie auch die eigentliche Implementierung.
+
+Sie können sich bezüglich letzterer am Code auf Seite 127 der Kursunterlagen
+orientieren, jedoch mit der Abwandlung, dass Sie die Ausgaben NICHT erst im
+Hilfs-Stream `result` aufsammeln sondern direkt an `lhs` senden.
+
+(Tipp: Wenn Sie die Seite 127 im Browser darstellen, können Sie den dortigen
+Code einfach mit Copy&Paste in den Editor übernehmen.)
+
+Schritt 1:
+
+Beginnen Sie mit einem festden Datentyp, z.B. `int` OHNE Templates und testen
+Sie folgende Verwendung:
+
+	auto li1 = { 2, 3, 5, 7, 1, 13, 17, 1 };
+	std::cout << l1 << std::endl;
+Und:
+	auto li2 = { 'a', 'b', 'c' };
+	std::cout << li2 << std::endl;
+
+Schritt 2:
+
+Ändern Sie den Typ der Listen-Elemente manuell (also immer noch OHNE aus dem
+Ausgabeoperator eine Template zu machen) von `int` in `double` und testen Sie
+mit
+	auto li3 = { 1.0, 1.414, 1.732, 2.0 };
+	std::cout << li3 << std::endl;
+
+Machen Sie aus dem Ausgabe-Operator nun eine Template in Bezug auf den
+Element-Typ (`T`) der Initializer-Liste:
+
+Statt `std::initializer_list<int>` oder `std::initializer_list<double>`
+soll es nun `std:initializer_list<T>` heißen.
+
+Testen Sie abschließend erneut mit den obigen Testfällen.
+

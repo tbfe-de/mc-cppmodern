@@ -1,0 +1,5 @@
+		Die etwas längere Übung für den Abschluss des Tages
+		===================================================
+
+Realsieren Sie eine einfache Form des Entwurfsmusters: "Publisher/Subscriber"
+

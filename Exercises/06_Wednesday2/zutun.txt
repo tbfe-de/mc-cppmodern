@@ -1,0 +1,30 @@
+		Die etwas längere Übung für den Abschluss des Tages
+		===================================================
+
+Schritt 1:
+
+(1) Zeigen Sie durch Anlegen von zwei Flughäfen und einer Verbindung zwischen
+    diesen dass nun insgesamt 3 Objekte existieren.
+(2) Löschen Sie die Flughäfen wieder und zeigen Sie, dass für diese nun zwar
+    keine Verbidnungen mehr aufgelistet werden, dennoch die dafür erzeugten
+    `Airport`-Objekte nicht weggeräumt wurden. (Warum ist das der Fall?)
+(3) Löschen Sie nun auch die Verbindung und zeigen Sie, dass damit weder das
+    `Connection`-Objekt, noch die `Airport`-Objekte weggeräumt wurden.
+
+= = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
+
+Schritt 2:
+
+Beseitigen Sie die potenziellen Memory-Leak im "Airtravel" Programm indem Sie
+
+* ENTWEDER in der Klasse `Airport`
+* ODER in der Klasse `Connection`
+
+die dort verwendeten `std::shared_ptr` (auf die jeweils andere Klasse) durch
+`std::weak_ptr` ersetzen.
+
+Da die gegenseitigen Verweise allerdings einen Zweck erfüllen, müssen Sie dabei
+auch eine Lösung für den Fall finden, dass aus dem `std::weak_ptr` u.U.  kein
+`std::shared_ptr` mehr gemacht werden kann, weil das ursprünglich referenzierte
+Objekt mittlerweile gelöscht wurde!
+
