@@ -2707,7 +2707,7 @@ name: uniform_initialisation
 
     - … and probably will so for a long time
 
-  - Therefore whether this [simplifies initilisation](#brace_initialisation)
+  - Therefore whether this [simplifies initialisation](#brace_initialisation)
     is questionable
 
 .N.center[
@@ -5006,19 +5006,22 @@ http://en.cppreference.com/w/cpp/memory/unique_ptr/operator_bool
 ```
 int main() {
     {
-        auto ptr = std::make_unique<clazz>();
-        PX(ptr.get());
-        auto pt2 = std::make_unique<clazz>(6*7);
-        PX(pt2.get());
+        std::unique_ptr<my::clazz> ptr;
+        PX((bool)ptr); PX(ptr.get());
+        ptr = std::make_unique<my::clazz>();
+        PX((bool)ptr); PX(ptr.get());
+        auto pt2 = std::move(ptr);
+        PX((bool)pt2); PX(pt2.get());
+        PX((bool)ptr); PX(ptr.get());
+        pt2 = nullptr;
+        PX((bool)pt2); PX(pt2.get());
     }
-    std::unique_ptr<clazz[]> arr;
-    PX(arr.get());
-    
-    arr = std::make_unique<clazz[]>(std::size_t{3});
-    PX(arr.get());  PX(&arr[0]);  PX(&arr[1]); PX(&arr[2]);
-    
-    arr = std::make_unique<clazz[]>(std::size_t{2});
-    PX(arr.get());  PX(&arr[0]);  PX(&arr[1]); 
+    #if (__cplusplus >= 201402L)
+    auto arr = std::make_unique<my::clazz>();
+    PX((bool)arr); PX(arr.get());
+    arr = nullptr;
+    PX((bool)arr); PX(arr.get());
+    #endif
 }
 ```
 ---
@@ -5512,21 +5515,21 @@ http://en.cppreference.com/w/cpp/memory/enable_shared_from_this/shared_from_this
 
 ```
 struct clazz : public std::enable_shared_from_this<clazz> {
-//  std::shared_ptr<clazz> get_self() {return shared_from_this();}
-    using std::enable_shared_from_this<clazz>::shared_from_this;
 #define P(t)\
     std::cout << "\t=> my::clazz " t << this << std::endl;
     clazz()                 {P("default c'tor")}
     ~clazz()                {P("d'tor")}
 #undef P
+    std::shared_ptr<clazz> get_self() {return shared_from_this();}
+//  using std::enable_shared_from_this<clazz>::shared_from_this;
 };
 
 int main() {
     auto ptz = std::make_shared<clazz>();
     PX(ptz.get()); PX(ptz.use_count()); PX(ptz.unique());
     
-//  auto pts = ptz->get_self();
-    auto pts = ptz->shared_from_this();
+    auto pts = ptz->get_self();
+//  auto pts = ptz->shared_from_this();
     PX(pts.get()); PX(pts.use_count()); PX(pts.unique());
 }
 ```
@@ -6464,7 +6467,9 @@ Much extended versatility with respect to calendar dates is offered by this appr
 https://github.com/HowardHinnant/date  
 (If you are willing to spend an hour of your time to get an overview you might want
 to watch [this comprehensive talk](https://www.youtube.com/watch?v=tzyGjOm8AKo) by
-the library's author (Howard Hinnant).
+the library's author (Howard Hinnant). Alternatively you might want to listen to
+this [10 minutes rant](https://www.youtube.com/watch?v=-5wpm-gesOY) covering much
+of the craziness of world-wide time zones.
 ]
 
 ---
@@ -7011,6 +7016,11 @@ copy **and** move constructor of `my::clazz`.
 http://en.cppreference.com/w/cpp/container/unordered_set
 
 http://en.cppreference.com/w/cpp/container/unordered_map
+
+.F[:
+For a general overview over hash-based storage you may want to read this:  
+https://en.wikipedia.org/wiki/Hash_table
+]
 
 ---
 
