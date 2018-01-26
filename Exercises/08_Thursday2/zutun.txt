@@ -1,0 +1,66 @@
+		Die etwas etwas längere Übung zum Abschluss des Tages
+		=====================================================
+
+Ein (fiktives) System soll den ganzen über Tag durchlaufen und bekommt alle
+paar Minuten einen Block von `N` neuen Datenwerten. Diese werden in einer
+Datenstruktur ablegelegt, die leicht durchsuchbar sein soll, z.B. ein
+`std::multiset` oder ein `std::vector` (wobei letzterer nach dem Anfügen von
+eines neuen Blocks von Werten jeweils wieder sortiert sein muss).
+
+Schreiben Sie eine Simulation, welche die möglichen Performance-Vorteile
+dieser Lösungsvarianten vergleicht.
+
+In einer ÄUSSEREN Schleife, die jeweils `X`-Mal ausgeführt wird, generieren
+Sie jeweils `N` Zufallszahlen und hängen diese an die bereits gespeicherten
+Daten an.
+
+Verwenden Sie für das Einfügen `std::generate_n`. Ein typische Fallgrube dabei
+ist, dass `std::generate_n` sein den Generator, der als drittes Argument zu
+übergebenen ist, intern kopiert und somit dessen Zustandsänderungen sich nur
+auswirken, wenn er als Referenz übergeben wird. Dazu ist entweder ein Lambda
+
+	std::generate_n( ... , N, [&gen]{ return gen(); });
+
+erforderlich oder der auch von `std::bind` bekannte Referenz-Wrapper:
+
+	std::generate_n( ... , N, std::ref(gen));
+
+(Jeweils unter der Annahme, dass der Generator als `std::mt1997 gen;`
+vereinbart wurde und dessen voller Wertebereich benutzt wird.)
+
+Nehmen Sie in dieser äußeren Schleife eine Zeitemessung vor unter Benutzung
+der `std::high_resolution_clock` und geben Sie am Ende folgende drei Zeiten
+aus:
+	Einfügen der `N`-Werte im den ERSTEN der `X` Durchläufe
+	Einfügen der `N`-Werte im den LETZTEN der `X` Durchläufe
+	Gesamtzahl aller Durchläufe (= Einfügen von `N*X` Werten)
+
+Schritt 1:
+
+Wählen Sie zur Speicherung ein `std::multiset`.
+
+Schritt 2:
+
+Wählen Sie zur Abspeicherung einen `std::vector` und sortieren Sie diesen
+jeweils NACH dem Anhängen des Blocks von `N` Werten KOMPLETT.
+
+Schritt 3:
+
+Ähnlich Schritt 2, aber sortieren Sie immer nur den NEU ANGHÄNGTEN Datenblock
+und benutzen Sie anschließend `std::inplace_merge` um diesen mit dem bereits
+früher sortierten Bereich zusammenzufassen.
+
+Schritt 4:
+
+Was verändert sich, wenn evtl. doppelt auftetende Datenwerte nicht doppelt
+angespeichert werden sollen?
+
+* Welche Änderungen sind an der `std::multiset`-basierten Lösung erforderlich?
+* Welche Änderungen sind an der `std::vector`-basierten Lösung erforderlich?
+
+Des weiteren: wie ist die Generierung der Testdaten-Blöcke anzupassen, damit
+man den Anteil von mehfach generierten Werten beeinflussen kann?
+
+(Fügen Sie eine Kontrollausgabe am Ende hinzu, die zeigt, dass insgesamt
+weniger als `N*X` Datenwerte gespeichert wurden.)
+

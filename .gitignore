@@ -1,0 +1,7 @@
+a.out
+core
+*.o
+.project
+.cproject
+.settings
+*_test
