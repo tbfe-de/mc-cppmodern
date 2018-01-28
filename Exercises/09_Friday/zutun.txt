@@ -1,0 +1,40 @@
+		Eine etwas kürzere Übung für Freitag zum Abschluss
+		==================================================
+
+Hier geht es abschließend um eine Demonstration der fortgeschrittenen Nutzung
+von Templates.
+
+= = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
+
+1. Teil:
+
+Demonstrieren Sie wie eine Template Typ und Anzahl der Elemente eines Arrays
+(= "native C-Style array") aufgreifen kann, z.B. um diese durchnummeriert
+auszugeben:
+
+Eine Funktion `print_native_array` soll dafür lediglich mit dem NAMEN des
+Arrays aufgerufen werden, die Anzahl der Elemente und der Typ soll nicht in der
+Parameterliste erscheinen.
+
+= = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
+
+2. Teil:
+
+Untersuchen Sie wie effizient ein solcher Ansatz ist, wenn sehr viele derartige
+Arrays ausgegeben werden, bei denen – wie das in der Praxis oft der Fall ist –
+nur die ANZAHL der Elemente nicht aber deren Typ variiert.
+
+= = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
+
+3. Teil:
+
+Schreiben Sie eine TYPSICHERE VARIADISCHE Funktion, die mit einer beliebigen
+Anzahl von Argumenten unterschiedlichen Typs aufgerufen werden kann und diese
+durchnummeriert ausgibt.
+
+Zusatzfrage:
+
+Wie sieht es hier mit der Effizienz aus und welcher alternative Ansatz ist
+möglich, wenn alle Argumente denselben Typ haben oder in einen einheitlichen
+Typ umwandelbar sind?
+

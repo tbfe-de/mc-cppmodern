@@ -1,3 +1,9 @@
+###############################################################################
+#             Die Musterlösungen hierfür werden noch nachgeliefert,           #
+#    eventuell auch mit einer geringfügig angepassten Aufgabenbeschreibung.   #
+#              Bitte sehen Sie in ein paar Tagen noch einmal nach.            #
+###############################################################################
+
 		Die etwas längere Übung für den Abschluss des Tages
 		===================================================
 
@@ -27,4 +33,3 @@ Da die gegenseitigen Verweise allerdings einen Zweck erfüllen, müssen Sie dabe
 auch eine Lösung für den Fall finden, dass aus dem `std::weak_ptr` u.U.  kein
 `std::shared_ptr` mehr gemacht werden kann, weil das ursprünglich referenzierte
 Objekt mittlerweile gelöscht wurde!
-

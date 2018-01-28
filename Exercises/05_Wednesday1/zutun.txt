@@ -1,3 +1,9 @@
+###############################################################################
+#             Die Musterlösungen hierfür werden noch nachgeliefert,           #
+#    eventuell auch mit einer geringfügig angepassten Aufgabenbeschreibung.   #
+#              Bitte sehen Sie in ein paar Tagen noch einmal nach.            #
+###############################################################################
+
 		Die etwas kürzere Übung für nach der Mittagspause
 		=================================================
 
