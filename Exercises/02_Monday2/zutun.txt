@@ -6,6 +6,8 @@ ieiner IDE arbeiten wollen) und erzeugen Sie das Ziel "all" (in Eclipse Default
 beim Klick auf das "Hammer"-Symbol, bzw. an der Kommandozeile in einem Terminal
 einfach `make` eingeben).
 
+= = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
+
 1. Teil:
 
 Klasse `my::length` in Datei `length.h`
@@ -24,6 +26,8 @@ verwenden – ansonsten müssten sie `friend`s sein).
 
 Passen Sie die Testfälle so an, dass diese die neuen Suffixe verwenden.
 
+= = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
+
 2. Teil:
 
 Klasse `my::rectangular_coord` in `rectangular_coord.h` und zugehörige Testfälle
@@ -35,6 +39,8 @@ wird, und zum anderen im Hinblick auf die verwendeten C++11 und C++14 Features.
 (Wenn Sie besonderen Fleiß beweisen wollen, können Sie auch den Code auf den
 C++98 Standard "zurückdrehen", aber der Lerneffekt dabei dürfte eher gering
 sein …)
+
+= = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
 
 3. Teil:
 

@@ -17,7 +17,7 @@ ANDERS ALS beim `std::vector` soll die Implementierung NUR EINEN
 
 = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
 
-Schritt 1:
+1. Teil:
 
 Beginnen Sie mit folgendem Minimalumfang indem Sie dort die mit ?? TO-DO ??
 markierten Stellen ergänzen … oder auch löschen, wenn sie überflüssig sind.
@@ -65,7 +65,7 @@ Fragen:
 
 = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
 
-Schritt 2:
+2. Teil
 
 Schreiben Sie dann einige Tests ähnlich den folgenden:
 
@@ -83,7 +83,7 @@ int main() {
 
 = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
 
-Schritt 3:
+3. Teil:
 
 Fügen Sie nun weitere Member-Funktionen hinzu, die bei STL-Containern üblich
 sind, z.B.
@@ -95,6 +95,6 @@ sind, z.B.
   und der bereichsbasierten `for`-Schleife verwendet werden kann;
 * … und ggf. noch mehr …
 
-Und natürlich auch: fügen Sie einige Tests für alle Features hinzu,
-die sie implementieren. (TDD wäre: Sie fügen ERST den Test hinzu,
-also was die Klasse unterstützen SOLL, und implementieren erst DANN).
+Und natürlich auch: fügen Sie einige Tests für alle Features hinzu, die sie
+implementieren. (TDD wäre: Sie fügen ERST den Test hinzu, also was die Klasse
+unterstützen SOLL, und implementieren erst DANN.)

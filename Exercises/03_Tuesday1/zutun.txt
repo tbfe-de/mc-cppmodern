@@ -24,7 +24,7 @@ Hilfs-Stream `result` aufsammeln sondern direkt an `lhs` senden.
 (Tipp: Wenn Sie die Seite 127 im Browser darstellen, können Sie den dortigen
 Code einfach mit Copy&Paste in den Editor übernehmen.)
 
-Schritt 1:
+1. Teil:
 
 Beginnen Sie mit einem festden Datentyp, z.B. `int` OHNE Templates und testen
 Sie folgende Verwendung:
@@ -35,7 +35,7 @@ Und:
 	auto li2 = { 'a', 'b', 'c' };
 	std::cout << li2 << std::endl;
 
-Schritt 2:
+2. Teil:
 
 Ändern Sie den Typ der Listen-Elemente manuell (also immer noch OHNE aus dem
 Ausgabeoperator eine Template zu machen) von `int` in `double` und testen Sie

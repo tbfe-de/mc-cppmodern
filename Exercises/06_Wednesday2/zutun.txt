@@ -1,7 +1,7 @@
 		Die etwas längere Übung für den Abschluss des Tages
 		===================================================
 
-Schritt 1:
+1. Teil:
 
 (1) Zeigen Sie durch Anlegen von zwei Flughäfen und einer Verbindung zwischen
     diesen dass nun insgesamt 3 Objekte existieren.
@@ -13,7 +13,7 @@ Schritt 1:
 
 = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
 
-Schritt 2:
+2. Teil:
 
 Beseitigen Sie die potenziellen Memory-Leak im "Airtravel" Programm indem Sie
 

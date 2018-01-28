@@ -1,0 +1,79 @@
+		Die etwas kürzere Übung für nach der Mittagspause
+		=================================================
+
+Der folgende Code kopiert alle Elemente eines Containers, mehrfach vorhandene
+Elemente allerdings nur einmal:
+
+```
+template<typename InIt, typename OutIt>
+OutIt no_dupes_copy(InIt b, InIt e, OutIt t) {
+    using ElType = typename std::iterator_traits<InIt>::value_type;
+    std::set<ElType> s;
+    while (b != e) {
+        const auto p = s.insert(*b++);
+        if (p.second)
+            *t++ = * p.first;
+    }
+    return t;
+}
+```
+
+= = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
+
+1. Teil:
+
+Erklären Sie (sich selbst) den Code so gut Sie können und merken Sie sich den
+Rest als offene Fragen für die spätere Besprechung der Lösung.
+
+Testen Sie `no_dupes_copy` mit einem initialisierten Array ("C-style Array").
+Zeigen Sie auch den Unterschied zu `std::unique_copy`.
+
+Hinweis: die Initialisierungs-Daten sollten einige Werte doppelt enthalten,
+sowohl direkt wie auch nicht direkt aufeinanderfolgend, z.B. so:
+
+    int data1[] = { 3, 1, 3, 7, 7, 2, 1, 3, 4, 4, 4, 1, 7, 1, 9 };
+
+= = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
+
+2. Teil:
+
+Nehmen Sie weitere Tests vor, z.B. mit den aus C++98 bekannten Containern
+`std::vector`, `std::list`, und `std::deque`, oder auch den in C++11 neu
+hinzugekommenen `std::array` und `std::forward_list`.
+
+= = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
+
+3. Teil:
+
+Ändern Sie die oben gezeigte Implementierung, so dass diese `std::copy_if`
+verwendet.
+
+= = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
+
+4. Teil:
+
+Warum ändert sich die Ausgabe, wenn der verarbeitete Container ein `std::set`
+oder ein `std::multiset` ist (oder auch ein `std::unordered_set` oder ein
+`std::unordered_multiset`), obwohl sich der Code kompileren lässt?
+
+Warum scheitert die Kompilierung für eine `std::map` (inklusive aller Varianten
+davon) und wie ließe sich das beheben?
+
+int main() {
+    std::ostream_iterator<int> osit(std::cout, "; ");
+    
+    int data1[] = { 3, 1, 3, 7, 2, 1, 3, 4 ,1, 7, 1, 9 };
+    std::unique_copy(std::begin(data1), std::end(data1), osit);
+    std::cout << std::endl;
+    no_dupes_copy(std::begin(data1), std::end(data1), osit);
+    std::cout << std::endl;
+    
+    std::array<int, 12> data2 = { 3, 1, 3, 7, 2, 1, 3, 4, 1, 7, 1, 9 };
+    no_dupes_copy(std::begin(data2), std::end(data2), osit);
+    std::cout << std::endl;
+
+    std::forward_list<int> data3 = { 3, 1, 3, 7, 2, 1, 3, 4, 1, 7, 1, 9 };
+    no_dupes_copy(std::begin(data3), std::end(data3), osit);
+    std::cout << std::endl;
+
+}
