@@ -1,9 +1,3 @@
-###############################################################################
-#             Die Musterlösungen hierfür werden noch nachgeliefert,           #
-#    eventuell auch mit einer geringfügig angepassten Aufgabenbeschreibung.   #
-#              Bitte sehen Sie in ein paar Tagen noch einmal nach.            #
-###############################################################################
-
 		Die etwas kürzere Übung für nach der Mittagspause
 		=================================================
 
@@ -18,74 +12,37 @@ GENAU WIE  beim `std::array` ist die Klasse der Elemente eingeschränkt
 ANDERS ALS beim `std::array` muss die Anzahl der Elemente aber NICHT schon zur
            Compilezeit sondern erst zur Laufzeit festgelegt werden. 
 
-ANDERS ALS beim `std::vector` soll die Implementierung NUR EINEN
-           `std::unique_ptr` sowie die Anzahl der Elemente speichern.
+ANDERS ALS beim `std::vector` soll die Implementierung NUR EINEN Zeiger sowie
+           sowie die Anzahl der Elemente speichern.
+
+
+Bitte bearbeiten Sie vorerst nur den ersten und zweiten Teil. Den Rest können
+Sie optional zu einem späteren Zeitpunkt angehen … oder auch nur die letzte
+Ausbaustufe ansehen. Diese Schritte haben weniger "Modernes C++" zum Inhalt,
+vielmehr illustrieren sie den grundsätzlichen Ansatz für die Implementierung
+von Container-Klassen an einem realistischen Beispiel.
 
 = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
 
 1. Teil:
 
-Beginnen Sie mit folgendem Minimalumfang indem Sie dort die mit ?? TO-DO ??
-markierten Stellen ergänzen … oder auch löschen, wenn sie überflüssig sind.
+Beginnen Sie mit dem in `fixarray.cpp` enthaltenen Minimalumfang.
 
-#include <memory>
+Analysieren Sie den vorgegebenen Code und fügen Sie weitere Testfälle hinzu,
+sodass ALLE Konstruktoren und Member-Funktionen zumindest EINMAL aufgerufen
+werden.
 
-namespace my {
-	template<typename T>
-	class fixarray {
-		const std::unique_ptr<T[]> arr;
-		const std::size_t sz = ?? TO-DO ??
-	public:
-		fixarray(std::size_t s)
-			: arr{new ?? TO-DO ??}, sz{?? TO-DO ??}
-		{}
-		fixarray(const fixarray&)            ?? TO-DO ??
-		fixarray(fixarray&&)                 ?? TO-DO ??
-		fixarray()                           ?? TO-DO ??
-		~fixarray()                          ?? TO-DO ??
-		fixarray& operator=(const fixarray&) ?? TO-DO ??
-		fixarray& operator=(fixarray&&)      ?? TO-DO ??
-		
-		auto size() const { return sz; }
-
-		T& operator[](std::size_t idx) {
-			return arr[idx];
-		}
-		const T& operator()(std::size_t idx) const {
-			return arr[idx];
-		}
-
-		T* data() { return arr.get(); }
-		const T* data() const { return arr.get(); };
-	};
-}
-
-Fragen:
-1. Braucht die obige Klasse noch einen Destruktor?
-2. Sollte man für die obige Klasse den "Copy-Constructor" und "-Assignment"
-   sicherheitshalber verbieten?
-3. Muss man für die obige Klasse den "Move-Constructor" und "-Assignment" –
-   wenn gewünscht – selbst implentieren?
-4. Warum ist sind die Member-Funktionen `operator[]` und `data` zweimal mit
-   (scheinbar) ein und derselben Implementierung vorhanden?
+Frage: Warum ist sind die Member-Funktionen `operator[]` und `data` zweimal mit
+       (scheinbar) ein und derselben Implementierung vorhanden?
 
 = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
 
-2. Teil
+2. Teil:
 
-Schreiben Sie dann einige Tests ähnlich den folgenden:
+Ersetzen Sie den bisherigen Zeiger (= native C-style pointer) durch einen
+`std::unique_ptr` und passen Sie die Member-Funktionen entsprechend an.
 
-// COLIRU => http://coliru.stacked-crooked.com/a/66bf5ba65a057092
-
-#include <cassert>
-
-int main() {
-	my::fixarray<double> a{3};	assert(a.size() == 3);
-	a[0] = 2.5;			assert(a[0] == 2.5);
-	a[1] = a[0]/2;			assert(a[1] == 1.25);
-	a[2] = a[0] + a[1];		assert(a[2] == 3.75);
-					assert(*a.data() == 2.5);
-}
+Frage: Welche Member-Funktionen können Sie nun einfach entfernen?
 
 = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
 
@@ -95,12 +52,35 @@ Fügen Sie nun weitere Member-Funktionen hinzu, die bei STL-Containern üblich
 sind, z.B.
 
 * `at()` für den Zugriff mit Indexprüfung;
-* Kopierkonstruktor und Zuweisung zwischen zwei Objekten der Klasse (dabei aber
-  die mögicherweise unterschiedliche Größe beachten!);
-* eine Standard-Iteratorschnittstelle damit die Klasse mit STL-Algorithmen
-  und der bereichsbasierten `for`-Schleife verwendet werden kann;
-* … und ggf. noch mehr …
+* Kopierkonstruktor und -zuweisung zwischen zwei Objekten der Klasse (dabei
+  aber auch die möglicherweise unterschiedliche Größe beachten!);
 
-Und natürlich auch: fügen Sie einige Tests für alle Features hinzu, die sie
-implementieren. (TDD wäre: Sie fügen ERST den Test hinzu, also was die Klasse
-unterstützen SOLL, und implementieren erst DANN.)
+Und natürlich auch: fügen Sie Tests für alle neu implementierten Features
+hinzu.
+
+(Oder praktizieren Sie striktes TDD: Sie fügen ZUERST den Test hinzu, also was
+die Klasse unterstützen SOLL, und schreiben erst DANACH die Implementierung.)
+
+= = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
+
+4. Teil:
+
+Fügen Sie einen Konstruktor für `std::initializer_list` und sowie für ein
+generisches Iteratorpaar hinzu. Letzterer soll als ERSTES Argument die Größe
+erhalten, danach die beiden (Input-) Interatoren.
+
+Zusatzfrage: Auf welche "Überaschung" müssen Sie gefasst sein, wenn Sie alle
+             bisherigen Tests im Testcode belassen?
+
+= = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
+
+5. Teil:
+
+Falls nicht schon im letzten Teil geschehen, überlegen Sie nun ob die beiden
+dort hinzugefügten Iteratoren evtl. aufeinander aufbauen könnten (also einer
+der beiden verwendet intern den anderen) und diskutieren Sie ob an dieser
+Stelle Konstruktor-Vererbung zum Einsatz kommen sollte.
+
+Versehen Sie außerdem die Klasse `fixarray` selbst mit derafür Container
+üblichen Iteratorschnittstelle, so dass sie sowohl mit STL-Algorithmen als auch
+bereichsbasierten `for`-Schleifen verwendbar wird.
