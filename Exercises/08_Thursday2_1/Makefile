@@ -14,5 +14,5 @@ performance2: performance.cpp
 performance3: performance.cpp
 	g++ -std=c++14 -O2 -DMANY_SMALL_CHUNKS performance.cpp -o$@
 clean:
-	rm -f a.out core *.o performance1 performance2
+	rm -f a.out core *.o $(ALL_TESTS)
 

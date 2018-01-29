@@ -81,6 +81,6 @@ dort hinzugefügten Iteratoren evtl. aufeinander aufbauen könnten (also einer
 der beiden verwendet intern den anderen) und diskutieren Sie ob an dieser
 Stelle Konstruktor-Vererbung zum Einsatz kommen sollte.
 
-Versehen Sie außerdem die Klasse `fixarray` selbst mit derafür Container
+Versehen Sie außerdem die Klasse `fixarray` selbst mit der für Container
 üblichen Iteratorschnittstelle, so dass sie sowohl mit STL-Algorithmen als auch
 bereichsbasierten `for`-Schleifen verwendbar wird.

@@ -7,29 +7,82 @@
 		Die etwas längere Übung für den Abschluss des Tages
 		===================================================
 
+Bei dieser Aufgabe müssen Sie sich zunächst etwas Zeit nehmen um die Quelltexte
+des `airtravel`-Projekts näher anzusehen.
+
+Dieses besteht aus den wesentlichen zwei Klassen `Airport` und `Connection`,
+welche jeweils Flughäfen und Flugverbindungen definieren.
+
+Da die Flughäfen (über `std::shared_ptr`) auf die Flugverbindungen verweisen,
+während diese wiederum (über `std::shared_ptr` auf die Flughäfen (zurück)
+verweisen, besteht hier die prinzipielle Gefahr zyklischer Referenzen, welche
+trotz der Verwendung referenzzählender Zeigern letzten Endes einen Memory-Leak
+verursachen könnten.
+
+Wenn Sie das Programm `./airtravel` gestarten haben, erhalten Sie mit `?` eine
+Übersicht über die verfügbaren Kommandos, mit denen Flughäfen und -verbindungen
+angelegt, aufgelistet und wieder gelöscht werden können.
+
+Spielen Sie alle diese Möglichkeiten durch, um damit etwas vertraut zu werden.
+Damit Sie nicht immer den Datenbestand händisch wieder neu aufbauen müssen, ist
+die Datei `setup` vorbeitet, die Sie mit dem `$`-Kommando einlesen können.
+
+= = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
+
 1. Teil:
 
-(1) Zeigen Sie durch Anlegen von zwei Flughäfen und einer Verbindung zwischen
-    diesen dass nun insgesamt 3 Objekte existieren.
-(2) Löschen Sie die Flughäfen wieder und zeigen Sie, dass für diese nun zwar
-    keine Verbidnungen mehr aufgelistet werden, dennoch die dafür erzeugten
-    `Airport`-Objekte nicht weggeräumt wurden. (Warum ist das der Fall?)
-(3) Löschen Sie nun auch die Verbindung und zeigen Sie, dass damit weder das
-    `Connection`-Objekt, noch die `Airport`-Objekte weggeräumt wurden.
+Demonstrieren Sie zwei Szenarien, die jeweils damit beginnen, dass Sie das in
+der Datei `setup` vorbereitete Szenario einlesen und anschließend einige Teile
+davon wieder per Hand entfernen.
+
+Je nachdem wie Sie dann weiter vorgehen, werden am Ende weder Flughafen-Objekte
+noch Flugverbindungs-Objekte übrig bleiben ODER aber es gibt noch einige
+solcher Objekte, die sich aber nicht mehr mit den Kommandos '>', '<' und '='
+auflisten lassen.
 
 = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
 
 2. Teil:
 
-Beseitigen Sie die potenziellen Memory-Leak im "Airtravel" Programm indem Sie
+Bereiten Sie die Beseitigung des Memory-Leaks vor, indem Sie zunächst für die
+expliziten `std::shared_ptr<Airport>` und `std::shared_ptr<Connection>` jeweils
+einen Typ-Alias `AirportRef` und `ConnectionRef` einführen.
 
-* ENTWEDER in der Klasse `Airport`
-* ODER in der Klasse `Connection`
+Ziel: Das Programm muss nach dieser Änderung fehlerfrei kompilierba sein und es
+      wird natürlich weiterhin das Problem mit dem Memory-Leak haben.
 
-die dort verwendeten `std::shared_ptr` (auf die jeweils andere Klasse) durch
-`std::weak_ptr` ersetzen.
+= = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
 
-Da die gegenseitigen Verweise allerdings einen Zweck erfüllen, müssen Sie dabei
-auch eine Lösung für den Fall finden, dass aus dem `std::weak_ptr` u.U.  kein
-`std::shared_ptr` mehr gemacht werden kann, weil das ursprünglich referenzierte
-Objekt mittlerweile gelöscht wurde!
+3. Teil:
+
+Ändern Sie nun EINEN der beiden Typ-Aliase von einem `std::shared_ptr` in einen
+entsprechenden `std::weak_ptr` um und kompilieren Sie erneut.
+
+NATÜRLICH WIRD ES JETZT FEHLER GEBEN.
+
+Versuchen Sie diese zunächst mit dem minimal möglichen Aufwand zu beseitigen,
+auch wenn das bedeutet, dass bei gelöschten Flughäfen oder Verbindungen in den
+Übersichten nicht mehr alles in der früheren Form ausgegeben wird.
+
+= = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
+
+4. Teil:
+
+Da die im letzten Schritt ersetzten `std::shared_ptr` natprlich nicht grundlos
+existierten, sollten Sie nun auch auch eine Lösung für den Fall finden, dass
+aus dem `std::weak_ptr` u.U. kein `std::shared_ptr` mehr gemacht werden kann,
+weil das ursprünglich referenzierte Objekt mittlerweile gelöscht wurde!
+
+Die Weiterführung der Aufgabe hängt nun davon ab, welchen der `std::shared_ptr`
+Sie zu einem `std::weak_ptr` gemacht haben:
+
+* Wenn aus der Sicht der Flugverbindungen nun die Flughäfen nur noch über
+  `std::weak_ptr` erreichbar sind, sollte in der Auflistung der angeflogenen
+  Stationen auch bei einem zwischenzeitlich gelöschten Flughafen weiterhin
+  dessen Name erscheinen, aber mit dem nachgestellten Zusatz `[closed]`.
+
+* Wenn dagegen aus der Sicht der Flughäfen nun die Flugverbindungen nur noch
+  über `std::weak_ptr` erreichbar sind, sollte bei einer weggefallenen
+  Flungverbindung diese stillschweigend aus der Übersicht der ankommenden oder
+  abgehenden Verbungen dieses Flughafens entfernt werden – UND natürlich auch
+  aus der Menge der `std::weak_ptr`, das dort gehaltgen wird.
