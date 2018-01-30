@@ -1,0 +1,26 @@
+$ setup
+!
+= *
+< *
+> *
+# now we clear the active connections first ...
+# clear
+: LH123
+: LH444
+: LH555
+=
+# ... and ONLY THEN we clear the Airports
+: LH123
+: LH444
+- CPH
+# now list the active connections and airports
+= *
+< *
+> *
+!
+# (still good) so remove the remaining airports
+- FRA MUC
+= *
+< *
+> *
+!

@@ -37,14 +37,14 @@ public:
 };
 
 bool parse(const string& line, const std::string& incfile = std::string()) {
-    static map<string, ConnectionRef> knownConnections;
-    static map<string, AirportRef> knownAirports;
+    static map<string, ConnectionRef_strong> knownConnections;
+    static map<string, AirportRef_strong> knownAirports;
     istringstream is(line + " ");
     char cmdc;
     if (!(is >> cmdc).good())
         return false;
     if (!incfile.empty())
-        cout << '$' << incfile << ' ' << line << std::endl;
+        cout << '$' << incfile << ' ' << line << endl;
     string airportName;
     string flightNumber;
     string includeFile;
@@ -77,7 +77,7 @@ bool parse(const string& line, const std::string& incfile = std::string()) {
                 }
                 knownConnections.erase(flightNumber);
             }
-            vector<AirportRef> visitedAirports;
+            vector<AirportRef_strong> visitedAirports;
             while (is >> airportName) {
                 auto foundAirport = knownAirports.find(airportName);
                 if (foundAirport == knownAirports.end()) {
@@ -124,16 +124,21 @@ bool parse(const string& line, const std::string& incfile = std::string()) {
                 continue;
             cout << e.first << endl;
             for (const auto c : e.second->getConnections()) {
-                const auto &li = (cmdc == '<')
-                                    ? get<1>(c)->getComingFrom(get<0>(c))
-                                    : get<1>(c)->getGoingTo(get<0>(c))
+		if (const auto cc = get<1>(c).lock()) {
+                    const auto &li = (cmdc == '<')
+                                    ? cc->getComingFrom(get<0>(c))
+                                    : cc->getGoingTo(get<0>(c))
                                     ;
-                if (!li.empty()) {
-                    cout << ' ' << cmdc << ' ' << get<1>(c)->getFlight() << ':';
-                    for (const auto a : li) {
-                        cout << ' ' << a->getName();
+                    if (!li.empty()) {
+                        cout << ' ' << cmdc << ' ' << cc->getFlight() << ':';
+                        for (const auto a : li) {
+                            if (const auto p = a.lock())
+                                cout << ' ' << p->getName();
+                            else
+                                cout << " ???";
+                        }
+                        cout << endl;
                     }
-                    cout << endl;
                 }
             }
         }
@@ -145,8 +150,12 @@ bool parse(const string& line, const std::string& incfile = std::string()) {
             if (flightNumber != "*" && e.first.find(flightNumber) == string::npos)
                 continue;
             cout << e.first << " =";
-            for (const auto a : e.second->getAirports())
-                cout << ' ' << a->getName();
+            for (const auto a : e.second->getAirports()) {
+                if (const auto p = a.lock())
+                    cout << ' ' << p->getName();
+                else
+                    cout << " ???";
+            }
             cout << endl;
         }
         return true;

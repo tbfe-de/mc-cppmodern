@@ -16,7 +16,7 @@ using ConnectionRef = shared_ptr<Connection>;
 
 class Airport {
     const string name;
-    list<tuple<size_t, shared_ptr<Connection>>> connections;
+    list<tuple<size_t, ConnectionRef>> connections;
 public:
     Airport(const string &name_)
         : name(name_)

@@ -1,9 +1,3 @@
-###############################################################################
-#             Die Musterlösungen hierfür werden noch nachgeliefert,           #
-#    eventuell auch mit einer geringfügig angepassten Aufgabenbeschreibung.   #
-#              Bitte sehen Sie in ein paar Tagen noch einmal nach.            #
-###############################################################################
-
 		Die etwas längere Übung für den Abschluss des Tages
 		===================================================
 
@@ -48,15 +42,18 @@ Bereiten Sie die Beseitigung des Memory-Leaks vor, indem Sie zunächst für die
 expliziten `std::shared_ptr<Airport>` und `std::shared_ptr<Connection>` jeweils
 einen Typ-Alias `AirportRef` und `ConnectionRef` einführen.
 
-Ziel: Das Programm muss nach dieser Änderung fehlerfrei kompilierba sein und es
+Ziel: Das Programm muss nach dieser Änderung fehlerfrei kompilierbar sein und es
       wird natürlich weiterhin das Problem mit dem Memory-Leak haben.
 
 = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
 
 3. Teil:
 
-Ändern Sie nun EINEN der beiden Typ-Aliase von einem `std::shared_ptr` in einen
-entsprechenden `std::weak_ptr` um und kompilieren Sie erneut.
+Ändern Sie nun mindestens EINEN der beiden Typ-Aliase von `std::shared_ptr` in
+`std::weak_ptr`, AUSGENOMMEN in `airtravel.cpp`, dort MÜSSEN `knownAirports`
+und `knownConnections` weiterhin via `std::shared_ptr` auf `Airport`- bzw.
+`Connection`-Objekte referenzieren, damit diese (mindestens) so lange am Leben
+gehalten werden, wie sie dort bekannt sind.
 
 NATÜRLICH WIRD ES JETZT FEHLER GEBEN.
 
@@ -68,7 +65,7 @@ auch wenn das bedeutet, dass bei gelöschten Flughäfen oder Verbindungen in den
 
 4. Teil:
 
-Da die im letzten Schritt ersetzten `std::shared_ptr` natprlich nicht grundlos
+Da die im letzten Schritt ersetzten `std::shared_ptr` natürlich nicht grundlos
 existierten, sollten Sie nun auch auch eine Lösung für den Fall finden, dass
 aus dem `std::weak_ptr` u.U. kein `std::shared_ptr` mehr gemacht werden kann,
 weil das ursprünglich referenzierte Objekt mittlerweile gelöscht wurde!
@@ -85,4 +82,4 @@ Sie zu einem `std::weak_ptr` gemacht haben:
   über `std::weak_ptr` erreichbar sind, sollte bei einer weggefallenen
   Flungverbindung diese stillschweigend aus der Übersicht der ankommenden oder
   abgehenden Verbungen dieses Flughafens entfernt werden – UND natürlich auch
-  aus der Menge der `std::weak_ptr`, das dort gehaltgen wird.
+  aus der Menge der `std::weak_ptr`, das dort gehalten wird.

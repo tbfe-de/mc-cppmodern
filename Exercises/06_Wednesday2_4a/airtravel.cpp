@@ -1,6 +1,7 @@
 #include <algorithm>
 #include <fstream>
 #include <iostream>
+#include <iterator>
 #include <map>
 #include <stdexcept>
 #include <string>
@@ -18,8 +19,8 @@ SETUP -------------------------------------------------------
   - airport ...                  (remove given airport(s))
   : flight [airport airport ...] (define connection)
 QUERY -------------------------------------------------------
-  > [select] (list outgoing flights from matching airport(s))
-  < [select] (list incomming flights to matching airport(s))
+  < [select] (list outgoing flights from matching airport(s))
+  > [select] (list incomming flights to matching airport(s))
   = [select] (list route of matching flight(s))
 OTHER -------------------------------------------------------
   $ filename (read commands from filename)
@@ -36,15 +37,15 @@ public:
     {}
 };
 
-bool parse(const string& line, const std::string& incfile = std::string()) {
-    static map<string, ConnectionRef> knownConnections;
-    static map<string, AirportRef> knownAirports;
+bool parse(const string &line, bool incf = false) {
+    static map<string, shared_ptr<Connection>>knownConnections;
+    static map<string, shared_ptr<Airport>> knownAirports;
     istringstream is(line + " ");
     char cmdc;
     if (!(is >> cmdc).good())
-        return false;
-    if (!incfile.empty())
-        cout << '$' << incfile << ' ' << line << std::endl;
+            return false;
+    if (incf)
+        cout << line;
     string airportName;
     string flightNumber;
     string includeFile;
@@ -77,7 +78,7 @@ bool parse(const string& line, const std::string& incfile = std::string()) {
                 }
                 knownConnections.erase(flightNumber);
             }
-            vector<AirportRef> visitedAirports;
+            vector<shared_ptr<Airport>> visitedAirports;
             while (is >> airportName) {
                 auto foundAirport = knownAirports.find(airportName);
                 if (foundAirport == knownAirports.end()) {
@@ -131,7 +132,7 @@ bool parse(const string& line, const std::string& incfile = std::string()) {
                 if (!li.empty()) {
                     cout << ' ' << cmdc << ' ' << get<1>(c)->getFlight() << ':';
                     for (const auto a : li) {
-                        cout << ' ' << a->getName();
+                       	cout << ' ' << get<1>(a);
                     }
                     cout << endl;
                 }
@@ -145,15 +146,23 @@ bool parse(const string& line, const std::string& incfile = std::string()) {
             if (flightNumber != "*" && e.first.find(flightNumber) == string::npos)
                 continue;
             cout << e.first << " =";
-            for (const auto a : e.second->getAirports())
-                cout << ' ' << a->getName();
+            for (const auto a : e.second->getAirports()) {
+                cout << ' ' << get<1>(a);
+                if (!get<0>(a).lock())
+                    cout << "[closed]";
+            }
             cout << endl;
         }
         return true;
     case '!':
-        cout << Airport::instances << " airport(s), "
-             << Connection::instances << " flight(s)"
-             << endl;
+        cout << Airport::instances.size() << " airport(s) [";
+	for(const auto &airport : Airport::instances)
+	     cout << ' ' << airport->getName();
+	cout << " ]" << endl;
+        cout << Connection::instances.size() << " flight(s) [";
+	for (const auto &connection : Connection::instances)
+	     cout << ' ' << connection->getFlight();
+	cout << " ]" << endl;
         return true;
     case '$':
         if (!(is >> includeFile))
@@ -164,26 +173,23 @@ bool parse(const string& line, const std::string& incfile = std::string()) {
                 throw ParseException("cannot open file: " + includeFile);
             string line;
             while (getline(ifs, line))
-                parse(line, includeFile + "$" + incfile);
+                parse(line, true);
         }
         return true;
-    case '#':
-	return true;
     default:
         cout << "unknown command: " << line << endl;
         // FALLTHROUGH
     case '?':
-        if (!incfile.empty())
+        if (incf)
             return false;
         cout << help << endl;
         return true;
     case '.':
-        if (!incfile.empty())
+        if (incf)
             return true;
         cout << "bye, bye" << endl;
         return false;
     }
-		
 }
 
 int main() {

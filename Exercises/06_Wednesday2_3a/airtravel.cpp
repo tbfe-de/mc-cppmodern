@@ -37,7 +37,7 @@ public:
 };
 
 bool parse(const string& line, const std::string& incfile = std::string()) {
-    static map<string, ConnectionRef> knownConnections;
+    static map<string, shared_ptr<Connection>> knownConnections;
     static map<string, AirportRef> knownAirports;
     istringstream is(line + " ");
     char cmdc;
@@ -106,11 +106,12 @@ bool parse(const string& line, const std::string& incfile = std::string()) {
                      << " connection " << flightNumber
                      << " in database" << endl;
                 for (const auto currentAirport : visitedAirports) {
-                    const auto currentConnection = knownConnections[flightNumber];
-                    const auto nthStop = currentConnection->addAirport(currentAirport);
-                    currentAirport->addConnection(currentConnection, nthStop);
-                    cout << "added airport " << currentAirport->getName()
-                         << " to connection " << currentConnection->getFlight() << endl;
+                    if (const auto currentConnection = knownConnections[flightNumber]) {
+                    	const auto nthStop = currentConnection->addAirport(currentAirport);
+                    	currentAirport->addConnection(currentConnection, nthStop);
+                    	cout << "added airport " << currentAirport->getName()
+                             << " to connection " << currentConnection->getFlight() << endl;
+		    }
                 }
             }
         }
@@ -124,16 +125,18 @@ bool parse(const string& line, const std::string& incfile = std::string()) {
                 continue;
             cout << e.first << endl;
             for (const auto c : e.second->getConnections()) {
-                const auto &li = (cmdc == '<')
-                                    ? get<1>(c)->getComingFrom(get<0>(c))
-                                    : get<1>(c)->getGoingTo(get<0>(c))
+		if (const auto cc = get<1>(c).lock()) {
+			const auto &li = (cmdc == '<')
+                                    ? cc->getComingFrom(get<0>(c))
+                                    : cc->getGoingTo(get<0>(c))
                                     ;
-                if (!li.empty()) {
-                    cout << ' ' << cmdc << ' ' << get<1>(c)->getFlight() << ':';
-                    for (const auto a : li) {
-                        cout << ' ' << a->getName();
+                    if (!li.empty()) {
+                        cout << ' ' << cmdc << ' ' << cc->getFlight() << ':';
+                        for (const auto a : li) {
+                            cout << ' ' << a->getName();
+                        }
+                        cout << endl;
                     }
-                    cout << endl;
                 }
             }
         }

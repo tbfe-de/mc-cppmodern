@@ -3,6 +3,7 @@
 
 #include <memory>
     using std::shared_ptr;
+    using std::weak_ptr;
 #include <string>
     using std::string;
 #include <vector>
@@ -10,7 +11,8 @@
 
 class Airport;
 
-using AirportRef = shared_ptr<Airport>;
+using AirportRef = weak_ptr<Airport>;
+using AirportRef_strong = shared_ptr<Airport>;
 
 class Connection {
     const string flight;

@@ -1,0 +1,7 @@
+# -------- airport setup
+$ airports
+# -------- flights setup
+$ flights
+= *
+< *
+> *

@@ -5,14 +5,15 @@
     using std::list;
 #include <memory>
     using std::shared_ptr;
+    using std::weak_ptr;
+#include <unordered_set>
+    using std::unordered_set;
 #include <string>
     using std::string;
 #include <tuple>
     using std::tuple;
 
 class Connection;
-
-using ConnectionRef = shared_ptr<Connection>;
 
 class Airport {
     const string name;
@@ -21,18 +22,18 @@ public:
     Airport(const string &name_)
         : name(name_)
     {
-        ++instances;
+        instances.insert(this);
     }
     ~Airport() {
-        --instances;
+        instances.erase(this);
     }
     string getName() const {
         return name;
     }
-    void addConnection(ConnectionRef c, size_t n);
-    void removeConnection(ConnectionRef c);
-    const list<tuple<size_t, ConnectionRef>> &getConnections() const;
-    static size_t instances;
+    void addConnection(shared_ptr<Connection> c, size_t n);
+    void removeConnection(shared_ptr<Connection> c);
+    const list<tuple<size_t, shared_ptr<Connection>>> &getConnections() const;
+    static std::unordered_set<Airport*> instances;
 };
 
 #endif /* AIRPORT_H_ */

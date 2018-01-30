@@ -5,6 +5,7 @@
     using std::list;
 #include <memory>
     using std::shared_ptr;
+    using std::weak_ptr;
 #include <string>
     using std::string;
 #include <tuple>
@@ -12,11 +13,12 @@
 
 class Connection;
 
-using ConnectionRef = shared_ptr<Connection>;
+// using ConnectionRef = shared_ptr<Connection>;
+using ConnectionRef = weak_ptr<Connection>;
 
 class Airport {
     const string name;
-    list<tuple<size_t, shared_ptr<Connection>>> connections;
+    list<tuple<size_t, ConnectionRef>> connections;
 public:
     Airport(const string &name_)
         : name(name_)

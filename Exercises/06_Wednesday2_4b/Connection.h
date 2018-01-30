@@ -3,6 +3,8 @@
 
 #include <memory>
     using std::shared_ptr;
+#include <unordered_set>
+    using std::unordered_set;
 #include <string>
     using std::string;
 #include <vector>
@@ -10,30 +12,30 @@
 
 class Airport;
 
-using AirportRef = shared_ptr<Airport>;
-
 class Connection {
+public:
+private:
     const string flight;
-    vector<AirportRef> airports;
+    vector<shared_ptr<Airport>> airports;
 public:
     Connection(const string &flight_)
         : flight(flight_)
     {
-        ++instances;
+        instances.insert(this);
     }
     ~Connection() {
-        --instances;
+        instances.erase(this);
     }
     string getFlight() const {
         return flight;
     }
-    const vector<AirportRef> &getAirports() const {
+    const vector<shared_ptr<Airport>> &getAirports() const {
         return airports;
     }
-    size_t addAirport(AirportRef ap);
-    vector<AirportRef> getComingFrom(size_t to) const;
-    vector<AirportRef> getGoingTo(size_t from) const;
-    static size_t instances;
+    size_t addAirport(shared_ptr<Airport> ap);
+    vector<shared_ptr<Airport>> getComingFrom(size_t to) const;
+    vector<shared_ptr<Airport>> getGoingTo(size_t from) const;
+    static unordered_set<Connection*> instances;
 };
 
 #endif /* CONNECTION_H_ */

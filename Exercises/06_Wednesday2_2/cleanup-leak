@@ -1,0 +1,22 @@
+$ setup
+!
+= *
+< *
+> *
+# here we don't clear all the `Connection`s ...
+: LH123
+: LH444
+=
+# ... before clearing an `Airport`
+- CPH
+= *
+< *
+> *
+!
+# and the trouble starts easily:
+: LH555
+- FRA MUC
+= *
+< *
+> *
+!

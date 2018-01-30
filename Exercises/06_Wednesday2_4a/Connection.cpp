@@ -3,24 +3,24 @@
 
 using namespace std;
 
-size_t Connection::addAirport(AirportRef ap) {
+size_t Connection::addAirport(shared_ptr<Airport> ap) {
 	const auto result = airports.size();
-	airports.push_back(ap);
+	airports.emplace_back(ap, ap->getName());
 	return result;
 }
 
-vector<AirportRef> Connection::getGoingTo(size_t from) const {
+auto Connection::getGoingTo(size_t from) const -> vector<AirportRef> {
 	vector<AirportRef> result;
 	while (++from < airports.size())
 		result.push_back(airports.at(from));
 	return result;
 }
 
-vector<AirportRef> Connection::getComingFrom(size_t to) const {
+auto Connection::getComingFrom(size_t to) const -> vector<AirportRef> {
 	vector<AirportRef> result;
 	for (size_t i = 0; i < to; ++i)
 		result.push_back(airports.at(i));
 	return result;
 }
 
-size_t Connection::instances;
+unordered_set<Connection*> Connection::instances;
