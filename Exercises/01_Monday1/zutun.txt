@@ -1,7 +1,16 @@
 		Die etwas kürzere Übung für nach der Mittagspause
 		=================================================
 
-Wiederholungen zum Thema `const` (noch C++98, nicht C++11)
+Die ersten beiden Abschnitte sind optional, da diese C++98 Stoff wiederholen.
+
+Wenn Sie denken, `const` und `mutable` sicher zu beherrschen, können Sie auch
+unmittelbar mit der C++11 Thematik weiter unten beginnen …
+
+(… und die optionalen Abschnitte evtl. nachholen, wenn später noch Zeit ist).
+
+= = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
+
+OPTIONAL Wiederholungen zum Thema `const` (noch C++98, nicht C++11)
 
 Schulungsunterlage Seite 52:
 ----------------------------

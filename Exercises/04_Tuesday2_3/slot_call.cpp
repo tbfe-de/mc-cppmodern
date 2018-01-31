@@ -140,3 +140,29 @@ int main() {
             "!!--> MyFunctor::operator()(def)\n"),
 	    sortlines(output.str()));
 }
+
+#include <cmath>
+
+struct hit_specific_value {
+	/*constexpr*/
+	static long double propability(unsigned long long tries, int bits) {
+		return (1-std::pow(1-1.L/(1uLL<<(bits-1)), tries));
+	}
+	~hit_specific_value() {
+		std::cout.precision(10);
+		for (const double N : {
+				//	10uLL,
+				//	100uLL,
+					1'000uLL,
+					1'000'000uLL,
+					1'000'000'000uLL,
+				// 	1'000'000'000'000uLL
+			}) {
+			std::cout << "hit specfic value in " << N << " attempts:\n"
+				  << "    15 bit: " << 100*propability(N, 15) << " %\n"
+				  << "    16 bit: " << 100*propability(N, 16) << " %\n"
+				  << "    32 bit: " << 100*propability(N, 32) << " %\n"
+				  << "    64 bit: " << 100*propability(N, 64) << " %\n";
+		}
+	}
+} xxx; // <--- insert/remove global object to view from the above
