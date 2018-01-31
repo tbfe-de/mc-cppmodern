@@ -1,5 +1,107 @@
 		Die etwas längere Übung für den Abschluss des Tages
 		===================================================
 
-Realsieren Sie eine einfache Form des Entwurfsmusters: "Publisher/Subscriber"
+Realsieren Sie eine einfache Form des "Publisher/Subscriber" Entwurfsmusters.
 
+= = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
+
+1. Schritt:
+
+Beginnen Sie mit einem sehr einfachen "Proof of Concept" in einem einfachen
+`main` Programm:
+
+(a) Definieren Sie einen `std::vector`, der `std::function`-Objekte enthält.
+    Wählen Sie für letztere eine nicht zu triviale aber auch nicht zu komplexe
+    Signatur, also z.B. das folgende:
+
+    std::vector<std::function<void(const char*, int)>> slot_call;
+
+(b) Registrieren Sie unterschiedliche "Callables", z.B. 
+    - eine klassische C-Funktion:
+      void my_func(const char *arg1, int arg2) {
+          /*...*/
+      }
+    - ein "Funktor" wie in C++98 üblich:
+      struct MyFunctor {
+          void operator()(const char *arg1, int arg2) const {
+              /*...*/
+          }
+      };
+    - ein C++11 Lambda:
+
+    slot_call.emplace_back(my_func);
+    slot_call.emplace_back(MyFunctor{});
+    slot_call.emplace_back([](const char *arg1, int arg2) { /*...*/ });
+
+(c) Führen Sie alle registrierten Callables in einer Schleife aus:
+    for (const auto& f : slot_call) f("hello, world", 3);
+
+(d) Wiederholen Sie die Aufrufschleife nachdem Sie zwei Einträge aus
+    `slot_call` entfernt und …
+
+(e) … einen anderen neu hinzugefügt haben.
+
+= = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
+
+2. Schritt:
+
+Verpacken Sie die diversen Bestandteile aus dem ersten Schritt in eine Klasse.
+Diese soll nicht nur den `std::vector` und die Aufrufschleife kapseln sondern
+das Registrieren und De-Registrieren der Callables.
+
+class CallSlots {
+public:
+	using CallableType = std::function<void(const char*, int)>;
+        using CallableList = std::vector<CallableType>;
+	using CallableId = CallableList::size_type;
+private:
+	CallableList slots;
+public:
+	CallSlots() =default;
+	CallableId register_call(const CallableType);
+        void unregister_call(CallableId);
+        void notify_all(const char*, int);
+};
+ 
+Implementieren Sie die obigen Member-Funktionen und passen Sie das Test-Progamm
+aus dem ersten Schritt entsprechend an.
+
+Hinweis: Der Rückgabewert von `CallSlots::register_call` soll als Identifikation
+des jeweils registrierten Callables dienen, mit dem es später de-registriert
+werden kann.
+
+Zusatzfrage: Welche Gefahr besteht bei dieser Art der Identifikation von
+             Callables bei einer sehr losen Kopplung schenvon Publisher und
+	     Subscriber, bei der letztere evtl. aus "unzuverlässiger Quelle"
+	     stammen?
+             Könnte es evtl. sinnvoll sein, `CallSlots::unregister_call` das
+             ursprünglich registrierte Callable zurückgeben zu lassen?
+
+= = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
+
+3. Schritt:
+
+Verbessern Sie die Schwachstelle aus der vorherigen Lösung indem Sie die
+Callables statt in einem `std::vector` in einer `std::map` rtegistrieren und
+als Schlüssel eine 32-bit Zufallszahl verwenden.
+
+Hinweis: Wenn Sie im vorherigen Schritt alles optimal gemacht haben, sollte das
+         Test-Programm ohne weitere Anpassungen kompilierbar sein … wenn Sie
+	 allerdings im TDD-Stil arbeiten, werden die "Erwartungswerte" nun
+	 nicht mehr so ohne weiteres verwendbar sein. (Warum?)
+
+Zusatzfrage: Wie hoch ist die Wahrscheinlichkeit, dass ein "un-kooperativer"
+             Subscriber das Callable eines anderen Subscribers löscht, wenn
+             dazu tausend (oder eine Million oder eine Milliarde) Versuche
+             zur Verfügung stehen?
+	     (Und wie verändern sich die Zahlen wenn statt eine 32-bit eine
+             64-bit lange Zufallszahl verwendet wird?)
+
+= = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
+
+4. Schritt:
+
+Demonstrieren Sie, dass es bei der Rückgabe des vorherigen Callables im Fall
+der De-Registrierung sehr einfach ist, ggf. auch noch nachträglich einen
+"Call-Wrapper" um ausgewählte Callable zu legen, z.B. zur Protokollierung des
+Aufrufs.
