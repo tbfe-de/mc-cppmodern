@@ -35,7 +35,7 @@ namespace srx = boost;
 #endif
 
 namespace my {
-    bool euro_parser(const::std::string &str, double& ec) {
+    bool euro_parser(const std::string &str, double& ec) {
         using namespace std;
     //  using namespace boost;
     //  regex re{"([1-9][0-9]*),([0-9][0-9])"};

@@ -9,7 +9,7 @@ ALL_TESTS=\
 	performance-vector-4\
 	performance-vector-9
 
-all: $(ALL_TESTS)
+all run_tests: $(ALL_TESTS)
 	@for t in $(ALL_TESTS);\
 	 do echo "$$t ..." && ./$$t;\
 	 done

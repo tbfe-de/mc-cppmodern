@@ -1,19 +1,17 @@
-#ifndef PXT_H
-#define PXT_H
+#ifndef PXTN_H
+#define PXTN_H
 
 #include <iostream>
 #include <sstream>
 #include <boost/type_index.hpp>
 
 #define PX(...)\
-	((void)(std::cout << "::: " << __FUNCTION__\
-			  << '[' << __LINE__ << ']'\
+	((void)(std::cout << "::: " << __FILE__ << '[' << __LINE__ << ']'\
                           << "\t" #__VA_ARGS__ " --> " << (__VA_ARGS__)\
 			  << std::endl))
 
 #define PT(...)\
-	((void)(std::cout << "::: " << __FUNCTION__\
-			  << '[' << __LINE__ << ']'\
+	((void)(std::cout << "::: " << __FILE__ << '[' << __LINE__ << ']'\
                           << "\t" #__VA_ARGS__ " --> "\
 			  << boost::typeindex::type_id_with_cvr<__VA_ARGS__>()\
 			  << std::endl))
@@ -26,7 +24,7 @@
 		result << (__VA_ARGS__);\
 		++PN_::done;\
 		if (result.str() == expect) break;\
-		std::cout << "::: " << __FUNCTION__ << '[' << __LINE__ << ']'\
+		std::cout << "::: " << __FILE__ << '[' << __LINE__ << ']'\
                           << "\t" #__VA_ARGS__ " --> " << result.str()\
 			  << "\t!= " << expect << std::endl;\
 		++PN_::fail;\
@@ -40,7 +38,7 @@
 		result << boost::typeindex::type_id_with_cvr<__VA_ARGS__>();\
 		++PN_::done;\
 		if (result.str() == expect) break;\
-		std::cout << "::: " << __FUNCTION__ << '[' << __LINE__ << ']'\
+		std::cout << "::: " << __FILE__ << '[' << __LINE__ << ']'\
                           << "\t" #__VA_ARGS__ " --> " << result.str()\
 			  << "\t!= " << expect << std::endl;\
 		++PN_::fail;\
@@ -53,9 +51,11 @@
 		}\
 		~PN_() {\
 			std::cout << "=== " << __FILE__ << ": "\
-				  << done << " tests, "\
-				  << fail << " failed."\
-				  << std::endl;\
+				  << done << " tests ";\
+			if (fail) std::cout << ", " << fail\
+                                            << " FAILED";\
+			else      std::cout << "passed (OK)";\
+			std::cout << std::endl;\
 		}\
 		static int done, fail;\
 	} PN_test;\

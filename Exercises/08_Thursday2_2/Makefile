@@ -3,7 +3,7 @@ ALL_TESTS=\
 	performance2\
 	performance3
 
-all: $(ALL_TESTS)
+all run_tests: $(ALL_TESTS)
 	@echo "two huge chunks ..." && ./performance1
 	@echo "few large chunks ..." && ./performance2
 	@echo "many small chunks ..." && ./performance3

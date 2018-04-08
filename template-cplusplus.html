@@ -71,7 +71,7 @@ Focussing
 
 * Template Meta-Programming
 
-© 2016: [Creative Commons BY-SA]
+© 2018: [Creative Commons BY-SA]
 
 * by: [Dipl.-Ing. Martin Weitzel](http://tbfe.de)
 
@@ -1001,7 +1001,7 @@ struct fixpoint {
 
 * Explain how the meta function `argument_type` optimises the code.
 * Add code to demonstrate the above **actually works**.
-* Why aren't there any specialisations or `double` etc. necessary`?
+* Why aren't there any specialisations or `double` etc. necessary?
 * (And what happens with `char` … or all the `unsigned …` types?)
 
 ---
@@ -1478,7 +1478,6 @@ int main() {
     PX(std::is_reference_v<decltype(cri)>);
     PX(std::is_same_v<signed int, int>);
 }
-#endif
 ```
 
 * Be sure to understand the relation between the usage forms.
@@ -2298,31 +2297,29 @@ inline auto to_string(const tuple<Ts...>& t) {
 ---
 
 name: concepts_light
-## Concepts Light
+## C++20 Concepts
 
 * Concepts can be thought of as
 
    - Constraints for template arguments
 
-   - One of the main intents is to improve error messages
+   - A major intent is to improve error messages._[]
 
 http://en.cppreference.com/w/cpp/concept
 
-----------------------------------------------------------------
-
+.F[:
 Currently, if a template instantiation fails, the root cause of
-the problem often is everything but clear to the compiler:
-
+the problem often is everything but clear to the compiler:  
 Usually the client (that instantiated the template) has created
 the problem by using a type that is not a model of the expected
 concept. But because the manifestation of the problem is in the
 instantiated template code – **frequently not authored by the
 client using it** – the error message gives no good idea what
-actually went wrong.
-
+actually went wrong.  
 Furthermore – in an attempt to be helpful – the error message
 often reveals (too) much of the internal state the compiler had
 when discovering the problem and is more confusing as enlightening.
+]
 
 ---
 
@@ -2340,20 +2337,11 @@ when discovering the problem and is more confusing as enlightening.
 
    - Instead showing code from inside the template implementation
 
-------------------------------------------------------------------
-
-https://www.youtube.com/watch?v=qwXq5MqY2ZA
-
-https://www.youtube.com/watch?v=NZeTAnW5LL0
-
-https://isocpp.org/blog/2013/02/concepts-lite-constraining-templates-with-predicates-andrew-sutton-bjarne-s
-
 ---
-
 
 ### Current State
 
-* Still experimental – available as compiler extension only:
+* Still experimental._[] – available as compiler extension only:
 
    - http://www.generic-programming.org/software/ConceptGCC
 
@@ -2362,6 +2350,13 @@ https://isocpp.org/blog/2013/02/concepts-lite-constraining-templates-with-predic
 * Expertimental libraries:
 
    - http://www.generic-programming.org/software/libraries.php
+
+.F[:
+The idea of concepts has been around for long, refined in many iterations.  
+Here are two talks on *Concepts Lite* as of *CppCon 2014*:  
+https://www.youtube.com/watch?v=qwXq5MqY2ZA  
+https://www.youtube.com/watch?v=NZeTAnW5LL0  
+]
 
 
 </textarea>

@@ -1,4 +1,6 @@
-all airtravel: airtravel.o Airport.o Connection.o
+all: airtravel
+	echo "airtravel up-to-date"
+airtravel: airtravel.o Airport.o Connection.o
 	g++ -std=c++0x airtravel.o Airport.o Connection.o -o $@
 airtravel.o: airtravel.cpp
 	g++ -std=c++0x -c airtravel.cpp

@@ -1,4 +1,4 @@
-#include "../pxtn.h"
+#include "pxtn.h"
 
 PN_(Some Basic Tests of `my::length`)
 

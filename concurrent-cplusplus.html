@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>C++11 Concurrency</title>
+    <title>Concurrency in C++</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
     <!-- when changing the stylesheet file please see also remark below -->
     <link rel="stylesheet" type="text/css" href="styling2.css" />
@@ -150,7 +150,6 @@ Introduction](http://www.boost.org/doc/libs/release/libs/{{link_to}}.html)
 {{copyright}}: {{branding}} {{customer}} .microconsult-logo[]
 ]
 
-
 ---
 layout: true
 name: withinfo
@@ -161,6 +160,24 @@ customer:  [im Auftrag von MicroConsult Training & Consulting GmbH](http://micro
 <!-- :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::: -->
 <!-- end of templates ... below comes the REALCONTENT - TNETNOCLAER ends it -->
 <!-- :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::: -->
+
+---
+
+# Agenda: Modern C++ 
+
+Focussing
+
+* Concurrency in C++
+
+© 2018: [Creative Commons BY-SA]
+
+* by: [Dipl.-Ing. Martin Weitzel](http://tbfe.de)
+
+* for: [MicroConsult GmbH Munich](http://microconsult.com)
+
+[Creative Commons BY-SA]: https://creativecommons.org/licenses/by-sa/4.0/
+
+---
 
 template: refersto
 see_also: Josuttis: 18.1
@@ -716,19 +733,12 @@ The following fragment avoids parallel initialisations of `table`:
 … foo( … ) {
     static std::once_flag init;
     static std::array<int, 1000> table;
-    std::call_once(init, [&table]) {
+    std::call_once(init, [&table]{
         … // precalculate table when foo runs for the first time
     });
     … //
 }
 ```
-
-.F[:
-The example code shown does **not** guarantee that from several concurrently
-executing threads all will see a **fully** initialised table – it only
-guarantees sure that the callable to precalculate the content will be executed
-exactly once and from exactly one thread.
-]
 
 ---
 template: plain

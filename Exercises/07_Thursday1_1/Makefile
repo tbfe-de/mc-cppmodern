@@ -1,4 +1,4 @@
-all test: no_dupes_copy
+all run_tests: no_dupes_copy
 	@./no_dupes_copy
 no_dupes_copy: no_dupes_copy.cpp
 	g++ -std=c++14 no_dupes_copy.cpp -o $@

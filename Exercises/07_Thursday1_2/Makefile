@@ -3,7 +3,7 @@ ALL_TESTS=\
 	no_dupes_copy2\
 	no_dupes_copy3
 	
-all test: $(ALL_TESTS)
+all run_tests: $(ALL_TESTS)
 	@for x in $(ALL_TESTS);\
 	 do echo "$$x ..."; ./$$x;\
 	 done

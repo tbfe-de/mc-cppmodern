@@ -90,12 +90,12 @@ Hinweis: Wenn Sie im vorherigen Schritt alles optimal gemacht haben, sollte das
 	 allerdings im TDD-Stil arbeiten, werden die "Erwartungswerte" nun
 	 nicht mehr so ohne weiteres verwendbar sein. (Warum?)
 
-Zusatzfrage: Wie hoch ist die Wahrscheinlichkeit, dass ein "un-kooperativer"
-             Subscriber das Callable eines anderen Subscribers löscht, wenn
-             dazu tausend (oder eine Million oder eine Milliarde) Versuche
+Zusatzfrage: Schätzen Sie die Wahrscheinlichkeit ab, mit der ein "maliziöser"
+             Subscriber das Callable eines anderen Subscribers löschen könnte,
+	     wenn dazu tausend (oder eine Million oder eine Milliarde) Versuche
              zur Verfügung stehen?
-	     (Und wie verändern sich die Zahlen wenn statt eine 32-bit eine
-             64-bit lange Zufallszahl verwendet wird?)
+	     (Und wie verändert sich diese Abschätzung, wenn statt einer 32-bit
+ 	     langen eine 64-bit lange Zufallszahl verwendet wird?)
 
 = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
 

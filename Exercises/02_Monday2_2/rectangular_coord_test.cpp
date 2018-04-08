@@ -1,4 +1,4 @@
-#include "../pxtn.h"
+#include "pxtn.h"
 
 #include "rectangular_coord.h"
 
