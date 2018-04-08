@@ -4,7 +4,7 @@
     <title>Concurrency in C++</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
     <!-- when changing the stylesheet file please see also remark below -->
-    <link rel="stylesheet" type="text/css" href="styling2.css" />
+    <link rel="stylesheet" type="text/css" href="styling.css" />
   </head>
   <body>
 <!-- :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::: -->
@@ -62,106 +62,7 @@ customer:  [im Auftrag von MicroConsult Training & Consulting GmbH](http://micro
 ]
 
 ---
-layout: true
-name: refersto
-copyright: (CC) BY-SA
-branding:  [Dipl.-Ing. Martin Weitzel](http://tbfe.de)
-customer:  [im Auftrag von MicroConsult Training & Consulting GmbH](http://microconsult.de)
-
-<!--
-  *****************************************************************************
-  Template used for pages holding a "refers to" notice
-  *****************************************************************************
-
-  On pages USING THIS TEMPLATE the following attributes must be set:
-
-  see_also: free text (usually reference to book and chapter or page)
-  header: ## and header text (i.e. including the markdown formatting indicator)
-
--->
-
-{{header}}
-
-.refersto.right[
-See also {{see_also}}
-]
-
-.pagefooter[
-{{copyright}}: {{branding}} {{customer}} .microconsult-logo[]
-]
-
----
-layout: true
-name: see_BoostBook
-copyright: (CC) BY-SA
-branding:  [Dipl.-Ing. Martin Weitzel](http://tbfe.de)
-customer:  [im Auftrag von MicroConsult Training & Consulting GmbH](http://microconsult.de)
-
-<!--
-  *****************************************************************************
-  Template used for pages displaying a link to documentation in Boost-Book
-  *****************************************************************************
-
-  On pages USING THIS TEMPLATE the following attributes must be set:
-
-  link_to: partial URL of link into chapter of Boost Book (see usage below)
-  header: ## and header text (i.e. including the markdown formatting indicator)
-
--->
-
-{{header}}
-
-.refersto.right[
-[Quick Link to  
-Introduction](http://www.boost.org/doc/libs/release/doc/html/{{link_to}}.html)
-]
-
-.pagefooter[
-{{copyright}}: {{branding}} {{customer}} .microconsult-logo[]
-]
-
----
-layout: true
-name: see_BoostDocs
-copyright: (CC) BY-SA
-branding:  [Dipl.-Ing. Martin Weitzel](http://tbfe.de)
-customer:  [im Auftrag von MicroConsult Training & Consulting GmbH](http://microconsult.de)
-
-<!--
-  *****************************************************************************
-  Template used for pages displaying a link to Boost documentation
-  *****************************************************************************
-
-  On pages USING THIS TEMPLATE the following attributes must be set:
-
-  link_to: file path to of the infographic EXCLUDING the suffix.
-  header: ## and header text (i.e. including the markdown formatting indicator)
-
--->
-
-{{header}}
-
-.refersto.right[
-[Quick Link to  
-Introduction](http://www.boost.org/doc/libs/release/libs/{{link_to}}.html)
-]
-
-.pagefooter[
-{{copyright}}: {{branding}} {{customer}} .microconsult-logo[]
-]
-
----
-layout: true
-name: withinfo
-copyright: (CC) BY-SA
-branding:  [Dipl.-Ing. Martin Weitzel](http://tbfe.de)
-customer:  [im Auftrag von MicroConsult Training & Consulting GmbH](http://microconsult.de)
-
-<!-- :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::: -->
-<!-- end of templates ... below comes the REALCONTENT - TNETNOCLAER ends it -->
-<!-- :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::: -->
-
----
+template: blank
 
 # Agenda: Modern C++ 
 
@@ -178,9 +79,7 @@ Focussing
 [Creative Commons BY-SA]: https://creativecommons.org/licenses/by-sa/4.0/
 
 ---
-
-template: refersto
-see_also: Josuttis: 18.1
+template: plain
 name: cpp11_concurrency_basics
 header: ## C++11: Concurrency Basics 
 
@@ -203,10 +102,10 @@ This part of the presentation was written with the intent to give an overview
 of the provided features only, it is by far not exhaustive!
 
 .F[:
-Concurrency features in C++11 may appear "as just some more library classes and
-functions", but especially in the area of allowed optimisations and how to
-provide [Cache Coherence] on modern multi-core CPUs, it is also closely
-intertwined with code generation.  For more information see:  
+Concurrency features in C++11 are more as "just some more library classes and
+functions". Especially with regard to optimisations and how to provide
+[Cache Coherence] on modern CPUs it is closely intertwined with code
+generation. For more information see:  
 http://en.cppreference.com/w/cpp/language/memory_model and  
 http://en.cppreference.com/w/cpp/language/memory_order
 ]
@@ -1231,8 +1130,6 @@ by Anthony Williams
 ]
 
 ---
-template: refersto
-see_also: Schäling: 6
 name: boost_thread
 header: ## Boost: Threads Library
 
@@ -1265,8 +1162,6 @@ loaded at program startup).
 ]
 
 ---
-template: refersto
-see_also: Schäling: 7
 name: boost_asio
 header: ## Boost: Asio
 
