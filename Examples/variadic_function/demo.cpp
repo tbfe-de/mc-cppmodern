@@ -123,7 +123,7 @@ void all_concatenated() {
 
 int main() {
     classic_varargs();
-    all_to_stream();
-    all_concatenated();
+//  all_to_stream();
+//  all_concatenated();
 }
 

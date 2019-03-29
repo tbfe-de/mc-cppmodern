@@ -114,8 +114,8 @@ void show_deref_string_literals() {
 
 int main() {
     show_sizeof_chartypes();
-    show_charvalues_hex();
-    show_char_literals();
-    show_string_literals();
-    show_deref_string_literals();
+//  show_charvalues_hex();
+//  show_char_literals();
+//  show_string_literals();
+//  show_deref_string_literals();
 }

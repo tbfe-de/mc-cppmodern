@@ -300,7 +300,7 @@ void element_access() {
 int main() {
     std::cout.setf(std::ios::boolalpha);
     tuple_creation();
-    ith_type_test();
-    element_access();
+//  ith_type_test();
+//  element_access();
 }
 

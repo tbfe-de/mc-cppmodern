@@ -2,7 +2,6 @@ ALL_TESTS=\
 	performance1\
 	performance2\
 	performance3
-
 all run_tests: $(ALL_TESTS)
 	@echo "two huge chunks ..." && ./performance1
 	@echo "few large chunks ..." && ./performance2

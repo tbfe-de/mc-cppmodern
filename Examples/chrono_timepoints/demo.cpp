@@ -142,7 +142,8 @@ void mixed_demo() {
 }
 
 int main() {
+    std::cout.setf(std::ios::boolalpha);
     additive_demo();
-    multiplicative_demo();
-    mixed_demo();
+//  multiplicative_demo();
+//  mixed_demo();
 }

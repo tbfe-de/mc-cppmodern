@@ -19,14 +19,14 @@
 
 namespace my {
     struct clazz {
-        clazz(int, std::string) {}
-    #if 0
+    clazz(int, std::string) {}
+       #if 0
         clazz(const clazz&) =delete;
         clazz(clazz&&)      =default;
-    #else
+       #else
         clazz(const clazz&) =default;
         clazz(clazz&&)      =delete;
-    #endif
+       #endif
     };
 }
 
@@ -91,6 +91,6 @@ void positions_to_words() {
 
 int main() {
     emplace_vs_push();
-    words_to_positions();
-    positions_to_words();
+//  words_to_positions();
+//  positions_to_words();
 }

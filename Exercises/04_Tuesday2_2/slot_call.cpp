@@ -2,6 +2,7 @@
 
 #include <algorithm>
 #include <functional>
+#include <algorithm>
 #include <sstream>
 #include <vector>
 
@@ -15,9 +16,18 @@ private:
 public:
         CallSlots() =default;
         auto register_call(const CallableType cb) -> CallableId {
-		const auto available = std::find(slots.begin(), slots.end(), nullptr);
-		const auto inserted = slots.insert(available, cb);
-		return inserted - slots.begin(); 
+		const auto fs{
+			 std::find(slots.begin(), slots.end(), nullptr)
+		};
+		const auto id{
+			 std::distance(slots.begin(), fs)
+		};
+		if (fs != slots.end()) {
+			*fs = cb;
+		} else {
+			slots.emplace_back(cb);
+		}
+		return id;
 	}
         auto unregister_call(CallableId id) {
 		auto cb = std::move(slots.at(id));

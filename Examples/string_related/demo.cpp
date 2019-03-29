@@ -119,7 +119,7 @@ void container_ops() {
 int main() {
     std::cout.setf(std::ios::boolalpha);
     some_basics();
-    cvt_from_arithmetic();
-    cvt_to_arithmetic();
-    container_ops();
+//  cvt_from_arithmetic();
+//  cvt_to_arithmetic();
+//  container_ops();
 }

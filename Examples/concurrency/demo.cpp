@@ -218,12 +218,12 @@ int main() {
         std::cout.setf(std::ios::boolalpha);
         std::iota(data.begin(), data.end(), 0);
         synchr_demo();
-        async_2_demo();
-        async_n_demo();
-        async_x_demo();
-        mutex_demo();
-        queue_demo();
-        atomic_demo();
+//      async_2_demo();
+//      async_n_demo();
+//      async_x_demo();
+//      mutex_demo();
+//      queue_demo();
+//      atomic_demo();
 //      task_demo();
 //      thread_demo();
 }

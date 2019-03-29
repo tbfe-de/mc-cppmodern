@@ -202,8 +202,8 @@ void shared_ptr_pitfalls() {
 //  auto ptr = std::shared_ptr<int>{&x};    PX(&*ptr);  PX(*ptr);
     auto p = new int{6*7};                  PX(p);      PX(*p);
     auto pt1 = std::shared_ptr<int>{p};     PX(&*pt1);  PX(*pt1);
-//  auto pt2 = std::unique_ptr<int>{p};
-//  auto pt3 = std::unique_ptr<int>{pt1.get()};
+//  auto pt2 = std::shared_ptr<int>{p};
+//  auto pt3 = std::shared_ptr<int>{pt1.get()};
 //  delete p;
     auto ptz = std::make_shared<my::clazz>();
 //  auto pts = ptz->get_self();
@@ -212,9 +212,9 @@ void shared_ptr_pitfalls() {
 int main() {
     std::cout.setf(std::ios::boolalpha);
     shared_ptr_basics();
-    make_shared_ptr();
-    test_shared_ptr();
-    access_shared_ptr();
-    custom_deleter();
-    shared_ptr_pitfalls();
+//  make_shared_ptr();
+//  test_shared_ptr();
+//  access_shared_ptr();
+//  custom_deleter();
+//  shared_ptr_pitfalls();
 }

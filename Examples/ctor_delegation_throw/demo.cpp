@@ -39,4 +39,3 @@ int main() {
     std::cout.setf(std::ios::boolalpha);
     ctor_delegation_throw();
 }
-

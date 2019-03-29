@@ -43,35 +43,37 @@ namespace my {
 		}
 	};
 
-	constexpr length operator"" _mm(unsigned long long v) {
-		return length::mm(v);
-	}
-	constexpr length operator"" _mm(long double v) {
-		return length::mm(v);
-	}
-	constexpr length operator"" _cm(unsigned long long v) {
-		return length::cm(v);
-	}
-	constexpr length operator"" _cm(long double v) {
-		return length::cm(v);
-	}
-	constexpr length operator"" _inch(unsigned long long v) {
-		return length::cm(2.54*v);
-	}
-	constexpr length operator"" _inch(long double v) {
-		return length::cm(2.54*v);
-	}
-	constexpr length operator"" _m(unsigned long long v) {
-		return length::m(v);
-	}
-	constexpr length operator"" _m(long double v) {
-		return length::m(v);
-	}
-	constexpr length operator"" _km(unsigned long long v) {
-		return length::km(v);
-	}
-	constexpr length operator"" _km(long double v) {
-		return length::km(v);
+	namespace length_literals {
+		constexpr length operator"" _mm(unsigned long long v) {
+			return length::mm(v);
+		}
+		constexpr length operator"" _mm(long double v) {
+			return length::mm(v);
+		}
+		constexpr length operator"" _cm(unsigned long long v) {
+			return length::cm(v);
+		}
+		constexpr length operator"" _cm(long double v) {
+			return length::cm(v);
+		}
+		constexpr length operator"" _inch(unsigned long long v) {
+			return length::cm(2.54*v);
+		}
+		constexpr length operator"" _inch(long double v) {
+			return length::cm(2.54*v);
+		}
+		constexpr length operator"" _m(unsigned long long v) {
+			return length::m(v);
+		}
+		constexpr length operator"" _m(long double v) {
+			return length::m(v);
+		}
+		constexpr length operator"" _km(unsigned long long v) {
+			return length::km(v);
+		}
+		constexpr length operator"" _km(long double v) {
+			return length::km(v);
+		}
 	}
 }
 

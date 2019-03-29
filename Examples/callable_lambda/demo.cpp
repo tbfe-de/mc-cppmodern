@@ -281,11 +281,8 @@ void capture_init_array() {
 
 int main() {
     std::cout.setf(std::ios::boolalpha);
-
-//  callable_basics();
-    copy_if_demo();
+    callable_basics();
+//  copy_if_demo();
 //  capture_basics();
 //  capture_init_array();
 }
-
-

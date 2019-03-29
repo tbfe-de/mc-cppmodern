@@ -215,7 +215,7 @@ void sfinae_default_arg() {
 }
 
 int main() {
-//  sfinae_return_type();
-    sfinae_default_arg();
+    sfinae_return_type();
+//  sfinae_default_arg();
 }
 

@@ -69,6 +69,6 @@ void shared_from_this() {
 
 int main() {
     std::cout.setf(std::ios::boolalpha);
-//  bad_shared_from_this();
-    shared_from_this();
+    bad_shared_from_this();
+//  shared_from_this();
 }

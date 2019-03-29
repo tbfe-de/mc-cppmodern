@@ -239,9 +239,9 @@ int main() {
     std::cout.setf(std::ios::boolalpha|std::ios::fixed);
     std::cout.precision(2);
     re_basics();                            PL();
-    re_based_matching();                    PL();
-    re_based_searching();                   PL();
-    re_based_parsing();                     PL();
-    re_based_replacing();                   PL();
-    easy_bulk_letter();                     PL();
+//  re_based_matching();                    PL();
+//  re_based_searching();                   PL();
+//  re_based_parsing();                     PL();
+//  re_based_replacing();                   PL();
+//  easy_bulk_letter();                     PL();
 }

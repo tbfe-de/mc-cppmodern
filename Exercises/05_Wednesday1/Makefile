@@ -1,6 +1,5 @@
 COMPILE_CPP=\
 	g++ -std=c++14 -I..
-
 all run_testrun_tests: fixarray
 	@./fixarray
 fixarray: fixarray.cpp

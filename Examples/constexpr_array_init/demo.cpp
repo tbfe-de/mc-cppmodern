@@ -33,5 +33,4 @@ int main() {
     constexpr primes<12> ptab{};
     for (auto i : ptab.data) std::cout << i << ' ';
     std::cout << std::endl;
-    
 }

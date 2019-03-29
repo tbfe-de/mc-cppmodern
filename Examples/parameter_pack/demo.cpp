@@ -210,8 +210,9 @@ void boost_mpl() {
 }
 
 int main() {
-//  the_basics();
+    std::cout.setf(std::ios::boolalpha);
+    the_basics();
 //  literal_lists();
 //  type_lists();
-    boost_mpl();
+//  boost_mpl();
 }

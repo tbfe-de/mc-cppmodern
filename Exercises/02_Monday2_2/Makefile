@@ -1,4 +1,5 @@
-COMPILE_CPP = g++ -std=c++98
+COMPILE_CPP=\
+	g++ -std=c++98 -I..
 
 ALL_TESTS =\
 	rectangular_coord_test

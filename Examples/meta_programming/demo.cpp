@@ -121,9 +121,10 @@ void branches_and_loops() {
 }
 
 int main() {
+    std::cout.setc(std::ios::boolalpha);
     bare_bones_use();
-    macro_based_use();
-    branches_and_loops();
+//  macro_based_use();
+//  branches_and_loops();
 }
 
 #endif

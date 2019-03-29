@@ -422,14 +422,12 @@ void bind_vs_lambda() {
 
 int main() {
     std::cout.setf(std::ios::boolalpha);
-#if 1
     function_basics();
-    type_erasure();
-    supported_operations();
-    function_vs_generic();
-    bind_basics();
-    ref_and_cref();
-    bind_vs_lambda();
-    function_callback();
-#endif
+//  type_erasure();
+//  supported_operations();
+//  function_vs_generic();
+//  bind_basics();
+//  ref_and_cref();
+//  bind_vs_lambda();
+//  function_callback();
 }

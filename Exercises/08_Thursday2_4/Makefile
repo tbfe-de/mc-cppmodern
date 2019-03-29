@@ -8,12 +8,10 @@ ALL_TESTS=\
 	performance-vector-1\
 	performance-vector-4\
 	performance-vector-9
-
 all run_tests: $(ALL_TESTS)
 	@for t in $(ALL_TESTS);\
 	 do echo "$$t ..." && ./$$t;\
 	 done
-	
 performance-tree-1: performance.cpp
 	g++ -std=c++14 -O2 -DUSE_TREE_SET -DDUPES_RATE=1 performance.cpp -o $@
 performance-tree-4: performance.cpp

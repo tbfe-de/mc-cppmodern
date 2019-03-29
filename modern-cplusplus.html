@@ -72,7 +72,7 @@ Focusing
 
 * C++11/14/17 Extensions
 
-© 2018: [Creative Commons BY-SA]
+© 2019: [Creative Commons BY-SA]
 
 * by: [Dipl.-Ing. Martin Weitzel](http://tbfe.de)
 
@@ -2915,7 +2915,6 @@ will be covered in a later chapter.
 ```
 std::string foo(const std::initializer_list<int> &li) {
     std::ostringstream result{};
-    result.setf(std::ios::boolalpha);
     result << "initializer_list<int>{";
     for (auto it = li.begin(); it != li.end(); ++it) {
         if (it != li.begin()) result << ", ";
@@ -5483,8 +5482,8 @@ int main() {
 //  auto ptr = std::shared_ptr<int>{&x};    PX(&*ptr);  PX(*ptr);
     auto p = new int{6*7};                  PX(p);      PX(*p);
     auto pt1 = std::shared_ptr<int>{p};     PX(&*pt1);  PX(*pt1);
-//  auto pt2 = std::unique_ptr<int>{p};
-//  auto pt3 = std::unique_ptr<int>{pt1.get()};
+//  auto pt2 = std::shared_ptr<int>{p};
+//  auto pt3 = std::shared_ptr<int>{pt1.get()};
 //  delete p;
     auto ptz = std::make_shared<clazz>();
 //  auto pts = ptz->get_self();

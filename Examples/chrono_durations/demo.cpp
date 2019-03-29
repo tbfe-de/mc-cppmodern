@@ -231,9 +231,10 @@ void printing_durations() {
 }
 
 int main() {
+    std:cout.setf(std::ios::boolalpha);
     predefined_durations();
-    nonstandard_durations();
-    combining_durations();
-    casting_durations();
-    printing_durations();
+//  nonstandard_durations();
+//  combining_durations();
+//  casting_durations();
+//  printing_durations();
 }

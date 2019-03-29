@@ -1,6 +1,5 @@
 ALL_TESTS=\
 	variadic_print
-
 all run_tests: $(ALL_TESTS)
 	@for x in $(ALL_TESTS); do ./$$x; done
 variadic_print: variadic_print.cpp

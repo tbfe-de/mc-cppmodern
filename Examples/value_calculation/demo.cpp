@@ -214,8 +214,8 @@ void compare_types() {
 
 int main() {
     std::cout.setf(std::ios::boolalpha);
-    function_test();
-    template_test();
-    value_as_type();
-    compare_types();
+//  function_test();
+//  template_test();
+//  value_as_type();
+//  compare_types();
 }

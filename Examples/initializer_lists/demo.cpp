@@ -189,7 +189,7 @@ void as_argument() {
                                          
 int main() {
     the_basics();
-    stl_containers();
-    auto_deduction();
-    as_argument();
+//  stl_containers();
+//  auto_deduction();
+//  as_argument();
 }

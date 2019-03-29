@@ -1,6 +1,5 @@
 ALL_TESTS=\
 	print_native_array
-
 all run_tests: $(ALL_TESTS)
 	@for x in $(ALL_TESTS); do ./$$x; done
 print_native_array: print_native_array.cpp

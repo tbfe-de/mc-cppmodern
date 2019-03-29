@@ -238,11 +238,12 @@ std::string colors_container() {
 
 int main()
 {
-//    PX(native_array());
-//    PX(std_array());
-//    PX(seq_container());
-//    PX(set_container());
-//    PX(map_container());
-//    PX(primes_container());
-    PX(colors_container());
+    std::cout.setf(std::ios::boolalpha);
+    PX(native_array());
+//  PX(std_array());
+//  PX(seq_container());
+//  PX(set_container());
+//  PX(map_container());
+//  PX(primes_container());
+//  PX(colors_container());
 }

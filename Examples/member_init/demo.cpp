@@ -184,7 +184,7 @@ void ctor_delegation_throw() {
 
 int main() {
     std::cout.setf(std::ios::boolalpha);
-//  xy_points_and_distances();
-    ctor_delegation_throw();
+    xy_points_and_distances();
+//  ctor_delegation_throw();
 }
 

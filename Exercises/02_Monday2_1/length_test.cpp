@@ -9,11 +9,15 @@ PN_(Some Basic Tests of `my::length`)
 int main() {
 	std::cout.setf(std::ios::fixed);
 	std::cout.precision(4);
-	constexpr auto PI = 2*std::acos(0.0);
+	const auto PI = 2*std::acos(0.0);
 
-	auto one_meter = my::length::m(1.0);
-	auto one_inch = my::length::cm(2.54);
-	auto earth_radius = my::length::km(6387);
+//	auto one_meter = my::length::m(1.0);
+//	auto one_inch = my::length::cm(2.54);
+//	auto earth_radius = my::length::km(6387);
+	using namespace my::length_literals;
+	auto one_meter = 1_m;
+	auto one_inch = 1_inch;
+  	auto earth_radius = 6387_km;
 	auto equator_length = 2*PI*earth_radius;
 	
 	PX_("1.0000", one_meter.value());
@@ -29,7 +33,5 @@ int main() {
 	std::cout.precision(4);
 	PX_("0.9746", (one_meter - one_inch).value());
 
-	using my::operator"" _m;
-	using my::operator"" _inch;
 	PX_("0.9746", (1_m - 1_inch).value());
 }

@@ -217,14 +217,14 @@ void experimental_tuple() {}
 
 int main() {
     std::cout.setf(std::ios::boolalpha);
-      some_basics();
-      create_and_access();
-      assign_and_tie();
-      compile_time_ops();
-      misc_features();
-      tuple_vs_pair();
+    some_basics();
+//  create_and_access();
+//  assign_and_tie();
+//  compile_time_ops();
+//  misc_features();
+//  tuple_vs_pair();
 #if __cplusplus > 201402L
-      experimental_tuple();
+//  experimental_tuple();
 #endif
 }
 

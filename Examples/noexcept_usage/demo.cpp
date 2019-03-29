@@ -150,6 +150,6 @@ void move_or_copy() {
 int main() {
     std::cout.setf(std::ios::boolalpha);
     basic_use();
-    static_select();
-    move_or_copy();
+//  static_select();
+//  move_or_copy();
 }

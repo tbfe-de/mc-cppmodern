@@ -181,7 +181,7 @@ namespace my {
             , xc(xc_), yc(yc_)
         {}
         friend std::ostream& operator<<(std::ostream &lhs, const point &rhs) {
-	    lhs << "point{nm=" << (rhs.nm ? &rhs.nm[0] : "??")
+	    lhs << "point{nm=" << (rhs.nm ? rhs.nm.get() : "??")
                 << ", xc=" << rhs.xc << ", yc=" << rhs.yc << "}";
 	}
     };
@@ -198,13 +198,11 @@ void unique_ptr_as_member() {
 
 int main() {
     std::cout.setf(std::ios::boolalpha);
-#if 0
     unique_ptr_basics();
-    make_unique_ptr();
-    test_unique_ptr();
-    access_unique_ptr();
-    legacy_unique_ptr();
-    unique_ptr_pitfalls();
-#endif
-    unique_ptr_as_member();
+//  make_unique_ptr();
+//  test_unique_ptr();
+//  access_unique_ptr();
+//  legacy_unique_ptr();
+//  unique_ptr_pitfalls();
+//  unique_ptr_as_member();
 }

@@ -138,9 +138,9 @@ void runlength_check() {
 int main() {
     std::cout.setf(std::ios::boolalpha);
     cstyle_random();
-    random_generator();
-    random_distribution();
-    randomness_check();
-    runlength_check();
+//  random_generator();
+//  random_distribution();
+//  randomness_check();
+//  runlength_check();
  }
  

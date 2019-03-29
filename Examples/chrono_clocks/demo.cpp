@@ -193,7 +193,7 @@ void high_resolution_clock() {
 
 int main() {
     cookbook_style();
-    system_clock();
-    steady_clock();
-    high_resolution_clock();
+//  system_clock();
+//  steady_clock();
+//  high_resolution_clock();
 }

@@ -1,6 +1,7 @@
 #include <algorithm>
 #include <memory>
 #include <stdexcept>
+#include <type_traits>
 
 #include "pxtn.h"
 
@@ -69,14 +70,17 @@ namespace my {
 			return arr[idx];
 		}
 		T& at(std::size_t idx) {
+			static_assert(std::is_unsigned<decltype(idx)>::value,
+				      "the test FOLLOWING requires unsigned!");
 			if (idx >= sz)
 				throw std::out_of_range("my::fixarray::at");
 			return arr[idx];
 		}
 		const T& at(std::size_t idx) const {
+			// the following cast is safe becausae ....
 			return const_cast<fixarray*>(this)->at(idx);
-		}
 
+		}
 		T* data() { return arr.get(); }
 		const T* data() const { return arr.get(); };
 	};
